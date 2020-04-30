@@ -24,6 +24,8 @@ import java.util.Objects;
 import org.kie.api.KieServices;
 import org.kie.api.builder.ReleaseId;
 import org.kie.api.runtime.KieContainer;
+import org.optaplanner.core.api.compatibility.lang.NonNull;
+import org.optaplanner.core.api.compatibility.lang.Nullable;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.score.Score;
 import org.optaplanner.core.api.score.constraint.ConstraintMatchTotal;
@@ -59,7 +61,9 @@ public abstract class SolverFactory<Solution_> {
      * @return never null
      * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
      */
-    public static <Solution_> SolverFactory<Solution_> createFromXmlResource(String solverConfigResource) {
+    @NonNull
+    public static <Solution_> SolverFactory<Solution_> createFromXmlResource(
+            @NonNull String solverConfigResource) {
         SolverConfig solverConfig = SolverConfig.createFromXmlResource(solverConfigResource);
         return new DefaultSolverFactory<>(solverConfig);
     }
@@ -73,7 +77,10 @@ public abstract class SolverFactory<Solution_> {
      * @return never null
      * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
      */
-    public static <Solution_> SolverFactory<Solution_> createFromXmlResource(String solverConfigResource, ClassLoader classLoader) {
+    @NonNull
+    public static <Solution_> SolverFactory<Solution_> createFromXmlResource(
+            @NonNull String solverConfigResource,
+            @Nullable ClassLoader classLoader) {
         SolverConfig solverConfig = SolverConfig.createFromXmlResource(solverConfigResource, classLoader);
         return new DefaultSolverFactory<>(solverConfig);
     }
@@ -88,7 +95,9 @@ public abstract class SolverFactory<Solution_> {
      * @return never null
      * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
      */
-    public static <Solution_> SolverFactory<Solution_> createFromXmlFile(File solverConfigFile) {
+    @NonNull
+    public static <Solution_> SolverFactory<Solution_> createFromXmlFile(
+            @NonNull File solverConfigFile) {
         SolverConfig solverConfig = SolverConfig.createFromXmlFile(solverConfigFile);
         return new DefaultSolverFactory<>(solverConfig);
     }
@@ -101,7 +110,10 @@ public abstract class SolverFactory<Solution_> {
      * @return never null
      * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
      */
-    public static <Solution_> SolverFactory<Solution_> createFromXmlFile(File solverConfigFile, ClassLoader classLoader) {
+    @NonNull
+    public static <Solution_> SolverFactory<Solution_> createFromXmlFile(
+            @NonNull File solverConfigFile,
+            @Nullable ClassLoader classLoader) {
         SolverConfig solverConfig = SolverConfig.createFromXmlFile(solverConfigFile, classLoader);
         return new DefaultSolverFactory<>(solverConfig);
     }
@@ -174,7 +186,9 @@ public abstract class SolverFactory<Solution_> {
      * @return never null
      * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
      */
-    public static <Solution_> SolverFactory<Solution_> create(SolverConfig solverConfig) {
+    @NonNull
+    public static <Solution_> SolverFactory<Solution_> create(
+            @NonNull SolverConfig solverConfig) {
         Objects.requireNonNull(solverConfig);
         // Defensive copy of solverConfig, because the DefaultSolverFactory doesn't internalize it yet
         solverConfig = new SolverConfig(solverConfig);
@@ -226,8 +240,9 @@ public abstract class SolverFactory<Solution_> {
      * @return never null
      * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
      */
+    @NonNull
     public static <Solution_> SolverFactory<Solution_> createFromKieContainerXmlResource(
-            String solverConfigResource) {
+            @NonNull String solverConfigResource) {
         KieContainer kieContainer = KieServices.Factory.get().getKieClasspathContainer();
         return createFromKieContainerXmlResource(kieContainer, solverConfigResource);
     }
@@ -239,8 +254,10 @@ public abstract class SolverFactory<Solution_> {
      * @return never null
      * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
      */
+    @NonNull
     public static <Solution_> SolverFactory<Solution_> createFromKieContainerXmlResource(
-            ReleaseId releaseId, String solverConfigResource) {
+            @NonNull ReleaseId releaseId,
+            @NonNull String solverConfigResource) {
         KieContainer kieContainer = KieServices.Factory.get().newKieContainer(releaseId);
         return createFromKieContainerXmlResource(kieContainer, solverConfigResource);
     }
@@ -252,8 +269,10 @@ public abstract class SolverFactory<Solution_> {
      * @return never null
      * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
      */
+    @NonNull
     public static <Solution_> SolverFactory<Solution_> createFromKieContainerXmlResource(
-            KieContainer kieContainer, String solverConfigResource) {
+            @NonNull KieContainer kieContainer,
+            @NonNull String solverConfigResource) {
         SolverConfig solverConfig = SolverConfig.createFromXmlResource(solverConfigResource,
                 kieContainer.getClassLoader());
         return new DefaultSolverFactory<>(solverConfig, new SolverConfigContext(kieContainer));
@@ -264,7 +283,9 @@ public abstract class SolverFactory<Solution_> {
      * @return never null
      * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
      */
-    public static <Solution_> SolverFactory<Solution_> createEmptyFromKieContainer(ReleaseId releaseId) {
+    @NonNull
+    public static <Solution_> SolverFactory<Solution_> createEmptyFromKieContainer(
+            @NonNull ReleaseId releaseId) {
         KieContainer kieContainer = KieServices.Factory.get().newKieContainer(releaseId);
         return createEmptyFromKieContainer(kieContainer);
     }
@@ -274,7 +295,9 @@ public abstract class SolverFactory<Solution_> {
      * @return never null
      * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
      */
-    public static <Solution_> SolverFactory<Solution_> createEmptyFromKieContainer(KieContainer kieContainer) {
+    @NonNull
+    public static <Solution_> SolverFactory<Solution_> createEmptyFromKieContainer(
+            @NonNull KieContainer kieContainer) {
         SolverConfig solverConfig = new SolverConfig(kieContainer.getClassLoader());
         return new DefaultSolverFactory<>(solverConfig, new SolverConfigContext(kieContainer));
     }
@@ -287,6 +310,7 @@ public abstract class SolverFactory<Solution_> {
      * Creates a new {@link Solver} instance.
      * @return never null
      */
+    @NonNull
     public abstract Solver<Solution_> buildSolver();
 
     /**
@@ -295,6 +319,7 @@ public abstract class SolverFactory<Solution_> {
      * with the {@link ConstraintMatchTotal} and {@link Indictment} API.
      * @return never null
      */
+    @NonNull
     public abstract ScoreDirectorFactory<Solution_> getScoreDirectorFactory();
 
     /**

@@ -21,6 +21,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import org.optaplanner.core.api.compatibility.lang.NonNull;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 
 /**
@@ -34,6 +35,7 @@ public interface SolverJob<Solution_, ProblemId_> {
      * @return never null, a value given to {@link SolverManager#solve(Object, Function, Consumer)}
      * or {@link SolverManager#solveAndListen(Object, Function, Consumer)}
      */
+    @NonNull
     ProblemId_ getProblemId();
 
     /**
@@ -42,6 +44,7 @@ public interface SolverJob<Solution_, ProblemId_> {
      * Returns {@link SolverStatus#NOT_SOLVING} if the solver already terminated.
      * @return never null
      */
+    @NonNull
     SolverStatus getSolverStatus();
 
     // TODO Future features
@@ -67,6 +70,7 @@ public interface SolverJob<Solution_, ProblemId_> {
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ExecutionException if the computation threw an exception
      */
+    @NonNull
     Solution_ getFinalBestSolution() throws InterruptedException, ExecutionException;
 
 }

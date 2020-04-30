@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Future;
 
+import org.optaplanner.core.api.compatibility.lang.NonNull;
+import org.optaplanner.core.api.compatibility.lang.Nullable;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.score.FeasibilityScore;
 import org.optaplanner.core.api.score.Score;
@@ -61,7 +63,8 @@ public interface Solver<Solution_> {
      * @return never null, but it can return the original, uninitialized {@link PlanningSolution} with a null {@link Score}.
      * @see #terminateEarly()
      */
-    Solution_ solve(Solution_ problem);
+    @NonNull
+    Solution_ solve(@NonNull Solution_ problem);
 
     /**
      * Notifies the solver that it should stop at its earliest convenience.
@@ -91,6 +94,7 @@ public interface Solver<Solution_> {
      * @return never null (unless {@link #solve(Object)} hasn't been called yet),
      * but it can return the uninitialized {@link PlanningSolution} with a {@link Score} null.
      */
+    @Nullable
     Solution_ getBestSolution();
 
     /**
@@ -102,6 +106,7 @@ public interface Solver<Solution_> {
      * This method is thread-safe.
      * @return null if the {@link PlanningSolution} is still uninitialized
      */
+    @Nullable
     Score getBestScore();
 
     /**
@@ -119,6 +124,7 @@ public interface Solver<Solution_> {
      * @return null if {@link #getBestScore()} returns null
      * @see ScoreDirector#explainScore()
      */
+    @Nullable
     String explainBestScore();
 
     /**
@@ -160,7 +166,7 @@ public interface Solver<Solution_> {
      * @return true (as specified by {@link Collection#add})
      * @see #addProblemFactChanges(List)
      */
-    boolean addProblemFactChange(ProblemFactChange<Solution_> problemFactChange);
+    boolean addProblemFactChange(@NonNull ProblemFactChange<Solution_> problemFactChange);
 
     /**
      * Schedules multiple {@link ProblemFactChange}s to be processed.
@@ -175,7 +181,7 @@ public interface Solver<Solution_> {
      * @return true (as specified by {@link Collection#add})
      * @see #addProblemFactChange(ProblemFactChange)
      */
-    boolean addProblemFactChanges(List<ProblemFactChange<Solution_>> problemFactChangeList);
+    boolean addProblemFactChanges(@NonNull List<ProblemFactChange<Solution_>> problemFactChangeList);
 
     /**
      * Checks if all scheduled {@link ProblemFactChange}s have been processed.
@@ -188,12 +194,12 @@ public interface Solver<Solution_> {
     /**
      * @param eventListener never null
      */
-    void addEventListener(SolverEventListener<Solution_> eventListener);
+    void addEventListener(@NonNull SolverEventListener<Solution_> eventListener);
 
     /**
      * @param eventListener never null
      */
-    void removeEventListener(SolverEventListener<Solution_> eventListener);
+    void removeEventListener(@NonNull SolverEventListener<Solution_> eventListener);
 
     /**
      * Useful to reuse the {@link Score} calculation (for example in a UI)
@@ -204,6 +210,7 @@ public interface Solver<Solution_> {
      * Will be removed in 8.0.
      */
     @Deprecated
+    @NonNull
     ScoreDirectorFactory<Solution_> getScoreDirectorFactory();
 
 }
