@@ -125,11 +125,13 @@ public class BestSolutionRecaller<Solution_> extends PhaseLifecycleListenerAdapt
             if (!solverScope.isBestSolutionInitialized()) {
                 solverScope.setStartingInitializedScore(bestScore);
             }
+            // Only update the best solution time if the solution is initalized
+            // (prevents solver from continuing a UnimprovedTimeMillisSpentTermination
+            // if a ConstructionHeuristic fails to finish)
+            solverScope.setBestSolutionTimeMillis(System.currentTimeMillis());
         }
         solverScope.setBestSolution(bestSolution);
         solverScope.setBestScore(bestScore);
-        solverScope.setBestSolutionTimeMillis(System.currentTimeMillis());
         solverEventSupport.fireBestSolutionChanged(solverScope, bestSolution);
     }
-
 }
