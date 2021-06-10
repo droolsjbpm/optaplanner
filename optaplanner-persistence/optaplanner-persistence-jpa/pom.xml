@@ -55,6 +55,12 @@
       <artifactId>hibernate-core</artifactId>
       <!-- Used at compile time by *ScoreHibernateType -->
       <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.activation</groupId>
+          <artifactId>javax.activation-api</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <!-- Replacement for 'org.apache.geronimo.specs:geronimo-jta_1.1_spec' which is excluded from Hibernate deps. -->
