@@ -129,13 +129,13 @@ void setupOptaplannerNativePrJob() {
 
 void setupOptawebEmployeeRosteringPrJob() {
     def jobParams = getDefaultJobParams('optaweb-employee-rostering')
-    jobParams.pr = [ whiteListTargetBranches: ['master'] ]
+    jobParams.pr = [ whiteListTargetBranches: ['main'] ]
     KogitoJobTemplate.createPRJob(this, jobParams)
 }
 
 void setupOptawebVehicleRoutingPrJob() {
     def jobParams = getDefaultJobParams('optaweb-vehicle-routing')
-    jobParams.pr = [ whiteListTargetBranches: ['master'] ]
+    jobParams.pr = [ whiteListTargetBranches: ['main'] ]
     KogitoJobTemplate.createPRJob(this, jobParams)
 }
 
