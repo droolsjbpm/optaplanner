@@ -39,6 +39,7 @@ import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider;
 import org.optaplanner.core.api.domain.variable.AnchorShadowVariable;
 import org.optaplanner.core.api.domain.variable.CustomShadowVariable;
 import org.optaplanner.core.api.domain.variable.InverseRelationShadowVariable;
+import org.optaplanner.core.api.domain.variable.PlanningCollectionVariable;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
 import org.optaplanner.core.api.score.director.ScoreDirector;
 import org.optaplanner.core.config.heuristic.selector.common.decorator.SelectionSorterOrder;
@@ -50,7 +51,9 @@ import org.optaplanner.core.impl.domain.policy.DescriptorPolicy;
 import org.optaplanner.core.impl.domain.solution.descriptor.SolutionDescriptor;
 import org.optaplanner.core.impl.domain.variable.anchor.AnchorShadowVariableDescriptor;
 import org.optaplanner.core.impl.domain.variable.custom.CustomShadowVariableDescriptor;
+import org.optaplanner.core.impl.domain.variable.descriptor.BasicVariableDescriptor;
 import org.optaplanner.core.impl.domain.variable.descriptor.GenuineVariableDescriptor;
+import org.optaplanner.core.impl.domain.variable.descriptor.ListVariableDescriptor;
 import org.optaplanner.core.impl.domain.variable.descriptor.ShadowVariableDescriptor;
 import org.optaplanner.core.impl.domain.variable.descriptor.VariableDescriptor;
 import org.optaplanner.core.impl.domain.variable.inverserelation.InverseRelationShadowVariableDescriptor;
@@ -71,7 +74,9 @@ public class EntityDescriptor<Solution_> {
 
     private static final Class[] VARIABLE_ANNOTATION_CLASSES = {
             PlanningVariable.class,
-            InverseRelationShadowVariable.class, AnchorShadowVariable.class,
+            PlanningCollectionVariable.class,
+            InverseRelationShadowVariable.class,
+            AnchorShadowVariable.class,
             CustomShadowVariable.class };
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EntityDescriptor.class);
@@ -243,9 +248,21 @@ public class EntityDescriptor<Solution_> {
                     + "Maybe the annotation is defined on both the field and its getter.");
         }
         if (variableAnnotationClass.equals(PlanningVariable.class)) {
-            GenuineVariableDescriptor<Solution_> variableDescriptor = new GenuineVariableDescriptor<>(this,
-                    memberAccessor);
+            GenuineVariableDescriptor<Solution_> variableDescriptor = new BasicVariableDescriptor<>(
+                    this, memberAccessor);
             declaredGenuineVariableDescriptorMap.put(memberName, variableDescriptor);
+        } else if (variableAnnotationClass.equals(PlanningCollectionVariable.class)) {
+            if (List.class.isAssignableFrom(memberAccessor.getType())) {
+                GenuineVariableDescriptor<Solution_> variableDescriptor = new ListVariableDescriptor<>(
+                        this, memberAccessor);
+                declaredGenuineVariableDescriptorMap.put(memberName, variableDescriptor);
+            } else {
+                throw new IllegalStateException("The entityClass (" + entityClass
+                        + ") has a " + PlanningCollectionVariable.class.getSimpleName()
+                        + " annotated member (" + memberAccessor
+                        + ") that has an unsupported type (" + memberAccessor.getType() + ").\n"
+                        + "A subtype of " + List.class.getCanonicalName() + " is expected.");
+            }
         } else if (variableAnnotationClass.equals(InverseRelationShadowVariable.class)) {
             ShadowVariableDescriptor<Solution_> variableDescriptor = new InverseRelationShadowVariableDescriptor<>(
                     this, memberAccessor);

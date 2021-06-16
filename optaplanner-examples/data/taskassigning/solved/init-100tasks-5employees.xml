@@ -1,0 +1,1935 @@
+<TaTaskAssigningSolution id="1">
+  <id>0</id>
+  <skillList id="2">
+    <TaSkill id="3">
+      <id>0</id>
+      <name>Problem Solving</name>
+    </TaSkill>
+    <TaSkill id="4">
+      <id>1</id>
+      <name>Team Building</name>
+    </TaSkill>
+    <TaSkill id="5">
+      <id>2</id>
+      <name>Business Storytelling</name>
+    </TaSkill>
+    <TaSkill id="6">
+      <id>3</id>
+      <name>Risk Management</name>
+    </TaSkill>
+    <TaSkill id="7">
+      <id>4</id>
+      <name>Creative Thinking</name>
+    </TaSkill>
+  </skillList>
+  <taskTypeList id="8">
+    <TaTaskType id="9">
+      <id>0</id>
+      <code>IS</code>
+      <title>Improve Sales</title>
+      <baseDuration>82</baseDuration>
+      <requiredSkillList id="10">
+        <TaSkill reference="4"/>
+        <TaSkill reference="5"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="11">
+      <id>1</id>
+      <code>ET</code>
+      <title>Expand Tax</title>
+      <baseDuration>54</baseDuration>
+      <requiredSkillList id="12">
+        <TaSkill reference="5"/>
+        <TaSkill reference="3"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="13">
+      <id>2</id>
+      <code>SV</code>
+      <title>Shrink VAT</title>
+      <baseDuration>63</baseDuration>
+      <requiredSkillList id="14">
+        <TaSkill reference="5"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="15">
+      <id>3</id>
+      <code>AL</code>
+      <title>Approve Legal</title>
+      <baseDuration>71</baseDuration>
+      <requiredSkillList id="16">
+        <TaSkill reference="7"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="17">
+      <id>4</id>
+      <code>LC</code>
+      <title>Localize Cloud</title>
+      <baseDuration>79</baseDuration>
+      <requiredSkillList id="18">
+        <TaSkill reference="6"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="19">
+      <id>5</id>
+      <code>RM</code>
+      <title>Review Marketing</title>
+      <baseDuration>77</baseDuration>
+      <requiredSkillList id="20">
+        <TaSkill reference="7"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="21">
+      <id>6</id>
+      <code>CI</code>
+      <title>Clean IT</title>
+      <baseDuration>50</baseDuration>
+      <requiredSkillList id="22">
+        <TaSkill reference="4"/>
+        <TaSkill reference="3"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="23">
+      <id>7</id>
+      <code>MC</code>
+      <title>Merge Contract</title>
+      <baseDuration>66</baseDuration>
+      <requiredSkillList id="24">
+        <TaSkill reference="5"/>
+        <TaSkill reference="3"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="25">
+      <id>8</id>
+      <code>DF</code>
+      <title>Double Financial</title>
+      <baseDuration>80</baseDuration>
+      <requiredSkillList id="26">
+        <TaSkill reference="7"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="27">
+      <id>9</id>
+      <code>OA</code>
+      <title>Optimize Advertisement</title>
+      <baseDuration>69</baseDuration>
+      <requiredSkillList id="28">
+        <TaSkill reference="6"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="29">
+      <id>10</id>
+      <code>IT</code>
+      <title>Improve Tax</title>
+      <baseDuration>78</baseDuration>
+      <requiredSkillList id="30">
+        <TaSkill reference="3"/>
+        <TaSkill reference="5"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="31">
+      <id>11</id>
+      <code>EV</code>
+      <title>Expand VAT</title>
+      <baseDuration>62</baseDuration>
+      <requiredSkillList id="32">
+        <TaSkill reference="3"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="33">
+      <id>12</id>
+      <code>SL</code>
+      <title>Shrink Legal</title>
+      <baseDuration>84</baseDuration>
+      <requiredSkillList id="34">
+        <TaSkill reference="6"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="35">
+      <id>13</id>
+      <code>AC</code>
+      <title>Approve Cloud</title>
+      <baseDuration>66</baseDuration>
+      <requiredSkillList id="36">
+        <TaSkill reference="6"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="37">
+      <id>14</id>
+      <code>LM</code>
+      <title>Localize Marketing</title>
+      <baseDuration>46</baseDuration>
+      <requiredSkillList id="38">
+        <TaSkill reference="6"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="39">
+      <id>15</id>
+      <code>RI</code>
+      <title>Review IT</title>
+      <baseDuration>38</baseDuration>
+      <requiredSkillList id="40">
+        <TaSkill reference="6"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="41">
+      <id>16</id>
+      <code>CC</code>
+      <title>Clean Contract</title>
+      <baseDuration>56</baseDuration>
+      <requiredSkillList id="42">
+        <TaSkill reference="6"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="43">
+      <id>17</id>
+      <code>MF</code>
+      <title>Merge Financial</title>
+      <baseDuration>44</baseDuration>
+      <requiredSkillList id="44">
+        <TaSkill reference="4"/>
+        <TaSkill reference="5"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="45">
+      <id>18</id>
+      <code>DA</code>
+      <title>Double Advertisement</title>
+      <baseDuration>32</baseDuration>
+      <requiredSkillList id="46">
+        <TaSkill reference="3"/>
+        <TaSkill reference="4"/>
+      </requiredSkillList>
+    </TaTaskType>
+    <TaTaskType id="47">
+      <id>19</id>
+      <code>OS</code>
+      <title>Optimize Sales</title>
+      <baseDuration>37</baseDuration>
+      <requiredSkillList id="48">
+        <TaSkill reference="5"/>
+      </requiredSkillList>
+    </TaTaskType>
+  </taskTypeList>
+  <customerList id="49">
+    <TaCustomer id="50">
+      <id>0</id>
+      <name>Steel Inc</name>
+    </TaCustomer>
+    <TaCustomer id="51">
+      <id>1</id>
+      <name>Paper Corp</name>
+    </TaCustomer>
+    <TaCustomer id="52">
+      <id>2</id>
+      <name>Stone Limited</name>
+    </TaCustomer>
+    <TaCustomer id="53">
+      <id>3</id>
+      <name>Wood Express</name>
+    </TaCustomer>
+    <TaCustomer id="54">
+      <id>4</id>
+      <name>Water Telco</name>
+    </TaCustomer>
+    <TaCustomer id="55">
+      <id>5</id>
+      <name>Food Mobile</name>
+    </TaCustomer>
+    <TaCustomer id="56">
+      <id>6</id>
+      <name>Oil Soft</name>
+    </TaCustomer>
+    <TaCustomer id="57">
+      <id>7</id>
+      <name>Car Mart</name>
+    </TaCustomer>
+    <TaCustomer id="58">
+      <id>8</id>
+      <name>Power Bank</name>
+    </TaCustomer>
+    <TaCustomer id="59">
+      <id>9</id>
+      <name>Computer Labs</name>
+    </TaCustomer>
+    <TaCustomer id="60">
+      <id>10</id>
+      <name>Steel Corp</name>
+    </TaCustomer>
+    <TaCustomer id="61">
+      <id>11</id>
+      <name>Paper Limited</name>
+    </TaCustomer>
+    <TaCustomer id="62">
+      <id>12</id>
+      <name>Stone Express</name>
+    </TaCustomer>
+    <TaCustomer id="63">
+      <id>13</id>
+      <name>Wood Telco</name>
+    </TaCustomer>
+    <TaCustomer id="64">
+      <id>14</id>
+      <name>Water Mobile</name>
+    </TaCustomer>
+  </customerList>
+  <employeeList id="65">
+    <TaEmployee id="66">
+      <id>0</id>
+      <nextTask id="67">
+        <id>24</id>
+        <nextTask id="68">
+          <id>84</id>
+          <nextTask id="69">
+            <id>87</id>
+            <nextTask id="70">
+              <id>19</id>
+              <nextTask id="71">
+                <id>92</id>
+                <nextTask id="72">
+                  <id>28</id>
+                  <nextTask id="73">
+                    <id>6</id>
+                    <nextTask id="74">
+                      <id>52</id>
+                      <nextTask id="75">
+                        <id>81</id>
+                        <nextTask id="76">
+                          <id>2</id>
+                          <nextTask id="77">
+                            <id>40</id>
+                            <nextTask id="78">
+                              <id>5</id>
+                              <nextTask id="79">
+                                <id>8</id>
+                                <nextTask id="80">
+                                  <id>33</id>
+                                  <nextTask id="81">
+                                    <id>27</id>
+                                    <nextTask id="82">
+                                      <id>94</id>
+                                      <taskType reference="21"/>
+                                      <indexInTaskType>4</indexInTaskType>
+                                      <customer reference="57"/>
+                                      <readyTime>0</readyTime>
+                                      <priority>MINOR</priority>
+                                      <pinned>false</pinned>
+                                      <previousTaskOrEmployee class="TaTask" reference="81"/>
+                                      <employee reference="66"/>
+                                      <startTime>1552</startTime>
+                                    </nextTask>
+                                    <taskType reference="13"/>
+                                    <indexInTaskType>2</indexInTaskType>
+                                    <customer reference="61"/>
+                                    <readyTime>0</readyTime>
+                                    <priority>MINOR</priority>
+                                    <pinned>false</pinned>
+                                    <previousTaskOrEmployee class="TaTask" reference="80"/>
+                                    <employee reference="66"/>
+                                    <startTime>1489</startTime>
+                                  </nextTask>
+                                  <taskType reference="11"/>
+                                  <indexInTaskType>6</indexInTaskType>
+                                  <customer reference="61"/>
+                                  <readyTime>0</readyTime>
+                                  <priority>MINOR</priority>
+                                  <pinned>false</pinned>
+                                  <previousTaskOrEmployee class="TaTask" reference="79"/>
+                                  <employee reference="66"/>
+                                  <startTime>1435</startTime>
+                                </nextTask>
+                                <taskType reference="11"/>
+                                <indexInTaskType>3</indexInTaskType>
+                                <customer reference="62"/>
+                                <readyTime>0</readyTime>
+                                <priority>MINOR</priority>
+                                <pinned>false</pinned>
+                                <previousTaskOrEmployee class="TaTask" reference="78"/>
+                                <employee reference="66"/>
+                                <startTime>1381</startTime>
+                              </nextTask>
+                              <taskType reference="11"/>
+                              <indexInTaskType>2</indexInTaskType>
+                              <customer reference="61"/>
+                              <readyTime>0</readyTime>
+                              <priority>MINOR</priority>
+                              <pinned>false</pinned>
+                              <previousTaskOrEmployee class="TaTask" reference="77"/>
+                              <employee reference="66"/>
+                              <startTime>1327</startTime>
+                            </nextTask>
+                            <taskType reference="47"/>
+                            <indexInTaskType>2</indexInTaskType>
+                            <customer reference="61"/>
+                            <readyTime>0</readyTime>
+                            <priority>MINOR</priority>
+                            <pinned>false</pinned>
+                            <previousTaskOrEmployee class="TaTask" reference="76"/>
+                            <employee reference="66"/>
+                            <startTime>1290</startTime>
+                          </nextTask>
+                          <taskType reference="11"/>
+                          <indexInTaskType>1</indexInTaskType>
+                          <customer reference="64"/>
+                          <readyTime>0</readyTime>
+                          <priority>MAJOR</priority>
+                          <pinned>false</pinned>
+                          <previousTaskOrEmployee class="TaTask" reference="75"/>
+                          <employee reference="66"/>
+                          <startTime>1074</startTime>
+                        </nextTask>
+                        <taskType reference="31"/>
+                        <indexInTaskType>3</indexInTaskType>
+                        <customer reference="57"/>
+                        <readyTime>0</readyTime>
+                        <priority>MAJOR</priority>
+                        <pinned>false</pinned>
+                        <previousTaskOrEmployee class="TaTask" reference="74"/>
+                        <employee reference="66"/>
+                        <startTime>888</startTime>
+                      </nextTask>
+                      <taskType reference="45"/>
+                      <indexInTaskType>3</indexInTaskType>
+                      <customer reference="57"/>
+                      <readyTime>0</readyTime>
+                      <priority>MAJOR</priority>
+                      <pinned>false</pinned>
+                      <previousTaskOrEmployee class="TaTask" reference="73"/>
+                      <employee reference="66"/>
+                      <startTime>792</startTime>
+                    </nextTask>
+                    <taskType reference="29"/>
+                    <indexInTaskType>1</indexInTaskType>
+                    <customer reference="61"/>
+                    <readyTime>0</readyTime>
+                    <priority>MAJOR</priority>
+                    <pinned>false</pinned>
+                    <previousTaskOrEmployee class="TaTask" reference="72"/>
+                    <employee reference="66"/>
+                    <startTime>714</startTime>
+                  </nextTask>
+                  <taskType reference="21"/>
+                  <indexInTaskType>1</indexInTaskType>
+                  <customer reference="61"/>
+                  <readyTime>0</readyTime>
+                  <priority>MAJOR</priority>
+                  <pinned>false</pinned>
+                  <previousTaskOrEmployee class="TaTask" reference="71"/>
+                  <employee reference="66"/>
+                  <startTime>664</startTime>
+                </nextTask>
+                <taskType reference="47"/>
+                <indexInTaskType>5</indexInTaskType>
+                <customer reference="61"/>
+                <readyTime>0</readyTime>
+                <priority>MAJOR</priority>
+                <pinned>false</pinned>
+                <previousTaskOrEmployee class="TaTask" reference="70"/>
+                <employee reference="66"/>
+                <startTime>627</startTime>
+              </nextTask>
+              <taskType reference="9"/>
+              <indexInTaskType>1</indexInTaskType>
+              <customer reference="64"/>
+              <readyTime>0</readyTime>
+              <priority>CRITICAL</priority>
+              <pinned>false</pinned>
+              <previousTaskOrEmployee class="TaTask" reference="69"/>
+              <employee reference="66"/>
+              <startTime>299</startTime>
+            </nextTask>
+            <taskType reference="13"/>
+            <indexInTaskType>7</indexInTaskType>
+            <customer reference="57"/>
+            <readyTime>0</readyTime>
+            <priority>CRITICAL</priority>
+            <pinned>false</pinned>
+            <previousTaskOrEmployee class="TaTask" reference="68"/>
+            <employee reference="66"/>
+            <startTime>110</startTime>
+          </nextTask>
+          <taskType reference="29"/>
+          <indexInTaskType>5</indexInTaskType>
+          <customer reference="62"/>
+          <readyTime>0</readyTime>
+          <priority>CRITICAL</priority>
+          <pinned>false</pinned>
+          <previousTaskOrEmployee class="TaTask" reference="67"/>
+          <employee reference="66"/>
+          <startTime>32</startTime>
+        </nextTask>
+        <taskType reference="45"/>
+        <indexInTaskType>2</indexInTaskType>
+        <customer reference="62"/>
+        <readyTime>0</readyTime>
+        <priority>CRITICAL</priority>
+        <pinned>false</pinned>
+        <previousTaskOrEmployee class="TaEmployee" reference="66"/>
+        <employee reference="66"/>
+        <startTime>0</startTime>
+      </nextTask>
+      <fullName>Amy</fullName>
+      <skillSet class="linked-hash-set" id="83">
+        <TaSkill reference="3"/>
+        <TaSkill reference="4"/>
+        <TaSkill reference="5"/>
+      </skillSet>
+      <affinityMap class="linked-hash-map" id="84">
+        <entry>
+          <TaCustomer reference="50"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="51"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>MEDIUM</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="52"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>NONE</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="53"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>MEDIUM</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="54"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>NONE</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="55"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>LOW</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="56"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>NONE</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="57"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>LOW</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="58"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>NONE</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="59"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>NONE</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="60"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>MEDIUM</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="61"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="62"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="63"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>LOW</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="64"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>NONE</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+      </affinityMap>
+    </TaEmployee>
+    <TaEmployee id="85">
+      <id>1</id>
+      <nextTask id="86">
+        <id>85</id>
+        <nextTask id="87">
+          <id>88</id>
+          <nextTask id="88">
+            <id>0</id>
+            <nextTask id="89">
+              <id>59</id>
+              <nextTask id="90">
+                <id>25</id>
+                <nextTask id="91">
+                  <id>46</id>
+                  <nextTask id="92">
+                    <id>7</id>
+                    <nextTask id="93">
+                      <id>69</id>
+                      <nextTask id="94">
+                        <id>44</id>
+                        <nextTask id="95">
+                          <id>98</id>
+                          <nextTask id="96">
+                            <id>66</id>
+                            <nextTask id="97">
+                              <id>18</id>
+                              <nextTask id="98">
+                                <id>56</id>
+                                <nextTask id="99">
+                                  <id>36</id>
+                                  <nextTask id="100">
+                                    <id>21</id>
+                                    <nextTask id="101">
+                                      <id>14</id>
+                                      <nextTask id="102">
+                                        <id>1</id>
+                                        <nextTask id="103">
+                                          <id>72</id>
+                                          <nextTask id="104">
+                                            <id>51</id>
+                                            <nextTask id="105">
+                                              <id>34</id>
+                                              <nextTask id="106">
+                                                <id>41</id>
+                                                <nextTask id="107">
+                                                  <id>23</id>
+                                                  <nextTask id="108">
+                                                    <id>15</id>
+                                                    <nextTask id="109">
+                                                      <id>91</id>
+                                                      <nextTask id="110">
+                                                        <id>29</id>
+                                                        <nextTask id="111">
+                                                          <id>11</id>
+                                                          <nextTask id="112">
+                                                            <id>82</id>
+                                                            <nextTask id="113">
+                                                              <id>50</id>
+                                                              <taskType reference="25"/>
+                                                              <indexInTaskType>6</indexInTaskType>
+                                                              <customer reference="52"/>
+                                                              <readyTime>0</readyTime>
+                                                              <priority>MINOR</priority>
+                                                              <pinned>false</pinned>
+                                                              <previousTaskOrEmployee class="TaTask" reference="112"/>
+                                                              <employee reference="85"/>
+                                                              <startTime>2523</startTime>
+                                                            </nextTask>
+                                                            <taskType reference="17"/>
+                                                            <indexInTaskType>6</indexInTaskType>
+                                                            <customer reference="56"/>
+                                                            <readyTime>0</readyTime>
+                                                            <priority>MINOR</priority>
+                                                            <pinned>false</pinned>
+                                                            <previousTaskOrEmployee class="TaTask" reference="111"/>
+                                                            <employee reference="85"/>
+                                                            <startTime>2365</startTime>
+                                                          </nextTask>
+                                                          <taskType reference="27"/>
+                                                          <indexInTaskType>1</indexInTaskType>
+                                                          <customer reference="52"/>
+                                                          <readyTime>0</readyTime>
+                                                          <priority>MINOR</priority>
+                                                          <pinned>false</pinned>
+                                                          <previousTaskOrEmployee class="TaTask" reference="110"/>
+                                                          <employee reference="85"/>
+                                                          <startTime>2227</startTime>
+                                                        </nextTask>
+                                                        <taskType reference="35"/>
+                                                        <indexInTaskType>2</indexInTaskType>
+                                                        <customer reference="52"/>
+                                                        <readyTime>0</readyTime>
+                                                        <priority>MINOR</priority>
+                                                        <pinned>false</pinned>
+                                                        <previousTaskOrEmployee class="TaTask" reference="109"/>
+                                                        <employee reference="85"/>
+                                                        <startTime>2095</startTime>
+                                                      </nextTask>
+                                                      <taskType reference="33"/>
+                                                      <indexInTaskType>4</indexInTaskType>
+                                                      <customer reference="50"/>
+                                                      <readyTime>0</readyTime>
+                                                      <priority>MINOR</priority>
+                                                      <pinned>false</pinned>
+                                                      <previousTaskOrEmployee class="TaTask" reference="108"/>
+                                                      <employee reference="85"/>
+                                                      <startTime>2011</startTime>
+                                                    </nextTask>
+                                                    <taskType reference="25"/>
+                                                    <indexInTaskType>2</indexInTaskType>
+                                                    <customer reference="50"/>
+                                                    <readyTime>0</readyTime>
+                                                    <priority>MINOR</priority>
+                                                    <pinned>false</pinned>
+                                                    <previousTaskOrEmployee class="TaTask" reference="107"/>
+                                                    <employee reference="85"/>
+                                                    <startTime>1931</startTime>
+                                                  </nextTask>
+                                                  <taskType reference="17"/>
+                                                  <indexInTaskType>2</indexInTaskType>
+                                                  <customer reference="51"/>
+                                                  <readyTime>0</readyTime>
+                                                  <priority>MINOR</priority>
+                                                  <pinned>false</pinned>
+                                                  <previousTaskOrEmployee class="TaTask" reference="106"/>
+                                                  <employee reference="85"/>
+                                                  <startTime>1852</startTime>
+                                                </nextTask>
+                                                <taskType reference="19"/>
+                                                <indexInTaskType>2</indexInTaskType>
+                                                <customer reference="51"/>
+                                                <readyTime>0</readyTime>
+                                                <priority>MINOR</priority>
+                                                <pinned>false</pinned>
+                                                <previousTaskOrEmployee class="TaTask" reference="105"/>
+                                                <employee reference="85"/>
+                                                <startTime>1775</startTime>
+                                              </nextTask>
+                                              <taskType reference="39"/>
+                                              <indexInTaskType>3</indexInTaskType>
+                                              <customer reference="56"/>
+                                              <readyTime>0</readyTime>
+                                              <priority>MINOR</priority>
+                                              <pinned>false</pinned>
+                                              <previousTaskOrEmployee class="TaTask" reference="104"/>
+                                              <employee reference="85"/>
+                                              <startTime>1699</startTime>
+                                            </nextTask>
+                                            <taskType reference="39"/>
+                                            <indexInTaskType>5</indexInTaskType>
+                                            <customer reference="52"/>
+                                            <readyTime>0</readyTime>
+                                            <priority>MINOR</priority>
+                                            <pinned>false</pinned>
+                                            <previousTaskOrEmployee class="TaTask" reference="103"/>
+                                            <employee reference="85"/>
+                                            <startTime>1623</startTime>
+                                          </nextTask>
+                                          <taskType reference="15"/>
+                                          <indexInTaskType>2</indexInTaskType>
+                                          <customer reference="59"/>
+                                          <readyTime>0</readyTime>
+                                          <priority>MINOR</priority>
+                                          <pinned>false</pinned>
+                                          <previousTaskOrEmployee class="TaTask" reference="102"/>
+                                          <employee reference="85"/>
+                                          <startTime>1552</startTime>
+                                        </nextTask>
+                                        <taskType reference="37"/>
+                                        <indexInTaskType>1</indexInTaskType>
+                                        <customer reference="60"/>
+                                        <readyTime>0</readyTime>
+                                        <priority>MINOR</priority>
+                                        <pinned>false</pinned>
+                                        <previousTaskOrEmployee class="TaTask" reference="101"/>
+                                        <employee reference="85"/>
+                                        <startTime>1506</startTime>
+                                      </nextTask>
+                                      <taskType reference="37"/>
+                                      <indexInTaskType>3</indexInTaskType>
+                                      <customer reference="50"/>
+                                      <readyTime>0</readyTime>
+                                      <priority>MINOR</priority>
+                                      <pinned>false</pinned>
+                                      <previousTaskOrEmployee class="TaTask" reference="100"/>
+                                      <employee reference="85"/>
+                                      <startTime>1460</startTime>
+                                    </nextTask>
+                                    <taskType reference="33"/>
+                                    <indexInTaskType>2</indexInTaskType>
+                                    <customer reference="56"/>
+                                    <readyTime>0</readyTime>
+                                    <priority>MAJOR</priority>
+                                    <pinned>false</pinned>
+                                    <previousTaskOrEmployee class="TaTask" reference="99"/>
+                                    <employee reference="85"/>
+                                    <startTime>1292</startTime>
+                                  </nextTask>
+                                  <taskType reference="25"/>
+                                  <indexInTaskType>4</indexInTaskType>
+                                  <customer reference="52"/>
+                                  <readyTime>0</readyTime>
+                                  <priority>MAJOR</priority>
+                                  <pinned>false</pinned>
+                                  <previousTaskOrEmployee class="TaTask" reference="98"/>
+                                  <employee reference="85"/>
+                                  <startTime>1132</startTime>
+                                </nextTask>
+                                <taskType reference="37"/>
+                                <indexInTaskType>5</indexInTaskType>
+                                <customer reference="52"/>
+                                <readyTime>0</readyTime>
+                                <priority>MAJOR</priority>
+                                <pinned>false</pinned>
+                                <previousTaskOrEmployee class="TaTask" reference="97"/>
+                                <employee reference="85"/>
+                                <startTime>1040</startTime>
+                              </nextTask>
+                              <taskType reference="33"/>
+                              <indexInTaskType>1</indexInTaskType>
+                              <customer reference="60"/>
+                              <readyTime>0</readyTime>
+                              <priority>MAJOR</priority>
+                              <pinned>false</pinned>
+                              <previousTaskOrEmployee class="TaTask" reference="96"/>
+                              <employee reference="85"/>
+                              <startTime>956</startTime>
+                            </nextTask>
+                            <taskType reference="19"/>
+                            <indexInTaskType>6</indexInTaskType>
+                            <customer reference="60"/>
+                            <readyTime>0</readyTime>
+                            <priority>MAJOR</priority>
+                            <pinned>false</pinned>
+                            <previousTaskOrEmployee class="TaTask" reference="95"/>
+                            <employee reference="85"/>
+                            <startTime>879</startTime>
+                          </nextTask>
+                          <taskType reference="41"/>
+                          <indexInTaskType>3</indexInTaskType>
+                          <customer reference="51"/>
+                          <readyTime>0</readyTime>
+                          <priority>MAJOR</priority>
+                          <pinned>false</pinned>
+                          <previousTaskOrEmployee class="TaTask" reference="94"/>
+                          <employee reference="85"/>
+                          <startTime>823</startTime>
+                        </nextTask>
+                        <taskType reference="39"/>
+                        <indexInTaskType>4</indexInTaskType>
+                        <customer reference="60"/>
+                        <readyTime>0</readyTime>
+                        <priority>MAJOR</priority>
+                        <pinned>false</pinned>
+                        <previousTaskOrEmployee class="TaTask" reference="93"/>
+                        <employee reference="85"/>
+                        <startTime>785</startTime>
+                      </nextTask>
+                      <taskType reference="33"/>
+                      <indexInTaskType>3</indexInTaskType>
+                      <customer reference="52"/>
+                      <readyTime>0</readyTime>
+                      <priority>CRITICAL</priority>
+                      <pinned>false</pinned>
+                      <previousTaskOrEmployee class="TaTask" reference="92"/>
+                      <employee reference="85"/>
+                      <startTime>617</startTime>
+                    </nextTask>
+                    <taskType reference="25"/>
+                    <indexInTaskType>1</indexInTaskType>
+                    <customer reference="56"/>
+                    <readyTime>0</readyTime>
+                    <priority>CRITICAL</priority>
+                    <pinned>false</pinned>
+                    <previousTaskOrEmployee class="TaTask" reference="91"/>
+                    <employee reference="85"/>
+                    <startTime>457</startTime>
+                  </nextTask>
+                  <taskType reference="17"/>
+                  <indexInTaskType>4</indexInTaskType>
+                  <customer reference="52"/>
+                  <readyTime>0</readyTime>
+                  <priority>CRITICAL</priority>
+                  <pinned>false</pinned>
+                  <previousTaskOrEmployee class="TaTask" reference="90"/>
+                  <employee reference="85"/>
+                  <startTime>299</startTime>
+                </nextTask>
+                <taskType reference="25"/>
+                <indexInTaskType>3</indexInTaskType>
+                <customer reference="50"/>
+                <readyTime>0</readyTime>
+                <priority>CRITICAL</priority>
+                <pinned>false</pinned>
+                <previousTaskOrEmployee class="TaTask" reference="89"/>
+                <employee reference="85"/>
+                <startTime>219</startTime>
+              </nextTask>
+              <taskType reference="19"/>
+              <indexInTaskType>4</indexInTaskType>
+              <customer reference="60"/>
+              <readyTime>0</readyTime>
+              <priority>CRITICAL</priority>
+              <pinned>false</pinned>
+              <previousTaskOrEmployee class="TaTask" reference="88"/>
+              <employee reference="85"/>
+              <startTime>142</startTime>
+            </nextTask>
+            <taskType reference="35"/>
+            <indexInTaskType>1</indexInTaskType>
+            <customer reference="50"/>
+            <readyTime>0</readyTime>
+            <priority>CRITICAL</priority>
+            <pinned>false</pinned>
+            <previousTaskOrEmployee class="TaTask" reference="87"/>
+            <employee reference="85"/>
+            <startTime>76</startTime>
+          </nextTask>
+          <taskType reference="39"/>
+          <indexInTaskType>7</indexInTaskType>
+          <customer reference="51"/>
+          <readyTime>0</readyTime>
+          <priority>CRITICAL</priority>
+          <pinned>false</pinned>
+          <previousTaskOrEmployee class="TaTask" reference="86"/>
+          <employee reference="85"/>
+          <startTime>38</startTime>
+        </nextTask>
+        <taskType reference="39"/>
+        <indexInTaskType>6</indexInTaskType>
+        <customer reference="60"/>
+        <readyTime>0</readyTime>
+        <priority>CRITICAL</priority>
+        <pinned>false</pinned>
+        <previousTaskOrEmployee class="TaEmployee" reference="85"/>
+        <employee reference="85"/>
+        <startTime>0</startTime>
+      </nextTask>
+      <fullName>Beth</fullName>
+      <skillSet class="linked-hash-set" id="114">
+        <TaSkill reference="6"/>
+        <TaSkill reference="7"/>
+      </skillSet>
+      <affinityMap class="linked-hash-map" id="115">
+        <entry>
+          <TaCustomer reference="50"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="51"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="52"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>MEDIUM</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="53"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="54"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>MEDIUM</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="55"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>NONE</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="56"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>MEDIUM</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="57"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>MEDIUM</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="58"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>LOW</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="59"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="60"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="61"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>MEDIUM</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="62"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>MEDIUM</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="63"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="64"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>LOW</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+      </affinityMap>
+    </TaEmployee>
+    <TaEmployee id="116">
+      <id>2</id>
+      <nextTask id="117">
+        <id>86</id>
+        <nextTask id="118">
+          <id>61</id>
+          <nextTask id="119">
+            <id>49</id>
+            <nextTask id="120">
+              <id>71</id>
+              <nextTask id="121">
+                <id>95</id>
+                <nextTask id="122">
+                  <id>30</id>
+                  <nextTask id="123">
+                    <id>73</id>
+                    <nextTask id="124">
+                      <id>78</id>
+                      <nextTask id="125">
+                        <id>99</id>
+                        <nextTask id="126">
+                          <id>97</id>
+                          <nextTask id="127">
+                            <id>90</id>
+                            <nextTask id="128">
+                              <id>17</id>
+                              <nextTask id="129">
+                                <id>9</id>
+                                <nextTask id="130">
+                                  <id>83</id>
+                                  <taskType reference="45"/>
+                                  <indexInTaskType>5</indexInTaskType>
+                                  <customer reference="64"/>
+                                  <readyTime>0</readyTime>
+                                  <priority>MINOR</priority>
+                                  <pinned>false</pinned>
+                                  <previousTaskOrEmployee class="TaTask" reference="129"/>
+                                  <employee reference="116"/>
+                                  <startTime>1344</startTime>
+                                </nextTask>
+                                <taskType reference="13"/>
+                                <indexInTaskType>1</indexInTaskType>
+                                <customer reference="58"/>
+                                <readyTime>0</readyTime>
+                                <priority>MINOR</priority>
+                                <pinned>false</pinned>
+                                <previousTaskOrEmployee class="TaTask" reference="128"/>
+                                <employee reference="116"/>
+                                <startTime>1281</startTime>
+                              </nextTask>
+                              <taskType reference="11"/>
+                              <indexInTaskType>4</indexInTaskType>
+                              <customer reference="64"/>
+                              <readyTime>0</readyTime>
+                              <priority>MAJOR</priority>
+                              <pinned>false</pinned>
+                              <previousTaskOrEmployee class="TaTask" reference="127"/>
+                              <employee reference="116"/>
+                              <startTime>1119</startTime>
+                            </nextTask>
+                            <taskType reference="13"/>
+                            <indexInTaskType>8</indexInTaskType>
+                            <customer reference="54"/>
+                            <readyTime>0</readyTime>
+                            <priority>MAJOR</priority>
+                            <pinned>false</pinned>
+                            <previousTaskOrEmployee class="TaTask" reference="126"/>
+                            <employee reference="116"/>
+                            <startTime>993</startTime>
+                          </nextTask>
+                          <taskType reference="23"/>
+                          <indexInTaskType>2</indexInTaskType>
+                          <customer reference="63"/>
+                          <readyTime>0</readyTime>
+                          <priority>MAJOR</priority>
+                          <pinned>false</pinned>
+                          <previousTaskOrEmployee class="TaTask" reference="125"/>
+                          <employee reference="116"/>
+                          <startTime>927</startTime>
+                        </nextTask>
+                        <taskType reference="21"/>
+                        <indexInTaskType>5</indexInTaskType>
+                        <customer reference="60"/>
+                        <readyTime>0</readyTime>
+                        <priority>MAJOR</priority>
+                        <pinned>false</pinned>
+                        <previousTaskOrEmployee class="TaTask" reference="124"/>
+                        <employee reference="116"/>
+                        <startTime>877</startTime>
+                      </nextTask>
+                      <taskType reference="43"/>
+                      <indexInTaskType>2</indexInTaskType>
+                      <customer reference="63"/>
+                      <readyTime>0</readyTime>
+                      <priority>MAJOR</priority>
+                      <pinned>false</pinned>
+                      <previousTaskOrEmployee class="TaTask" reference="123"/>
+                      <employee reference="116"/>
+                      <startTime>833</startTime>
+                    </nextTask>
+                    <taskType reference="13"/>
+                    <indexInTaskType>6</indexInTaskType>
+                    <customer reference="57"/>
+                    <readyTime>0</readyTime>
+                    <priority>CRITICAL</priority>
+                    <pinned>false</pinned>
+                    <previousTaskOrEmployee class="TaTask" reference="122"/>
+                    <employee reference="116"/>
+                    <startTime>581</startTime>
+                  </nextTask>
+                  <taskType reference="9"/>
+                  <indexInTaskType>3</indexInTaskType>
+                  <customer reference="64"/>
+                  <readyTime>0</readyTime>
+                  <priority>CRITICAL</priority>
+                  <pinned>false</pinned>
+                  <previousTaskOrEmployee class="TaTask" reference="121"/>
+                  <employee reference="116"/>
+                  <startTime>335</startTime>
+                </nextTask>
+                <taskType reference="11"/>
+                <indexInTaskType>8</indexInTaskType>
+                <customer reference="54"/>
+                <readyTime>0</readyTime>
+                <priority>CRITICAL</priority>
+                <pinned>false</pinned>
+                <previousTaskOrEmployee class="TaTask" reference="120"/>
+                <employee reference="116"/>
+                <startTime>227</startTime>
+              </nextTask>
+              <taskType reference="47"/>
+              <indexInTaskType>3</indexInTaskType>
+              <customer reference="54"/>
+              <readyTime>0</readyTime>
+              <priority>CRITICAL</priority>
+              <pinned>false</pinned>
+              <previousTaskOrEmployee class="TaTask" reference="119"/>
+              <employee reference="116"/>
+              <startTime>153</startTime>
+            </nextTask>
+            <taskType reference="31"/>
+            <indexInTaskType>2</indexInTaskType>
+            <customer reference="63"/>
+            <readyTime>0</readyTime>
+            <priority>CRITICAL</priority>
+            <pinned>false</pinned>
+            <previousTaskOrEmployee class="TaTask" reference="118"/>
+            <employee reference="116"/>
+            <startTime>91</startTime>
+          </nextTask>
+          <taskType reference="11"/>
+          <indexInTaskType>7</indexInTaskType>
+          <customer reference="63"/>
+          <readyTime>0</readyTime>
+          <priority>CRITICAL</priority>
+          <pinned>false</pinned>
+          <previousTaskOrEmployee class="TaTask" reference="117"/>
+          <employee reference="116"/>
+          <startTime>37</startTime>
+        </nextTask>
+        <taskType reference="47"/>
+        <indexInTaskType>4</indexInTaskType>
+        <customer reference="60"/>
+        <readyTime>0</readyTime>
+        <priority>CRITICAL</priority>
+        <pinned>false</pinned>
+        <previousTaskOrEmployee class="TaEmployee" reference="116"/>
+        <employee reference="116"/>
+        <startTime>0</startTime>
+      </nextTask>
+      <fullName>Chad</fullName>
+      <skillSet class="linked-hash-set" id="131">
+        <TaSkill reference="3"/>
+        <TaSkill reference="4"/>
+        <TaSkill reference="5"/>
+      </skillSet>
+      <affinityMap class="linked-hash-map" id="132">
+        <entry>
+          <TaCustomer reference="50"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>LOW</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="51"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>LOW</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="52"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="53"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>NONE</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="54"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>MEDIUM</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="55"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>NONE</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="56"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>LOW</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="57"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>NONE</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="58"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="59"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>LOW</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="60"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="61"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>LOW</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="62"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>NONE</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="63"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="64"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>LOW</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+      </affinityMap>
+    </TaEmployee>
+    <TaEmployee id="133">
+      <id>3</id>
+      <nextTask id="134">
+        <id>3</id>
+        <nextTask id="135">
+          <id>37</id>
+          <nextTask id="136">
+            <id>89</id>
+            <nextTask id="137">
+              <id>79</id>
+              <nextTask id="138">
+                <id>55</id>
+                <nextTask id="139">
+                  <id>31</id>
+                  <nextTask id="140">
+                    <id>63</id>
+                    <nextTask id="141">
+                      <id>16</id>
+                      <nextTask id="142">
+                        <id>80</id>
+                        <nextTask id="143">
+                          <id>75</id>
+                          <nextTask id="144">
+                            <id>64</id>
+                            <nextTask id="145">
+                              <id>70</id>
+                              <nextTask id="146">
+                                <id>96</id>
+                                <nextTask id="147">
+                                  <id>62</id>
+                                  <nextTask id="148">
+                                    <id>53</id>
+                                    <nextTask id="149">
+                                      <id>35</id>
+                                      <nextTask id="150">
+                                        <id>26</id>
+                                        <nextTask id="151">
+                                          <id>93</id>
+                                          <nextTask id="152">
+                                            <id>4</id>
+                                            <nextTask id="153">
+                                              <id>57</id>
+                                              <nextTask id="154">
+                                                <id>54</id>
+                                                <nextTask id="155">
+                                                  <id>47</id>
+                                                  <nextTask id="156">
+                                                    <id>42</id>
+                                                    <taskType reference="19"/>
+                                                    <indexInTaskType>3</indexInTaskType>
+                                                    <customer reference="57"/>
+                                                    <readyTime>0</readyTime>
+                                                    <priority>MINOR</priority>
+                                                    <pinned>false</pinned>
+                                                    <previousTaskOrEmployee class="TaTask" reference="155"/>
+                                                    <employee reference="133"/>
+                                                    <startTime>2344</startTime>
+                                                  </nextTask>
+                                                  <taskType reference="15"/>
+                                                  <indexInTaskType>1</indexInTaskType>
+                                                  <customer reference="57"/>
+                                                  <readyTime>0</readyTime>
+                                                  <priority>MINOR</priority>
+                                                  <pinned>false</pinned>
+                                                  <previousTaskOrEmployee class="TaTask" reference="154"/>
+                                                  <employee reference="133"/>
+                                                  <startTime>2202</startTime>
+                                                </nextTask>
+                                                <taskType reference="35"/>
+                                                <indexInTaskType>3</indexInTaskType>
+                                                <customer reference="57"/>
+                                                <readyTime>0</readyTime>
+                                                <priority>MINOR</priority>
+                                                <pinned>false</pinned>
+                                                <previousTaskOrEmployee class="TaTask" reference="153"/>
+                                                <employee reference="133"/>
+                                                <startTime>2070</startTime>
+                                              </nextTask>
+                                              <taskType reference="41"/>
+                                              <indexInTaskType>2</indexInTaskType>
+                                              <customer reference="58"/>
+                                              <readyTime>0</readyTime>
+                                              <priority>MINOR</priority>
+                                              <pinned>false</pinned>
+                                              <previousTaskOrEmployee class="TaTask" reference="152"/>
+                                              <employee reference="133"/>
+                                              <startTime>1958</startTime>
+                                            </nextTask>
+                                            <taskType reference="37"/>
+                                            <indexInTaskType>2</indexInTaskType>
+                                            <customer reference="58"/>
+                                            <readyTime>0</readyTime>
+                                            <priority>MINOR</priority>
+                                            <pinned>false</pinned>
+                                            <previousTaskOrEmployee class="TaTask" reference="151"/>
+                                            <employee reference="133"/>
+                                            <startTime>1866</startTime>
+                                          </nextTask>
+                                          <taskType reference="33"/>
+                                          <indexInTaskType>5</indexInTaskType>
+                                          <customer reference="62"/>
+                                          <readyTime>0</readyTime>
+                                          <priority>MINOR</priority>
+                                          <pinned>false</pinned>
+                                          <previousTaskOrEmployee class="TaTask" reference="150"/>
+                                          <employee reference="133"/>
+                                          <startTime>1782</startTime>
+                                        </nextTask>
+                                        <taskType reference="17"/>
+                                        <indexInTaskType>3</indexInTaskType>
+                                        <customer reference="61"/>
+                                        <readyTime>0</readyTime>
+                                        <priority>MINOR</priority>
+                                        <pinned>false</pinned>
+                                        <previousTaskOrEmployee class="TaTask" reference="149"/>
+                                        <employee reference="133"/>
+                                        <startTime>1703</startTime>
+                                      </nextTask>
+                                      <taskType reference="19"/>
+                                      <indexInTaskType>1</indexInTaskType>
+                                      <customer reference="63"/>
+                                      <readyTime>0</readyTime>
+                                      <priority>MINOR</priority>
+                                      <pinned>false</pinned>
+                                      <previousTaskOrEmployee class="TaTask" reference="148"/>
+                                      <employee reference="133"/>
+                                      <startTime>1626</startTime>
+                                    </nextTask>
+                                    <taskType reference="41"/>
+                                    <indexInTaskType>1</indexInTaskType>
+                                    <customer reference="64"/>
+                                    <readyTime>0</readyTime>
+                                    <priority>MINOR</priority>
+                                    <pinned>false</pinned>
+                                    <previousTaskOrEmployee class="TaTask" reference="147"/>
+                                    <employee reference="133"/>
+                                    <startTime>1570</startTime>
+                                  </nextTask>
+                                  <taskType reference="25"/>
+                                  <indexInTaskType>7</indexInTaskType>
+                                  <customer reference="57"/>
+                                  <readyTime>0</readyTime>
+                                  <priority>MAJOR</priority>
+                                  <pinned>false</pinned>
+                                  <previousTaskOrEmployee class="TaTask" reference="146"/>
+                                  <employee reference="133"/>
+                                  <startTime>1410</startTime>
+                                </nextTask>
+                                <taskType reference="15"/>
+                                <indexInTaskType>3</indexInTaskType>
+                                <customer reference="57"/>
+                                <readyTime>0</readyTime>
+                                <priority>MAJOR</priority>
+                                <pinned>false</pinned>
+                                <previousTaskOrEmployee class="TaTask" reference="145"/>
+                                <employee reference="133"/>
+                                <startTime>1268</startTime>
+                              </nextTask>
+                              <taskType reference="27"/>
+                              <indexInTaskType>2</indexInTaskType>
+                              <customer reference="54"/>
+                              <readyTime>0</readyTime>
+                              <priority>MAJOR</priority>
+                              <pinned>false</pinned>
+                              <previousTaskOrEmployee class="TaTask" reference="144"/>
+                              <employee reference="133"/>
+                              <startTime>1130</startTime>
+                            </nextTask>
+                            <taskType reference="37"/>
+                            <indexInTaskType>6</indexInTaskType>
+                            <customer reference="58"/>
+                            <readyTime>0</readyTime>
+                            <priority>MAJOR</priority>
+                            <pinned>false</pinned>
+                            <previousTaskOrEmployee class="TaTask" reference="143"/>
+                            <employee reference="133"/>
+                            <startTime>1038</startTime>
+                          </nextTask>
+                          <taskType reference="37"/>
+                          <indexInTaskType>7</indexInTaskType>
+                          <customer reference="54"/>
+                          <readyTime>0</readyTime>
+                          <priority>MAJOR</priority>
+                          <pinned>false</pinned>
+                          <previousTaskOrEmployee class="TaTask" reference="142"/>
+                          <employee reference="133"/>
+                          <startTime>946</startTime>
+                        </nextTask>
+                        <taskType reference="25"/>
+                        <indexInTaskType>8</indexInTaskType>
+                        <customer reference="61"/>
+                        <readyTime>0</readyTime>
+                        <priority>MAJOR</priority>
+                        <pinned>false</pinned>
+                        <previousTaskOrEmployee class="TaTask" reference="141"/>
+                        <employee reference="133"/>
+                        <startTime>866</startTime>
+                      </nextTask>
+                      <taskType reference="17"/>
+                      <indexInTaskType>1</indexInTaskType>
+                      <customer reference="53"/>
+                      <readyTime>0</readyTime>
+                      <priority>MAJOR</priority>
+                      <pinned>false</pinned>
+                      <previousTaskOrEmployee class="TaTask" reference="140"/>
+                      <employee reference="133"/>
+                      <startTime>787</startTime>
+                    </nextTask>
+                    <taskType reference="19"/>
+                    <indexInTaskType>5</indexInTaskType>
+                    <customer reference="61"/>
+                    <readyTime>0</readyTime>
+                    <priority>MAJOR</priority>
+                    <pinned>false</pinned>
+                    <previousTaskOrEmployee class="TaTask" reference="139"/>
+                    <employee reference="133"/>
+                    <startTime>710</startTime>
+                  </nextTask>
+                  <taskType reference="39"/>
+                  <indexInTaskType>2</indexInTaskType>
+                  <customer reference="58"/>
+                  <readyTime>0</readyTime>
+                  <priority>MAJOR</priority>
+                  <pinned>false</pinned>
+                  <previousTaskOrEmployee class="TaTask" reference="138"/>
+                  <employee reference="133"/>
+                  <startTime>634</startTime>
+                </nextTask>
+                <taskType reference="37"/>
+                <indexInTaskType>4</indexInTaskType>
+                <customer reference="62"/>
+                <readyTime>0</readyTime>
+                <priority>MAJOR</priority>
+                <pinned>false</pinned>
+                <previousTaskOrEmployee class="TaTask" reference="137"/>
+                <employee reference="133"/>
+                <startTime>588</startTime>
+              </nextTask>
+              <taskType reference="17"/>
+              <indexInTaskType>5</indexInTaskType>
+              <customer reference="56"/>
+              <readyTime>0</readyTime>
+              <priority>CRITICAL</priority>
+              <pinned>false</pinned>
+              <previousTaskOrEmployee class="TaTask" reference="136"/>
+              <employee reference="133"/>
+              <startTime>272</startTime>
+            </nextTask>
+            <taskType reference="19"/>
+            <indexInTaskType>7</indexInTaskType>
+            <customer reference="57"/>
+            <readyTime>0</readyTime>
+            <priority>CRITICAL</priority>
+            <pinned>false</pinned>
+            <previousTaskOrEmployee class="TaTask" reference="135"/>
+            <employee reference="133"/>
+            <startTime>118</startTime>
+          </nextTask>
+          <taskType reference="25"/>
+          <indexInTaskType>5</indexInTaskType>
+          <customer reference="55"/>
+          <readyTime>0</readyTime>
+          <priority>CRITICAL</priority>
+          <pinned>false</pinned>
+          <previousTaskOrEmployee class="TaTask" reference="134"/>
+          <employee reference="133"/>
+          <startTime>38</startTime>
+        </nextTask>
+        <taskType reference="39"/>
+        <indexInTaskType>1</indexInTaskType>
+        <customer reference="62"/>
+        <readyTime>0</readyTime>
+        <priority>CRITICAL</priority>
+        <pinned>false</pinned>
+        <previousTaskOrEmployee class="TaEmployee" reference="133"/>
+        <employee reference="133"/>
+        <startTime>0</startTime>
+      </nextTask>
+      <fullName>Dan</fullName>
+      <skillSet class="linked-hash-set" id="157">
+        <TaSkill reference="6"/>
+        <TaSkill reference="7"/>
+      </skillSet>
+      <affinityMap class="linked-hash-map" id="158">
+        <entry>
+          <TaCustomer reference="50"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>MEDIUM</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="51"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>NONE</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="52"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>LOW</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="53"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="54"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>MEDIUM</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="55"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="56"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>NONE</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="57"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>MEDIUM</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="58"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>MEDIUM</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="59"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>MEDIUM</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="60"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>LOW</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="61"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="62"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="63"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="64"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+      </affinityMap>
+    </TaEmployee>
+    <TaEmployee id="159">
+      <id>4</id>
+      <nextTask id="160">
+        <id>68</id>
+        <nextTask id="161">
+          <id>58</id>
+          <nextTask id="162">
+            <id>67</id>
+            <nextTask id="163">
+              <id>74</id>
+              <nextTask id="164">
+                <id>65</id>
+                <nextTask id="165">
+                  <id>10</id>
+                  <nextTask id="166">
+                    <id>22</id>
+                    <nextTask id="167">
+                      <id>77</id>
+                      <nextTask id="168">
+                        <id>76</id>
+                        <nextTask id="169">
+                          <id>60</id>
+                          <nextTask id="170">
+                            <id>39</id>
+                            <nextTask id="171">
+                              <id>43</id>
+                              <nextTask id="172">
+                                <id>32</id>
+                                <nextTask id="173">
+                                  <id>13</id>
+                                  <nextTask id="174">
+                                    <id>12</id>
+                                    <nextTask id="175">
+                                      <id>20</id>
+                                      <nextTask id="176">
+                                        <id>48</id>
+                                        <nextTask id="177">
+                                          <id>38</id>
+                                          <nextTask id="178">
+                                            <id>45</id>
+                                            <taskType reference="9"/>
+                                            <indexInTaskType>5</indexInTaskType>
+                                            <customer reference="56"/>
+                                            <readyTime>0</readyTime>
+                                            <priority>MINOR</priority>
+                                            <pinned>false</pinned>
+                                            <previousTaskOrEmployee class="TaTask" reference="177"/>
+                                            <employee reference="159"/>
+                                            <startTime>1967</startTime>
+                                          </nextTask>
+                                          <taskType reference="23"/>
+                                          <indexInTaskType>1</indexInTaskType>
+                                          <customer reference="56"/>
+                                          <readyTime>0</readyTime>
+                                          <priority>MINOR</priority>
+                                          <pinned>false</pinned>
+                                          <previousTaskOrEmployee class="TaTask" reference="176"/>
+                                          <employee reference="159"/>
+                                          <startTime>1835</startTime>
+                                        </nextTask>
+                                        <taskType reference="31"/>
+                                        <indexInTaskType>1</indexInTaskType>
+                                        <customer reference="59"/>
+                                        <readyTime>0</readyTime>
+                                        <priority>MINOR</priority>
+                                        <pinned>false</pinned>
+                                        <previousTaskOrEmployee class="TaTask" reference="175"/>
+                                        <employee reference="159"/>
+                                        <startTime>1711</startTime>
+                                      </nextTask>
+                                      <taskType reference="9"/>
+                                      <indexInTaskType>2</indexInTaskType>
+                                      <customer reference="53"/>
+                                      <readyTime>0</readyTime>
+                                      <priority>MINOR</priority>
+                                      <pinned>false</pinned>
+                                      <previousTaskOrEmployee class="TaTask" reference="174"/>
+                                      <employee reference="159"/>
+                                      <startTime>1629</startTime>
+                                    </nextTask>
+                                    <taskType reference="47"/>
+                                    <indexInTaskType>1</indexInTaskType>
+                                    <customer reference="56"/>
+                                    <readyTime>0</readyTime>
+                                    <priority>MINOR</priority>
+                                    <pinned>false</pinned>
+                                    <previousTaskOrEmployee class="TaTask" reference="173"/>
+                                    <employee reference="159"/>
+                                    <startTime>1555</startTime>
+                                  </nextTask>
+                                  <taskType reference="45"/>
+                                  <indexInTaskType>1</indexInTaskType>
+                                  <customer reference="56"/>
+                                  <readyTime>0</readyTime>
+                                  <priority>MINOR</priority>
+                                  <pinned>false</pinned>
+                                  <previousTaskOrEmployee class="TaTask" reference="172"/>
+                                  <employee reference="159"/>
+                                  <startTime>1491</startTime>
+                                </nextTask>
+                                <taskType reference="13"/>
+                                <indexInTaskType>3</indexInTaskType>
+                                <customer reference="53"/>
+                                <readyTime>0</readyTime>
+                                <priority>MINOR</priority>
+                                <pinned>false</pinned>
+                                <previousTaskOrEmployee class="TaTask" reference="171"/>
+                                <employee reference="159"/>
+                                <startTime>1428</startTime>
+                              </nextTask>
+                              <taskType reference="13"/>
+                              <indexInTaskType>4</indexInTaskType>
+                              <customer reference="64"/>
+                              <readyTime>0</readyTime>
+                              <priority>MAJOR</priority>
+                              <pinned>false</pinned>
+                              <previousTaskOrEmployee class="TaTask" reference="170"/>
+                              <employee reference="159"/>
+                              <startTime>1239</startTime>
+                            </nextTask>
+                            <taskType reference="9"/>
+                            <indexInTaskType>4</indexInTaskType>
+                            <customer reference="56"/>
+                            <readyTime>0</readyTime>
+                            <priority>MAJOR</priority>
+                            <pinned>false</pinned>
+                            <previousTaskOrEmployee class="TaTask" reference="169"/>
+                            <employee reference="159"/>
+                            <startTime>1075</startTime>
+                          </nextTask>
+                          <taskType reference="29"/>
+                          <indexInTaskType>2</indexInTaskType>
+                          <customer reference="56"/>
+                          <readyTime>0</readyTime>
+                          <priority>MAJOR</priority>
+                          <pinned>false</pinned>
+                          <previousTaskOrEmployee class="TaTask" reference="168"/>
+                          <employee reference="159"/>
+                          <startTime>919</startTime>
+                        </nextTask>
+                        <taskType reference="21"/>
+                        <indexInTaskType>3</indexInTaskType>
+                        <customer reference="59"/>
+                        <readyTime>0</readyTime>
+                        <priority>MAJOR</priority>
+                        <pinned>false</pinned>
+                        <previousTaskOrEmployee class="TaTask" reference="167"/>
+                        <employee reference="159"/>
+                        <startTime>819</startTime>
+                      </nextTask>
+                      <taskType reference="29"/>
+                      <indexInTaskType>4</indexInTaskType>
+                      <customer reference="51"/>
+                      <readyTime>0</readyTime>
+                      <priority>MAJOR</priority>
+                      <pinned>false</pinned>
+                      <previousTaskOrEmployee class="TaTask" reference="166"/>
+                      <employee reference="159"/>
+                      <startTime>741</startTime>
+                    </nextTask>
+                    <taskType reference="11"/>
+                    <indexInTaskType>5</indexInTaskType>
+                    <customer reference="55"/>
+                    <readyTime>0</readyTime>
+                    <priority>MAJOR</priority>
+                    <pinned>false</pinned>
+                    <previousTaskOrEmployee class="TaTask" reference="165"/>
+                    <employee reference="159"/>
+                    <startTime>687</startTime>
+                  </nextTask>
+                  <taskType reference="43"/>
+                  <indexInTaskType>1</indexInTaskType>
+                  <customer reference="53"/>
+                  <readyTime>0</readyTime>
+                  <priority>MAJOR</priority>
+                  <pinned>false</pinned>
+                  <previousTaskOrEmployee class="TaTask" reference="164"/>
+                  <employee reference="159"/>
+                  <startTime>643</startTime>
+                </nextTask>
+                <taskType reference="29"/>
+                <indexInTaskType>3</indexInTaskType>
+                <customer reference="57"/>
+                <readyTime>0</readyTime>
+                <priority>CRITICAL</priority>
+                <pinned>false</pinned>
+                <previousTaskOrEmployee class="TaTask" reference="163"/>
+                <employee reference="159"/>
+                <startTime>409</startTime>
+              </nextTask>
+              <taskType reference="9"/>
+              <indexInTaskType>6</indexInTaskType>
+              <customer reference="59"/>
+              <readyTime>0</readyTime>
+              <priority>CRITICAL</priority>
+              <pinned>false</pinned>
+              <previousTaskOrEmployee class="TaTask" reference="162"/>
+              <employee reference="159"/>
+              <startTime>245</startTime>
+            </nextTask>
+            <taskType reference="21"/>
+            <indexInTaskType>2</indexInTaskType>
+            <customer reference="64"/>
+            <readyTime>0</readyTime>
+            <priority>CRITICAL</priority>
+            <pinned>false</pinned>
+            <previousTaskOrEmployee class="TaTask" reference="161"/>
+            <employee reference="159"/>
+            <startTime>95</startTime>
+          </nextTask>
+          <taskType reference="13"/>
+          <indexInTaskType>5</indexInTaskType>
+          <customer reference="51"/>
+          <readyTime>0</readyTime>
+          <priority>CRITICAL</priority>
+          <pinned>false</pinned>
+          <previousTaskOrEmployee class="TaTask" reference="160"/>
+          <employee reference="159"/>
+          <startTime>32</startTime>
+        </nextTask>
+        <taskType reference="45"/>
+        <indexInTaskType>4</indexInTaskType>
+        <customer reference="53"/>
+        <readyTime>0</readyTime>
+        <priority>CRITICAL</priority>
+        <pinned>false</pinned>
+        <previousTaskOrEmployee class="TaEmployee" reference="159"/>
+        <employee reference="159"/>
+        <startTime>0</startTime>
+      </nextTask>
+      <fullName>Elsa</fullName>
+      <skillSet class="linked-hash-set" id="179">
+        <TaSkill reference="3"/>
+        <TaSkill reference="4"/>
+        <TaSkill reference="5"/>
+      </skillSet>
+      <affinityMap class="linked-hash-map" id="180">
+        <entry>
+          <TaCustomer reference="50"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="51"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="52"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>NONE</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="53"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="54"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>NONE</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="55"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="56"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>MEDIUM</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="57"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>LOW</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="58"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>HIGH</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="59"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>MEDIUM</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="60"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>LOW</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="61"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>LOW</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="62"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>LOW</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="63"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>NONE</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+        <entry>
+          <TaCustomer reference="64"/>
+          <org.optaplanner.examples.taskassigning.domain.Affinity>LOW</org.optaplanner.examples.taskassigning.domain.Affinity>
+        </entry>
+      </affinityMap>
+    </TaEmployee>
+  </employeeList>
+  <taskList id="181">
+    <TaTask reference="88"/>
+    <TaTask reference="102"/>
+    <TaTask reference="76"/>
+    <TaTask reference="134"/>
+    <TaTask reference="152"/>
+    <TaTask reference="78"/>
+    <TaTask reference="73"/>
+    <TaTask reference="92"/>
+    <TaTask reference="79"/>
+    <TaTask reference="129"/>
+    <TaTask reference="165"/>
+    <TaTask reference="111"/>
+    <TaTask reference="174"/>
+    <TaTask reference="173"/>
+    <TaTask reference="101"/>
+    <TaTask reference="108"/>
+    <TaTask reference="141"/>
+    <TaTask reference="128"/>
+    <TaTask reference="97"/>
+    <TaTask reference="70"/>
+    <TaTask reference="175"/>
+    <TaTask reference="100"/>
+    <TaTask reference="166"/>
+    <TaTask reference="107"/>
+    <TaTask reference="67"/>
+    <TaTask reference="90"/>
+    <TaTask reference="150"/>
+    <TaTask reference="81"/>
+    <TaTask reference="72"/>
+    <TaTask reference="110"/>
+    <TaTask reference="122"/>
+    <TaTask reference="139"/>
+    <TaTask reference="172"/>
+    <TaTask reference="80"/>
+    <TaTask reference="105"/>
+    <TaTask reference="149"/>
+    <TaTask reference="99"/>
+    <TaTask reference="135"/>
+    <TaTask reference="177"/>
+    <TaTask reference="170"/>
+    <TaTask reference="77"/>
+    <TaTask reference="106"/>
+    <TaTask reference="156"/>
+    <TaTask reference="171"/>
+    <TaTask reference="94"/>
+    <TaTask reference="178"/>
+    <TaTask reference="91"/>
+    <TaTask reference="155"/>
+    <TaTask reference="176"/>
+    <TaTask reference="119"/>
+    <TaTask reference="113"/>
+    <TaTask reference="104"/>
+    <TaTask reference="74"/>
+    <TaTask reference="148"/>
+    <TaTask reference="154"/>
+    <TaTask reference="138"/>
+    <TaTask reference="98"/>
+    <TaTask reference="153"/>
+    <TaTask reference="161"/>
+    <TaTask reference="89"/>
+    <TaTask reference="169"/>
+    <TaTask reference="118"/>
+    <TaTask reference="147"/>
+    <TaTask reference="140"/>
+    <TaTask reference="144"/>
+    <TaTask reference="164"/>
+    <TaTask reference="96"/>
+    <TaTask reference="162"/>
+    <TaTask reference="160"/>
+    <TaTask reference="93"/>
+    <TaTask reference="145"/>
+    <TaTask reference="120"/>
+    <TaTask reference="103"/>
+    <TaTask reference="123"/>
+    <TaTask reference="163"/>
+    <TaTask reference="143"/>
+    <TaTask reference="168"/>
+    <TaTask reference="167"/>
+    <TaTask reference="124"/>
+    <TaTask reference="137"/>
+    <TaTask reference="142"/>
+    <TaTask reference="75"/>
+    <TaTask reference="112"/>
+    <TaTask reference="130"/>
+    <TaTask reference="68"/>
+    <TaTask reference="86"/>
+    <TaTask reference="117"/>
+    <TaTask reference="69"/>
+    <TaTask reference="87"/>
+    <TaTask reference="136"/>
+    <TaTask reference="127"/>
+    <TaTask reference="109"/>
+    <TaTask reference="71"/>
+    <TaTask reference="151"/>
+    <TaTask reference="82"/>
+    <TaTask reference="121"/>
+    <TaTask reference="146"/>
+    <TaTask reference="126"/>
+    <TaTask reference="95"/>
+    <TaTask reference="125"/>
+  </taskList>
+  <score id="182">[0]hard/[-8398/-22950058/-35468/-67880]soft</score>
+  <frozenCutoff>0</frozenCutoff>
+</TaTaskAssigningSolution>

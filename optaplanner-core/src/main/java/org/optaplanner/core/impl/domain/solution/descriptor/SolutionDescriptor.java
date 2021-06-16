@@ -351,7 +351,7 @@ public class SolutionDescriptor<Solution_> {
                                     + "Maybe the member (" + memberName + ") should return a typed "
                                     + Collection.class.getSimpleName() + ".");
                         }
-                        elementType = ConfigUtils.extractCollectionGenericTypeParameter(
+                        elementType = ConfigUtils.extractCollectionGenericTypeParameterBenevolently(
                                 "solutionClass", solutionClass,
                                 type, genericType,
                                 null, member.getName());
@@ -518,7 +518,8 @@ public class SolutionDescriptor<Solution_> {
         Stream<Class<?>> problemFactOrEntityClassStream = concat(entityClassStream, factClassStream);
         Stream<Class<?>> factCollectionClassStream = problemFactCollectionMemberAccessorMap.values()
                 .stream()
-                .map(accessor -> ConfigUtils.extractCollectionGenericTypeParameter("solutionClass", getSolutionClass(),
+                .map(accessor -> ConfigUtils.extractCollectionGenericTypeParameterBenevolently(
+                        "solutionClass", getSolutionClass(),
                         accessor.getType(), accessor.getGenericType(), ProblemFactCollectionProperty.class,
                         accessor.getName()));
         problemFactOrEntityClassStream = concat(problemFactOrEntityClassStream, factCollectionClassStream);

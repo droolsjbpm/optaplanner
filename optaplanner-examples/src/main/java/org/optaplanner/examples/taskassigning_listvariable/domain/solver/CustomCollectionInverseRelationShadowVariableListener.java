@@ -1,11 +1,11 @@
 /*
- * Copyright 2020 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2021 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,7 +24,8 @@ import org.optaplanner.examples.taskassigning_listvariable.domain.Employee;
 import org.optaplanner.examples.taskassigning_listvariable.domain.Task;
 import org.optaplanner.examples.taskassigning_listvariable.domain.TaskAssigningSolution;
 
-public class StartTimeUpdatingVariableListener implements VariableListener<TaskAssigningSolution, Employee> {
+public class CustomCollectionInverseRelationShadowVariableListener
+        implements VariableListener<TaskAssigningSolution, Employee> {
 
     @Override
     public void beforeEntityAdded(ScoreDirector<TaskAssigningSolution> scoreDirector, Employee employee) {
@@ -33,7 +34,7 @@ public class StartTimeUpdatingVariableListener implements VariableListener<TaskA
 
     @Override
     public void afterEntityAdded(ScoreDirector<TaskAssigningSolution> scoreDirector, Employee employee) {
-        updateStartTime(scoreDirector, employee);
+        updateEmployeeAndIndex(scoreDirector, employee);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class StartTimeUpdatingVariableListener implements VariableListener<TaskA
 
     @Override
     public void afterVariableChanged(ScoreDirector<TaskAssigningSolution> scoreDirector, Employee employee) {
-        updateStartTime(scoreDirector, employee);
+        updateEmployeeAndIndex(scoreDirector, employee);
     }
 
     @Override
@@ -56,20 +57,23 @@ public class StartTimeUpdatingVariableListener implements VariableListener<TaskA
         // Do nothing
     }
 
-    protected void updateStartTime(ScoreDirector<TaskAssigningSolution> scoreDirector, Employee sourceEmployee) {
-        if (sourceEmployee.getTasks() == null) {
+    private void updateEmployeeAndIndex(ScoreDirector<TaskAssigningSolution> scoreDirector, Employee employee) {
+        if (employee.getTasks() == null) {
             return;
         }
-        int previousStartTime = 0;
-        for (Task task : sourceEmployee.getTasks()) {
-            int startTime = Math.max(task.getReadyTime(), previousStartTime);
-            if (!Objects.equals(task.getStartTime(), startTime)) {
-                scoreDirector.beforeVariableChanged(task, "startTime");
-                task.setStartTime(startTime);
-                scoreDirector.afterVariableChanged(task, "startTime");
+        int index = 0;
+        for (Task task : employee.getTasks()) {
+            if (!Objects.equals(task.getEmployee(), employee)) {
+                scoreDirector.beforeVariableChanged(task, "employee");
+                task.setEmployee(employee);
+                scoreDirector.afterVariableChanged(task, "employee");
             }
-            previousStartTime = task.getEndTime();
+            if (!Objects.equals(task.getIndex(), index)) {
+                scoreDirector.beforeVariableChanged(task, "index");
+                task.setIndex(index);
+                scoreDirector.afterVariableChanged(task, "index");
+            }
+            index++;
         }
     }
-
 }

@@ -16,6 +16,7 @@
 
 package org.optaplanner.examples.taskassigning_listvariable.solver;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,6 @@ import org.optaplanner.examples.taskassigning_listvariable.domain.Priority;
 import org.optaplanner.examples.taskassigning_listvariable.domain.Skill;
 import org.optaplanner.examples.taskassigning_listvariable.domain.Task;
 import org.optaplanner.examples.taskassigning_listvariable.domain.TaskAssigningSolution;
-import org.optaplanner.examples.taskassigning_listvariable.domain.TaskOrEmployee;
 import org.optaplanner.examples.taskassigning_listvariable.domain.TaskType;
 import org.optaplanner.test.impl.score.buildin.bendable.BendableScoreVerifier;
 
@@ -56,19 +56,28 @@ public class TaskAssigningScoreConstraintTest {
                 Arrays.asList(e1, e2, e3),
                 Arrays.asList(t1, t2, t3));
         scoreVerifier.assertHardWeight("Skill requirements", 0, 0, solution);
-        setPreviousAndShadows(t1, e1);
+        // E1: [T1]
+        addTaskAndUpdateShadows(e1, t1, 0);
         scoreVerifier.assertHardWeight("Skill requirements", 0, -1, solution);
-        setPreviousAndShadows(t2, t1);
+        // E1: [T1,T2]
+        addTaskAndUpdateShadows(e1, t2, 1);
         scoreVerifier.assertHardWeight("Skill requirements", 0, -2, solution);
-        setPreviousAndShadows(t3, e1);
+        // E1: [T3,T1,T2]
+        addTaskAndUpdateShadows(e1, t3, 0);
         scoreVerifier.assertHardWeight("Skill requirements", 0, -2, solution);
     }
 
-    private static void setPreviousAndShadows(Task task, TaskOrEmployee previous) {
-        task.setPreviousTaskOrEmployee(previous);
-        task.setEmployee(previous.getEmployee());
-        previous.setNextTask(task);
-        task.setStartTime(previous.getEndTime());
+    private static void addTaskAndUpdateShadows(Employee employee, Task task, int index) {
+        if (employee.getTasks() == null) {
+            employee.setTasks(new ArrayList<>());
+        }
+        employee.getTasks().add(index, task);
+        task.setEmployee(employee);
+        for (int i = index; i < employee.getTasks().size(); i++) {
+            Task t = employee.getTasks().get(i);
+            t.setIndex(i);
+            t.setStartTime(i == 0 ? 0 : employee.getTasks().get(i - 1).getEndTime());
+        }
     }
 
 }

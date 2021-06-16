@@ -21,13 +21,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.domain.valuerange.CountableValueRange;
 import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider;
+import org.optaplanner.core.api.domain.variable.PlanningCollectionVariable;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
-import org.optaplanner.core.api.domain.variable.PlanningVariableGraphType;
 import org.optaplanner.core.api.score.director.ScoreDirector;
 import org.optaplanner.core.config.heuristic.selector.common.decorator.SelectionSorterOrder;
 import org.optaplanner.core.config.util.ConfigUtils;
@@ -49,14 +50,12 @@ import org.optaplanner.core.impl.heuristic.selector.value.decorator.MovableChain
 /**
  * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
  */
-public class GenuineVariableDescriptor<Solution_> extends VariableDescriptor<Solution_> {
-
-    private boolean chained;
+public abstract class GenuineVariableDescriptor<Solution_> extends VariableDescriptor<Solution_> {
 
     private ValueRangeDescriptor<Solution_> valueRangeDescriptor;
-    private boolean nullable;
     private SelectionFilter<Solution_, Object> movableChainedTrailingValueFilter;
-    private SelectionFilter<Solution_, Object> reinitializeVariableEntityFilter;
+    private SelectionFilter<Solution_, Object> reinitializeVariableEntityFilter =
+            new NullValueReinitializeVariableEntityFilter<>(this);
     private SelectionSorter<Solution_, Object> increasingStrengthSorter;
     private SelectionSorter<Solution_, Object> decreasingStrengthSorter;
 
@@ -77,49 +76,10 @@ public class GenuineVariableDescriptor<Solution_> extends VariableDescriptor<Sol
         processPropertyAnnotations(descriptorPolicy);
     }
 
-    private void processPropertyAnnotations(DescriptorPolicy descriptorPolicy) {
-        PlanningVariable planningVariableAnnotation = variableMemberAccessor.getAnnotation(PlanningVariable.class);
-        processNullable(descriptorPolicy, planningVariableAnnotation);
-        processChained(descriptorPolicy, planningVariableAnnotation);
-        processValueRangeRefs(descriptorPolicy, planningVariableAnnotation);
-        processStrength(descriptorPolicy, planningVariableAnnotation);
-    }
+    abstract protected void processPropertyAnnotations(DescriptorPolicy descriptorPolicy);
 
-    private void processNullable(DescriptorPolicy descriptorPolicy, PlanningVariable planningVariableAnnotation) {
-        nullable = planningVariableAnnotation.nullable();
-        if (nullable && variableMemberAccessor.getType().isPrimitive()) {
-            throw new IllegalArgumentException("The entityClass (" + entityDescriptor.getEntityClass()
-                    + ") has a @" + PlanningVariable.class.getSimpleName()
-                    + " annotated property (" + variableMemberAccessor.getName()
-                    + ") with nullable (" + nullable + "), which is not compatible with the primitive propertyType ("
-                    + variableMemberAccessor.getType() + ").");
-        }
-        reinitializeVariableEntityFilter = new NullValueReinitializeVariableEntityFilter<>(this);
-    }
-
-    private void processChained(DescriptorPolicy descriptorPolicy, PlanningVariable planningVariableAnnotation) {
-        chained = planningVariableAnnotation.graphType() == PlanningVariableGraphType.CHAINED;
-        if (chained && !variableMemberAccessor.getType().isAssignableFrom(
-                entityDescriptor.getEntityClass())) {
-            throw new IllegalArgumentException("The entityClass (" + entityDescriptor.getEntityClass()
-                    + ") has a @" + PlanningVariable.class.getSimpleName()
-                    + " annotated property (" + variableMemberAccessor.getName()
-                    + ") with chained (" + chained + ") and propertyType (" + variableMemberAccessor.getType()
-                    + ") which is not a superclass/interface of or the same as the entityClass ("
-                    + entityDescriptor.getEntityClass() + ").\n"
-                    + "If an entity's chained planning variable cannot point to another entity of the same class,"
-                    + " then it is impossible to make chain longer than 1 entity and therefore chaining is useless.");
-        }
-        if (chained && nullable) {
-            throw new IllegalArgumentException("The entityClass (" + entityDescriptor.getEntityClass()
-                    + ") has a @" + PlanningVariable.class.getSimpleName()
-                    + " annotated property (" + variableMemberAccessor.getName()
-                    + ") with chained (" + chained + "), which is not compatible with nullable (" + nullable + ").");
-        }
-    }
-
-    private void processValueRangeRefs(DescriptorPolicy descriptorPolicy, PlanningVariable planningVariableAnnotation) {
-        String[] valueRangeProviderRefs = planningVariableAnnotation.valueRangeProviderRefs();
+    protected void processValueRangeRefs(DescriptorPolicy descriptorPolicy, Supplier<String[]> valueRangeProviderRefsSupplier) {
+        String[] valueRangeProviderRefs = valueRangeProviderRefsSupplier.get();
         if (ArrayUtils.isEmpty(valueRangeProviderRefs)) {
             throw new IllegalArgumentException("The entityClass (" + entityDescriptor.getEntityClass()
                     + ") has a @" + PlanningVariable.class.getSimpleName()
@@ -127,7 +87,7 @@ public class GenuineVariableDescriptor<Solution_> extends VariableDescriptor<Sol
                     + ") that has no valueRangeProviderRefs (" + Arrays.toString(valueRangeProviderRefs) + ").");
         }
         List<ValueRangeDescriptor<Solution_>> valueRangeDescriptorList = new ArrayList<>(valueRangeProviderRefs.length);
-        boolean addNullInValueRange = nullable && valueRangeProviderRefs.length == 1;
+        boolean addNullInValueRange = isNullable() && valueRangeProviderRefs.length == 1;
         for (String valueRangeProviderRef : valueRangeProviderRefs) {
             valueRangeDescriptorList
                     .add(buildValueRangeDescriptor(descriptorPolicy, valueRangeProviderRef, addNullInValueRange));
@@ -135,7 +95,7 @@ public class GenuineVariableDescriptor<Solution_> extends VariableDescriptor<Sol
         if (valueRangeDescriptorList.size() == 1) {
             valueRangeDescriptor = valueRangeDescriptorList.get(0);
         } else {
-            valueRangeDescriptor = new CompositeValueRangeDescriptor<>(this, nullable, valueRangeDescriptorList);
+            valueRangeDescriptor = new CompositeValueRangeDescriptor<>(this, isNullable(), valueRangeDescriptorList);
         }
     }
 
@@ -166,7 +126,7 @@ public class GenuineVariableDescriptor<Solution_> extends VariableDescriptor<Sol
         }
     }
 
-    private void processStrength(DescriptorPolicy descriptorPolicy, PlanningVariable planningVariableAnnotation) {
+    protected void processStrength(DescriptorPolicy descriptorPolicy, PlanningVariable planningVariableAnnotation) {
         Class<? extends Comparator> strengthComparatorClass = planningVariableAnnotation.strengthComparatorClass();
         if (strengthComparatorClass == PlanningVariable.NullStrengthComparator.class) {
             strengthComparatorClass = null;
@@ -203,7 +163,7 @@ public class GenuineVariableDescriptor<Solution_> extends VariableDescriptor<Sol
 
     @Override
     public void linkVariableDescriptors(DescriptorPolicy descriptorPolicy) {
-        if (chained && entityDescriptor.hasEffectiveMovableEntitySelectionFilter()) {
+        if (isChained() && entityDescriptor.hasEffectiveMovableEntitySelectionFilter()) {
             movableChainedTrailingValueFilter = new MovableChainedTrailingValueFilter<>(this);
         } else {
             movableChainedTrailingValueFilter = null;
@@ -214,13 +174,13 @@ public class GenuineVariableDescriptor<Solution_> extends VariableDescriptor<Sol
     // Worker methods
     // ************************************************************************
 
-    public boolean isChained() {
-        return chained;
-    }
+    public abstract boolean isListVariable();
 
-    public boolean isNullable() {
-        return nullable;
-    }
+    public abstract boolean isChained();
+
+    public abstract boolean isNullable();
+
+    public abstract boolean acceptsValueType(Class<?> valueType);
 
     public boolean hasMovableChainedTrailingValueFilter() {
         return movableChainedTrailingValueFilter != null;
@@ -247,18 +207,13 @@ public class GenuineVariableDescriptor<Solution_> extends VariableDescriptor<Sol
     // ************************************************************************
 
     /**
-     * A {@link PlanningVariable#nullable()} value is always considered initialized.
+     * A {@link PlanningVariable#nullable() nullable} planning variable and {@link PlanningCollectionVariable}
+     * are always considered initialized.
      *
      * @param entity never null
      * @return true if the variable on that entity is initialized
      */
-    public boolean isInitialized(Object entity) {
-        if (nullable) {
-            return true;
-        }
-        Object variable = getValue(entity);
-        return variable != null;
-    }
+    public abstract boolean isInitialized(Object entity);
 
     @Override
     public boolean isGenuineAndUninitialized(Object entity) {

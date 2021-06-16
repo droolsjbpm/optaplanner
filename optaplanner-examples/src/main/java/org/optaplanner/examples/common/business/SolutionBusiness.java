@@ -356,6 +356,10 @@ public class SolutionBusiness<Solution_, Score_ extends Score<Score_>> {
         solver.terminateEarly();
     }
 
+    public GenuineVariableDescriptor<Solution_> variableDescriptor(Object entity, String variableName) {
+        return guiScoreDirector.getSolutionDescriptor().findGenuineVariableDescriptorOrFail(entity, variableName);
+    }
+
     public ChangeMove<Solution_> createChangeMove(Object entity, String variableName, Object toPlanningValue) {
         // TODO Solver should support building a ChangeMove
         SolutionDescriptor<Solution_> solutionDescriptor = guiScoreDirector.getSolutionDescriptor();

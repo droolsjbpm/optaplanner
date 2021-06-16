@@ -18,7 +18,7 @@ package org.optaplanner.examples.taskassigning_listvariable.app;
 
 import org.optaplanner.examples.common.app.CommonApp;
 import org.optaplanner.examples.taskassigning_listvariable.domain.TaskAssigningSolution;
-import org.optaplanner.examples.taskassigning_listvariable.persistence.TaskAssigningXmlSolutionFileIO;
+import org.optaplanner.examples.taskassigning_listvariable.persistence.orig.TmpBridgeTaskAssigningXmlSolutionFileIO;
 import org.optaplanner.examples.taskassigning_listvariable.swingui.TaskAssigningPanel;
 import org.optaplanner.persistence.common.api.domain.solution.SolutionFileIO;
 
@@ -27,7 +27,7 @@ public class TaskAssigningApp extends CommonApp<TaskAssigningSolution> {
     public static final String SOLVER_CONFIG =
             "org/optaplanner/examples/taskassigning_listvariable/solver/taskAssigningSolverConfig.xml";
 
-    public static final String DATA_DIR_NAME = "taskassigning_listvariable";
+    public static final String DATA_DIR_NAME = "taskassigning";
 
     public static void main(String[] args) {
         prepareSwingEnvironment();
@@ -51,7 +51,7 @@ public class TaskAssigningApp extends CommonApp<TaskAssigningSolution> {
 
     @Override
     public SolutionFileIO<TaskAssigningSolution> createSolutionFileIO() {
-        return new TaskAssigningXmlSolutionFileIO();
+        return new TmpBridgeTaskAssigningXmlSolutionFileIO();
     }
 
 }

@@ -30,11 +30,13 @@ import org.optaplanner.core.config.heuristic.selector.move.composite.UnionMoveSe
 import org.optaplanner.core.config.heuristic.selector.move.generic.SwapMoveSelectorConfig;
 import org.optaplanner.core.impl.domain.entity.descriptor.EntityDescriptor;
 import org.optaplanner.core.impl.domain.variable.descriptor.GenuineVariableDescriptor;
+import org.optaplanner.core.impl.domain.variable.descriptor.ListVariableDescriptor;
 import org.optaplanner.core.impl.heuristic.HeuristicConfigPolicy;
 import org.optaplanner.core.impl.heuristic.selector.entity.EntitySelector;
 import org.optaplanner.core.impl.heuristic.selector.entity.EntitySelectorFactory;
 import org.optaplanner.core.impl.heuristic.selector.move.AbstractMoveSelectorFactory;
 import org.optaplanner.core.impl.heuristic.selector.move.MoveSelector;
+import org.optaplanner.core.impl.heuristic.selector.move.generic.list.ListSwapMoveSelector;
 
 public class SwapMoveSelectorFactory<Solution_>
         extends AbstractMoveSelectorFactory<Solution_, SwapMoveSelectorConfig> {
@@ -59,6 +61,13 @@ public class SwapMoveSelectorFactory<Solution_>
                                 SelectionOrder.fromRandomSelectionBoolean(randomSelection));
         List<GenuineVariableDescriptor<Solution_>> variableDescriptorList =
                 deduceVariableDescriptorList(leftEntitySelector.getEntityDescriptor(), config.getVariableNameIncludeList());
+        if (variableDescriptorList.size() == 1 && variableDescriptorList.get(0).isListVariable()) {
+            return new ListSwapMoveSelector<>(
+                    (ListVariableDescriptor<Solution_>) variableDescriptorList.get(0),
+                    leftEntitySelector,
+                    rightEntitySelector,
+                    randomSelection);
+        }
         return new SwapMoveSelector<>(leftEntitySelector, rightEntitySelector, variableDescriptorList,
                 randomSelection);
     }

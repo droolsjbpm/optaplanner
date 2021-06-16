@@ -23,14 +23,18 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -42,13 +46,14 @@ import javax.swing.JViewport;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
+import org.optaplanner.core.impl.domain.variable.descriptor.ListVariableDescriptor;
+import org.optaplanner.core.impl.heuristic.selector.move.generic.list.ListChangeMove;
 import org.optaplanner.examples.common.swingui.SolutionPanel;
 import org.optaplanner.examples.common.swingui.components.LabeledComboBoxRenderer;
 import org.optaplanner.examples.taskassigning_listvariable.domain.Employee;
 import org.optaplanner.examples.taskassigning_listvariable.domain.Skill;
 import org.optaplanner.examples.taskassigning_listvariable.domain.Task;
 import org.optaplanner.examples.taskassigning_listvariable.domain.TaskAssigningSolution;
-import org.optaplanner.examples.taskassigning_listvariable.domain.TaskOrEmployee;
 import org.optaplanner.swing.impl.SwingUtils;
 import org.optaplanner.swing.impl.TangoColorFactory;
 
@@ -180,22 +185,45 @@ public class TaskOverviewPanel extends JPanel implements Scrollable {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            JPanel listFieldsPanel = new JPanel(new GridLayout(2, 1));
-            List<TaskOrEmployee> taskOrEmployeeList = new ArrayList<>();
-            taskOrEmployeeList.addAll(taskAssigningPanel.getSolution().getEmployeeList());
-            taskOrEmployeeList.addAll(taskAssigningPanel.getSolution().getTaskList());
+            JComboBox<Integer> indexListField = new JComboBox<>();
+            List<Employee> employees = taskAssigningPanel.getSolution().getEmployeeList();
             // Add 1 to array size to add null, which makes the entity unassigned
-            JComboBox TaskOrEmployeeListField = new JComboBox(
-                    taskOrEmployeeList.toArray(new Object[taskOrEmployeeList.size() + 1]));
-            LabeledComboBoxRenderer.applyToComboBox(TaskOrEmployeeListField);
-            TaskOrEmployeeListField.setSelectedItem(task.getPreviousTaskOrEmployee());
-            listFieldsPanel.add(TaskOrEmployeeListField);
+            // FIXME unassigning
+            // FIXME moving task at the end of the current employee's task list
+            JComboBox<Employee> employeeListField = new JComboBox<>(employees.toArray(new Employee[employees.size() + 1]));
+            employeeListField.addItemListener(itemEvent -> {
+                if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
+                    Employee employee = (Employee) itemEvent.getItem();
+                    int size = employee.getTasks() == null ? 0 : employee.getTasks().size();
+                    Integer[] data = new Integer[size + 1];
+                    IntStream.rangeClosed(0, size).boxed().collect(Collectors.toList()).toArray(data);
+                    indexListField.setModel(new DefaultComboBoxModel<>(data));
+                }
+            });
+            LabeledComboBoxRenderer.applyToComboBox(employeeListField);
+            // Without selecting null first, the next select wouldn't call the item listener if the selected employee
+            // is the first on the list (and the index combo wouldn't be populated).
+            employeeListField.setSelectedItem(null);
+            employeeListField.setSelectedItem(task.getEmployee());
+
+            JPanel listFieldsPanel = new JPanel(new GridLayout(3, 1));
+            listFieldsPanel.add(new JLabel("Select employee and index:"));
+            listFieldsPanel.add(employeeListField);
+            listFieldsPanel.add(indexListField);
             int result = JOptionPane.showConfirmDialog(TaskOverviewPanel.this.getRootPane(),
-                    listFieldsPanel, "Select previous task or employee for " + task.getLabel(),
+                    listFieldsPanel, "Move " + task.getCode(),
                     JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {
-                TaskOrEmployee toTaskOrEmployee = (TaskOrEmployee) TaskOrEmployeeListField.getSelectedItem();
-                taskAssigningPanel.getSolutionBusiness().doChangeMove(task, "previousTaskOrEmployee", toTaskOrEmployee);
+                Employee selectedEmployee = (Employee) employeeListField.getSelectedItem();
+                Integer selectedIndex = (Integer) indexListField.getSelectedItem();
+                ListChangeMove<TaskAssigningSolution> changeMove = new ListChangeMove<>(
+                        task.getEmployee(),
+                        task.getIndex(),
+                        selectedEmployee,
+                        selectedIndex,
+                        (ListVariableDescriptor<TaskAssigningSolution>) taskAssigningPanel.getSolutionBusiness()
+                                .variableDescriptor(task.getEmployee(), "tasks"));
+                taskAssigningPanel.getSolutionBusiness().doMove(changeMove);
                 taskAssigningPanel.getSolverAndPersistenceFrame().resetScreen();
             }
         }
