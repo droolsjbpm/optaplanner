@@ -24,7 +24,6 @@ import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.optaplanner.core.api.solver.Solver;
@@ -51,9 +50,8 @@ public class CloudBalancingDaemonTest extends LoggingTest {
     private volatile Throwable solverThreadException = null;
     private volatile CloudBalance currentBestSolution = null;
 
-    @Disabled("PLANNER-2249")
     @Test
-    @Timeout(600)
+    @Timeout(1500)
     public void daemon() throws InterruptedException {
         // In main thread
         Solver<CloudBalance> solver = buildSolver();
@@ -126,7 +124,6 @@ public class CloudBalancingDaemonTest extends LoggingTest {
                 nextStage();
             }
         }
-
     }
 
     protected Solver<CloudBalance> buildSolver() {
@@ -188,5 +185,4 @@ public class CloudBalancingDaemonTest extends LoggingTest {
             }
         }
     }
-
 }
