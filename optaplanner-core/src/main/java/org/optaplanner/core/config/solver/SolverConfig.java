@@ -82,7 +82,8 @@ import org.optaplanner.core.impl.solver.random.RandomFactory;
         "domainAccessType",
         "scoreDirectorFactoryConfig",
         "terminationConfig",
-        "phaseConfigList"
+        "phaseConfigList",
+        "solverMetricList",
 })
 public class SolverConfig extends AbstractConfig<SolverConfig> {
 
@@ -263,6 +264,9 @@ public class SolverConfig extends AbstractConfig<SolverConfig> {
     })
     protected List<PhaseConfig> phaseConfigList = null;
 
+    @XmlElement(name = "metrics")
+    protected List<SolverMetric> solverMetricList = null;
+
     // ************************************************************************
     // Constructors and simple getters/setters
     // ************************************************************************
@@ -428,6 +432,14 @@ public class SolverConfig extends AbstractConfig<SolverConfig> {
         this.phaseConfigList = phaseConfigList;
     }
 
+    public List<SolverMetric> getSolverMetricList() {
+        return solverMetricList;
+    }
+
+    public void setSolverMetricList(List<SolverMetric> solverMetricList) {
+        this.solverMetricList = solverMetricList;
+    }
+
     // ************************************************************************
     // With methods
     // ************************************************************************
@@ -564,6 +576,11 @@ public class SolverConfig extends AbstractConfig<SolverConfig> {
         return this;
     }
 
+    public SolverConfig withSolverMetricList(List<SolverMetric> solverMetricList) {
+        this.solverMetricList = solverMetricList;
+        return this;
+    }
+
     // ************************************************************************
     // Smart getters
     // ************************************************************************
@@ -574,6 +591,11 @@ public class SolverConfig extends AbstractConfig<SolverConfig> {
 
     public DomainAccessType determineDomainAccessType() {
         return defaultIfNull(domainAccessType, DomainAccessType.REFLECTION);
+    }
+
+    public List<SolverMetric> determineSolverMetrics() {
+        return defaultIfNull(solverMetricList,
+                Arrays.asList(SolverMetric.SOLVE_LENGTH, SolverMetric.ERROR_COUNT, SolverMetric.SCORE_CALCULATION_COUNT));
     }
 
     // ************************************************************************

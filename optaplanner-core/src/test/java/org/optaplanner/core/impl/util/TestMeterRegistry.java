@@ -22,6 +22,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import org.optaplanner.core.api.solver.Solver;
+import org.optaplanner.core.impl.solver.DefaultSolver;
+
 import io.micrometer.core.instrument.MockClock;
 import io.micrometer.core.instrument.config.NamingConvention;
 import io.micrometer.core.instrument.simple.SimpleConfig;
@@ -55,8 +58,10 @@ public class TestMeterRegistry extends SimpleMeterRegistry {
         }
     }
 
-    public void publish() {
-        getMeters().forEach(meter -> {
+    public void publish(Solver solver) {
+        DefaultSolver defaultSolver = (DefaultSolver) solver;
+        String solverId = defaultSolver.getSolverScope().getSolverId();
+        this.getMeters().stream().filter(meter -> solverId.equals(meter.getId().getTag("solver.id"))).forEach(meter -> {
             final Map<String, BigDecimal> meterMeasurementMap = new HashMap<>();
             measurementMap.put(meter.getId().getConventionName(NamingConvention.dot), meterMeasurementMap);
             meter.measure().forEach(measurement -> {

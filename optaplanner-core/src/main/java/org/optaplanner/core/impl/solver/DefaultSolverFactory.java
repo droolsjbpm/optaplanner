@@ -20,7 +20,9 @@ import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.UUID;
 
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.solver.Solver;
@@ -31,6 +33,7 @@ import org.optaplanner.core.config.phase.PhaseConfig;
 import org.optaplanner.core.config.score.director.ScoreDirectorFactoryConfig;
 import org.optaplanner.core.config.solver.EnvironmentMode;
 import org.optaplanner.core.config.solver.SolverConfig;
+import org.optaplanner.core.config.solver.SolverMetric;
 import org.optaplanner.core.config.solver.random.RandomType;
 import org.optaplanner.core.config.solver.termination.TerminationConfig;
 import org.optaplanner.core.config.util.ConfigUtils;
@@ -75,6 +78,7 @@ public final class DefaultSolverFactory<Solution_> implements SolverFactory<Solu
 
     @Override
     public Solver<Solution_> buildSolver() {
+        String solverId = UUID.randomUUID().toString();
         EnvironmentMode environmentMode_ = solverConfig.determineEnvironmentMode();
         boolean daemon_ = defaultIfNull(solverConfig.getDaemon(), false);
 
@@ -83,7 +87,19 @@ public final class DefaultSolverFactory<Solution_> implements SolverFactory<Solu
         InnerScoreDirectorFactory<Solution_, ?> scoreDirectorFactory = buildScoreDirectorFactory(environmentMode_);
         boolean constraintMatchEnabledPreference = environmentMode_.isAsserted();
         SolverScope<Solution_> solverScope = new SolverScope<>();
+        solverScope.setSolverId(solverId);
+        solverScope.setSolverMetricSet(EnumSet.copyOf(solverConfig.determineSolverMetrics()));
         solverScope.setScoreDirector(scoreDirectorFactory.buildScoreDirector(true, constraintMatchEnabledPreference));
+
+        if (solverScope.isMetricEnabled(SolverMetric.CONSTRAINT_MATCH_TOTAL_STEP_SCORE)
+                || solverScope.isMetricEnabled(SolverMetric.CONSTRAINT_MATCH_TOTAL_BEST_SCORE)) {
+            if (!solverScope.getScoreDirector().isConstraintMatchEnabled()) {
+                LOGGER.warn("The metrics [{}, {}] cannot function properly" +
+                        " because ConstraintMatches are not supported on the ScoreDirector.",
+                        SolverMetric.CONSTRAINT_MATCH_TOTAL_STEP_SCORE.getMeterId(),
+                        SolverMetric.CONSTRAINT_MATCH_TOTAL_BEST_SCORE.getMeterId());
+            }
+        }
 
         BestSolutionRecaller<Solution_> bestSolutionRecaller =
                 BestSolutionRecallerFactory.create().buildBestSolutionRecaller(environmentMode_);
@@ -97,9 +113,12 @@ public final class DefaultSolverFactory<Solution_> implements SolverFactory<Solu
         Termination<Solution_> termination = TerminationFactory.<Solution_> create(terminationConfig_)
                 .buildTermination(configPolicy, basicPlumbingTermination);
         List<Phase<Solution_>> phaseList = buildPhaseList(configPolicy, bestSolutionRecaller, termination);
-        return new DefaultSolver<>(environmentMode_, randomFactory, bestSolutionRecaller, basicPlumbingTermination,
-                termination, phaseList, solverScope,
-                moveThreadCount_ == null ? SolverConfig.MOVE_THREAD_COUNT_NONE : Integer.toString(moveThreadCount_));
+        Solver<Solution_> out =
+                new DefaultSolver<>(environmentMode_, randomFactory, bestSolutionRecaller, basicPlumbingTermination,
+                        termination, phaseList, solverScope,
+                        moveThreadCount_ == null ? SolverConfig.MOVE_THREAD_COUNT_NONE : Integer.toString(moveThreadCount_));
+        SolverMetric.setupMetrics(solverId, solverConfig, out);
+        return out;
     }
 
     /**

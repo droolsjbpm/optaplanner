@@ -17,15 +17,22 @@
 package org.optaplanner.core.impl.localsearch;
 
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
+import org.optaplanner.core.api.score.constraint.ConstraintMatchTotal;
+import org.optaplanner.core.config.solver.SolverMetric;
 import org.optaplanner.core.impl.heuristic.move.Move;
 import org.optaplanner.core.impl.localsearch.decider.LocalSearchDecider;
 import org.optaplanner.core.impl.localsearch.event.LocalSearchPhaseLifecycleListener;
 import org.optaplanner.core.impl.localsearch.scope.LocalSearchPhaseScope;
 import org.optaplanner.core.impl.localsearch.scope.LocalSearchStepScope;
 import org.optaplanner.core.impl.phase.AbstractPhase;
+import org.optaplanner.core.impl.score.definition.ScoreDefinition;
+import org.optaplanner.core.impl.score.director.InnerScoreDirector;
 import org.optaplanner.core.impl.solver.recaller.BestSolutionRecaller;
 import org.optaplanner.core.impl.solver.scope.SolverScope;
 import org.optaplanner.core.impl.solver.termination.Termination;
+
+import io.micrometer.core.instrument.Metrics;
+import io.micrometer.core.instrument.Tags;
 
 /**
  * Default implementation of {@link LocalSearchPhase}.
@@ -129,6 +136,7 @@ public class DefaultLocalSearchPhase<Solution_> extends AbstractPhase<Solution_>
     public void stepEnded(LocalSearchStepScope<Solution_> stepScope) {
         super.stepEnded(stepScope);
         decider.stepEnded(stepScope);
+        collectMetrics(stepScope);
         LocalSearchPhaseScope<Solution_> phaseScope = stepScope.getPhaseScope();
         if (logger.isDebugEnabled()) {
             logger.debug("{}    LS step ({}), time spent ({}), score ({}), {} best score ({})," +
@@ -141,6 +149,58 @@ public class DefaultLocalSearchPhase<Solution_> extends AbstractPhase<Solution_>
                     stepScope.getAcceptedMoveCount(),
                     stepScope.getSelectedMoveCount(),
                     stepScope.getStepString());
+        }
+    }
+
+    private void collectMetrics(LocalSearchStepScope<Solution_> stepScope) {
+        LocalSearchPhaseScope<Solution_> phaseScope = stepScope.getPhaseScope();
+        SolverScope<Solution_> solverScope = phaseScope.getSolverScope();
+        final String solverId = phaseScope.getSolverScope().getSolverId();
+        if (solverScope.isMetricEnabled(SolverMetric.MOVE_COUNT_PER_STEP)) {
+            Metrics.gauge(SolverMetric.MOVE_COUNT_PER_STEP.getMeterId() + ".accepted",
+                    Tags.of("solver.id", solverId), stepScope.getAcceptedMoveCount());
+            Metrics.gauge(SolverMetric.MOVE_COUNT_PER_STEP.getMeterId() + ".selected",
+                    Tags.of("solver.id", solverId), stepScope.getSelectedMoveCount());
+        }
+        if (solverScope.isMetricEnabled(SolverMetric.CONSTRAINT_MATCH_TOTAL_STEP_SCORE)
+                || solverScope.isMetricEnabled(SolverMetric.CONSTRAINT_MATCH_TOTAL_BEST_SCORE)) {
+            InnerScoreDirector<Solution_, ?> scoreDirector = stepScope.getScoreDirector();
+            ScoreDefinition scoreDefinition = solverScope.getScoreDefinition();
+            if (scoreDirector.isConstraintMatchEnabled()) {
+                for (ConstraintMatchTotal<?> constraintMatchTotal : scoreDirector.getConstraintMatchTotalMap()
+                        .values()) {
+                    if (solverScope.isMetricEnabled(SolverMetric.CONSTRAINT_MATCH_TOTAL_STEP_SCORE)) {
+                        Metrics.gauge(SolverMetric.CONSTRAINT_MATCH_TOTAL_STEP_SCORE.getMeterId() + ".count",
+                                Tags.of("solver.id", solverId,
+                                        "constraint.package", constraintMatchTotal.getConstraintPackage(),
+                                        "constraint.name", constraintMatchTotal.getConstraintName()),
+                                constraintMatchTotal.getConstraintMatchCount());
+                        SolverMetric.registerScoreMetrics(SolverMetric.CONSTRAINT_MATCH_TOTAL_STEP_SCORE,
+                                Tags.of("solver.id", solverId,
+                                        "constraint.package", constraintMatchTotal.getConstraintPackage(),
+                                        "constraint.name", constraintMatchTotal.getConstraintName()),
+                                scoreDefinition, stepScope.getScore());
+                    }
+                    if (solverScope.isMetricEnabled(SolverMetric.CONSTRAINT_MATCH_TOTAL_BEST_SCORE)
+                            && stepScope.getBestScoreImproved()) {
+                        Metrics.gauge(SolverMetric.CONSTRAINT_MATCH_TOTAL_BEST_SCORE.getMeterId() + ".count",
+                                Tags.of("solver.id", solverId,
+                                        "constraint.package", constraintMatchTotal.getConstraintPackage(),
+                                        "constraint.name", constraintMatchTotal.getConstraintName()),
+                                constraintMatchTotal.getConstraintMatchCount());
+
+                        SolverMetric.registerScoreMetrics(SolverMetric.CONSTRAINT_MATCH_TOTAL_BEST_SCORE,
+                                Tags.of("solver.id", solverId,
+                                        "constraint.package", constraintMatchTotal.getConstraintPackage(),
+                                        "constraint.name", constraintMatchTotal.getConstraintName()),
+                                scoreDefinition, stepScope.getScore());
+                    }
+                }
+            }
+        }
+        if (solverScope.isMetricEnabled(SolverMetric.PICKED_MOVE_TYPE_BEST_SCORE_DIFF)
+                || solverScope.isMetricEnabled(SolverMetric.PICKED_MOVE_TYPE_STEP_SCORE_DIFF)) {
+
         }
     }
 

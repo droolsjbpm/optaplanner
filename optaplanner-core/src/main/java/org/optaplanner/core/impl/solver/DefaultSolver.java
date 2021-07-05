@@ -25,6 +25,7 @@ import org.optaplanner.core.api.score.Score;
 import org.optaplanner.core.api.solver.ProblemFactChange;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.config.solver.EnvironmentMode;
+import org.optaplanner.core.config.solver.SolverMetric;
 import org.optaplanner.core.impl.phase.Phase;
 import org.optaplanner.core.impl.score.director.InnerScoreDirector;
 import org.optaplanner.core.impl.score.director.InnerScoreDirectorFactory;
@@ -37,6 +38,7 @@ import org.optaplanner.core.impl.solver.termination.Termination;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.LongTaskTimer;
 import io.micrometer.core.instrument.Metrics;
+import io.micrometer.core.instrument.Tags;
 
 /**
  * Default implementation for {@link Solver}.
@@ -76,8 +78,13 @@ public class DefaultSolver<Solution_> extends AbstractSolver<Solution_> {
         this.basicPlumbingTermination = basicPlumbingTermination;
         this.solverScope = solverScope;
         this.moveThreadCountDescription = moveThreadCountDescription;
-        this.solveLengthTimer = Metrics.more().longTaskTimer("optaplanner.solver.solve-length");
-        this.errorCounter = Metrics.counter("optaplanner.solver.errors");
+        this.solveLengthTimer = Metrics.more().longTaskTimer(SolverMetric.SOLVE_LENGTH.getMeterId(),
+                "solver.id", solverScope.getSolverId());
+        this.errorCounter = Metrics.counter(SolverMetric.ERROR_COUNT.getMeterId(), "solver.id", solverScope.getSolverId());
+
+        // Gauge; score calculation count is reset after different solve runs
+        Metrics.gauge(SolverMetric.SCORE_CALCULATION_COUNT.getMeterId(), Tags.of("solver.id", solverScope.getSolverId()),
+                solverScope, SolverScope::getScoreCalculationCount);
     }
 
     public EnvironmentMode getEnvironmentMode() {
