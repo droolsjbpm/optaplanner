@@ -40,7 +40,7 @@ public enum SolverMetric {
     ERROR_COUNT("optaplanner.solver.errors"),
     BEST_SCORE("optaplanner.solver.best-score", new BestScoreStatistic()),
     STEP_SCORE("optaplanner.solver.step-score"),
-    SCORE_CALCULATION_COUNT("optaplanner.solver.score-calculation-count"),
+    SCORE_CALCULATION_SPEED("optaplanner.solver.score-calculation-count"),
     BEST_SOLUTION_MUTATION("optaplanner.solver.best-solution-mutation", new BestSolutionMutationCountStatistic()),
     MOVE_COUNT_PER_STEP("optaplanner.solver.step-move-count"),
     MEMORY_USE("jvm.memory.used", new MemoryUseStatistic()),

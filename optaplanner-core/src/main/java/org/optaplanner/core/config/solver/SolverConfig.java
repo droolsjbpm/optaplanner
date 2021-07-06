@@ -598,7 +598,7 @@ public class SolverConfig extends AbstractConfig<SolverConfig> {
     public MetricConfig determineMetricConfig() {
         return defaultIfNull(metricConfig,
                 new MetricConfig().withSolverMetricList(Arrays.asList(SolverMetric.SOLVE_LENGTH, SolverMetric.ERROR_COUNT,
-                        SolverMetric.SCORE_CALCULATION_COUNT)));
+                        SolverMetric.SCORE_CALCULATION_SPEED)));
     }
 
     // ************************************************************************

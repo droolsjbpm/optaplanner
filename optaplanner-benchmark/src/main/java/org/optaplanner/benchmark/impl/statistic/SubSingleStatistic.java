@@ -44,6 +44,8 @@ import org.optaplanner.core.impl.score.definition.ScoreDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.micrometer.core.instrument.Tags;
+
 /**
  * 1 statistic of {@link SubSingleBenchmarkResult}.
  */
@@ -103,9 +105,9 @@ public abstract class SubSingleStatistic<Solution_, StatisticPoint_ extends Stat
     // Lifecycle methods
     // ************************************************************************
 
-    public abstract void open(Solver<Solution_> solver);
+    public abstract void open(StatisticRegistry registry, Tags runTag, Solver<Solution_> solver);
 
-    public abstract void close(Solver<Solution_> solver);
+    public abstract void close(StatisticRegistry registry, Tags runTag, Solver<Solution_> solver);
 
     // ************************************************************************
     // Write methods

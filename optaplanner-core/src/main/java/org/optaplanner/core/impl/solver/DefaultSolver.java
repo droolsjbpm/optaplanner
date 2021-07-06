@@ -19,6 +19,7 @@ package org.optaplanner.core.impl.solver;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.ToDoubleFunction;
 
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.score.Score;
@@ -81,9 +82,24 @@ public class DefaultSolver<Solution_> extends AbstractSolver<Solution_> {
                 solverScope.getMetricTags());
         this.errorCounter = Metrics.counter(SolverMetric.ERROR_COUNT.getMeterId(), solverScope.getMetricTags());
 
-        // Gauge; score calculation count is reset after different solve runs
-        Metrics.gauge(SolverMetric.SCORE_CALCULATION_COUNT.getMeterId(), solverScope.getMetricTags(),
-                solverScope, SolverScope::getScoreCalculationCount);
+        // NOTE: Speed can be derived by count if sampling rate is known
+        Metrics.gauge(SolverMetric.SCORE_CALCULATION_SPEED.getMeterId(), solverScope.getMetricTags(),
+                solverScope, new ToDoubleFunction<SolverScope>() {
+                    long lastTimestamp = System.currentTimeMillis();
+                    long lastCount = 0;
+
+                    @Override
+                    public double applyAsDouble(SolverScope solverScope) {
+                        long newCount = solverScope.getScoreCalculationCount();
+                        long newTimestamp = System.currentTimeMillis();
+                        double difference = (newTimestamp == lastTimestamp) ? 1L : newTimestamp - lastTimestamp;
+                        double out = (newCount - lastCount) / difference;
+
+                        lastCount = newCount;
+                        lastTimestamp = newTimestamp;
+                        return out;
+                    }
+                });
     }
 
     public EnvironmentMode getEnvironmentMode() {

@@ -16,14 +16,20 @@
 
 package org.optaplanner.benchmark.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.optaplanner.benchmark.impl.result.ProblemBenchmarkResult;
 import org.optaplanner.benchmark.impl.result.SingleBenchmarkResult;
 import org.optaplanner.benchmark.impl.result.SubSingleBenchmarkResult;
+import org.optaplanner.benchmark.impl.statistic.StatisticRegistry;
 import org.optaplanner.benchmark.impl.statistic.SubSingleStatistic;
 import org.optaplanner.core.api.score.ScoreManager;
 import org.optaplanner.core.config.solver.SolverConfig;
+import org.optaplanner.core.config.solver.metric.MetricConfig;
 import org.optaplanner.core.impl.domain.solution.descriptor.SolutionDescriptor;
 import org.optaplanner.core.impl.solver.DefaultSolver;
 import org.optaplanner.core.impl.solver.DefaultSolverFactory;
@@ -31,6 +37,9 @@ import org.optaplanner.core.impl.solver.scope.SolverScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+
+import io.micrometer.core.instrument.Metrics;
+import io.micrometer.core.instrument.Tags;
 
 public class SubSingleBenchmarkRunner<Solution_> implements Callable<SubSingleBenchmarkRunner<Solution_>> {
 
@@ -93,23 +102,35 @@ public class SubSingleBenchmarkRunner<Solution_> implements Callable<SubSingleBe
             solverConfig = new SolverConfig(solverConfig);
             solverConfig.offerRandomSeedFromSubSingleIndex(subSingleBenchmarkResult.getSubSingleBenchmarkIndex());
         }
+        Map<String, String> subSingleBenchmarkTagMap = new HashMap<>();
+        String runId = UUID.randomUUID().toString();
+        subSingleBenchmarkTagMap.put("optaplanner.benchmark.run", runId);
+        solverConfig = new SolverConfig(solverConfig).withMetricConfig(
+                ObjectUtils.defaultIfNull(solverConfig.getMetricConfig(), new MetricConfig()).copyConfig().inherit(
+                        new MetricConfig().withTagNameToValueMap(subSingleBenchmarkTagMap)));
         randomSeed = solverConfig.getRandomSeed();
         // Defensive copy of solverConfig for every SingleBenchmarkResult to reset Random, tabu lists, ...
         DefaultSolverFactory<Solution_> solverFactory = new DefaultSolverFactory<>(new SolverConfig(solverConfig));
         DefaultSolver<Solution_> solver = (DefaultSolver<Solution_>) solverFactory.buildSolver();
+        StatisticRegistry statisticRegistry = new StatisticRegistry((DefaultSolver) solver);
+        Metrics.addRegistry(statisticRegistry);
+        solver.addEventListener(statisticRegistry);
 
+        Tags runTag = Tags.of("optaplanner.benchmark.run", runId);
         for (SubSingleStatistic<Solution_, ?> subSingleStatistic : subSingleBenchmarkResult.getEffectiveSubSingleStatisticMap()
                 .values()) {
-            subSingleStatistic.open(solver);
+            subSingleStatistic.open(statisticRegistry, runTag, solver);
             subSingleStatistic.initPointList();
         }
-
         Solution_ solution = solver.solve(problem);
+
+        solver.removeEventListener(statisticRegistry);
+        Metrics.removeRegistry(statisticRegistry);
         long timeMillisSpent = solver.getTimeMillisSpent();
 
         for (SubSingleStatistic<Solution_, ?> subSingleStatistic : subSingleBenchmarkResult.getEffectiveSubSingleStatisticMap()
                 .values()) {
-            subSingleStatistic.close(solver);
+            subSingleStatistic.close(statisticRegistry, runTag, solver);
             subSingleStatistic.hibernatePointList();
         }
         if (!warmUp) {
