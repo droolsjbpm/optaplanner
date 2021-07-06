@@ -20,10 +20,12 @@ import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
@@ -33,7 +35,8 @@ import org.optaplanner.core.config.phase.PhaseConfig;
 import org.optaplanner.core.config.score.director.ScoreDirectorFactoryConfig;
 import org.optaplanner.core.config.solver.EnvironmentMode;
 import org.optaplanner.core.config.solver.SolverConfig;
-import org.optaplanner.core.config.solver.SolverMetric;
+import org.optaplanner.core.config.solver.metric.MetricConfig;
+import org.optaplanner.core.config.solver.metric.SolverMetric;
 import org.optaplanner.core.config.solver.random.RandomType;
 import org.optaplanner.core.config.solver.termination.TerminationConfig;
 import org.optaplanner.core.config.util.ConfigUtils;
@@ -53,6 +56,8 @@ import org.optaplanner.core.impl.solver.termination.Termination;
 import org.optaplanner.core.impl.solver.termination.TerminationFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import io.micrometer.core.instrument.Tags;
 
 /**
  * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
@@ -87,8 +92,13 @@ public final class DefaultSolverFactory<Solution_> implements SolverFactory<Solu
         InnerScoreDirectorFactory<Solution_, ?> scoreDirectorFactory = buildScoreDirectorFactory(environmentMode_);
         boolean constraintMatchEnabledPreference = environmentMode_.isAsserted();
         SolverScope<Solution_> solverScope = new SolverScope<>();
-        solverScope.setSolverId(solverId);
-        solverScope.setSolverMetricSet(EnumSet.copyOf(solverConfig.determineSolverMetrics()));
+        MetricConfig metricConfig = solverConfig.determineMetricConfig();
+        Tags tags = ObjectUtils.defaultIfNull(metricConfig.getTagNameToValueMap(), Collections.<String, String> emptyMap())
+                .entrySet().stream().map(entry -> Tags.of(entry.getKey(), entry.getValue()))
+                .reduce(Tags.empty(), Tags::and)
+                .and("solver.id", solverId);
+        solverScope.setMetricTags(tags);
+        solverScope.setSolverMetricSet(EnumSet.copyOf(metricConfig.getSolverMetricList()));
         solverScope.setScoreDirector(scoreDirectorFactory.buildScoreDirector(true, constraintMatchEnabledPreference));
 
         if (solverScope.isMetricEnabled(SolverMetric.CONSTRAINT_MATCH_TOTAL_STEP_SCORE)

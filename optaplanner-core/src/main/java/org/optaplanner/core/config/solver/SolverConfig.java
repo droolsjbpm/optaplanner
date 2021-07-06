@@ -55,6 +55,8 @@ import org.optaplanner.core.config.phase.NoChangePhaseConfig;
 import org.optaplanner.core.config.phase.PhaseConfig;
 import org.optaplanner.core.config.phase.custom.CustomPhaseConfig;
 import org.optaplanner.core.config.score.director.ScoreDirectorFactoryConfig;
+import org.optaplanner.core.config.solver.metric.MetricConfig;
+import org.optaplanner.core.config.solver.metric.SolverMetric;
 import org.optaplanner.core.config.solver.random.RandomType;
 import org.optaplanner.core.config.solver.termination.TerminationConfig;
 import org.optaplanner.core.config.util.ConfigUtils;
@@ -83,7 +85,7 @@ import org.optaplanner.core.impl.solver.random.RandomFactory;
         "scoreDirectorFactoryConfig",
         "terminationConfig",
         "phaseConfigList",
-        "solverMetricList",
+        "metricConfig",
 })
 public class SolverConfig extends AbstractConfig<SolverConfig> {
 
@@ -265,7 +267,7 @@ public class SolverConfig extends AbstractConfig<SolverConfig> {
     protected List<PhaseConfig> phaseConfigList = null;
 
     @XmlElement(name = "metrics")
-    protected List<SolverMetric> solverMetricList = null;
+    protected MetricConfig metricConfig = null;
 
     // ************************************************************************
     // Constructors and simple getters/setters
@@ -432,12 +434,12 @@ public class SolverConfig extends AbstractConfig<SolverConfig> {
         this.phaseConfigList = phaseConfigList;
     }
 
-    public List<SolverMetric> getSolverMetricList() {
-        return solverMetricList;
+    public MetricConfig getMetricConfig() {
+        return metricConfig;
     }
 
-    public void setSolverMetricList(List<SolverMetric> solverMetricList) {
-        this.solverMetricList = solverMetricList;
+    public void setMetricConfig(MetricConfig metricConfig) {
+        this.metricConfig = metricConfig;
     }
 
     // ************************************************************************
@@ -576,8 +578,8 @@ public class SolverConfig extends AbstractConfig<SolverConfig> {
         return this;
     }
 
-    public SolverConfig withSolverMetricList(List<SolverMetric> solverMetricList) {
-        this.solverMetricList = solverMetricList;
+    public SolverConfig withMetricConfig(MetricConfig solverMetricList) {
+        this.metricConfig = solverMetricList;
         return this;
     }
 
@@ -593,9 +595,10 @@ public class SolverConfig extends AbstractConfig<SolverConfig> {
         return defaultIfNull(domainAccessType, DomainAccessType.REFLECTION);
     }
 
-    public List<SolverMetric> determineSolverMetrics() {
-        return defaultIfNull(solverMetricList,
-                Arrays.asList(SolverMetric.SOLVE_LENGTH, SolverMetric.ERROR_COUNT, SolverMetric.SCORE_CALCULATION_COUNT));
+    public MetricConfig determineMetricConfig() {
+        return defaultIfNull(metricConfig,
+                new MetricConfig().withSolverMetricList(Arrays.asList(SolverMetric.SOLVE_LENGTH, SolverMetric.ERROR_COUNT,
+                        SolverMetric.SCORE_CALCULATION_COUNT)));
     }
 
     // ************************************************************************

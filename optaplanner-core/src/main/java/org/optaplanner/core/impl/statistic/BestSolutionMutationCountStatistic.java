@@ -21,14 +21,13 @@ import java.util.function.Consumer;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.event.BestSolutionChangedEvent;
 import org.optaplanner.core.api.solver.event.SolverEventListener;
-import org.optaplanner.core.config.solver.SolverMetric;
+import org.optaplanner.core.config.solver.metric.SolverMetric;
 import org.optaplanner.core.impl.domain.solution.descriptor.SolutionDescriptor;
 import org.optaplanner.core.impl.domain.solution.mutation.MutationCounter;
 import org.optaplanner.core.impl.score.director.InnerScoreDirectorFactory;
 import org.optaplanner.core.impl.solver.DefaultSolver;
 
 import io.micrometer.core.instrument.Metrics;
-import io.micrometer.core.instrument.Tags;
 
 public class BestSolutionMutationCountStatistic implements Consumer<Solver> {
     @Override
@@ -38,7 +37,7 @@ public class BestSolutionMutationCountStatistic implements Consumer<Solver> {
         SolutionDescriptor<?> solutionDescriptor = innerScoreDirectorFactory.getSolutionDescriptor();
         MutationCounter mutationCounter = new MutationCounter(solutionDescriptor);
         solver.addEventListener(Metrics.gauge(SolverMetric.BEST_SOLUTION_MUTATION.getMeterId(),
-                Tags.of("solver.id", defaultSolver.getSolverScope().getSolverId()),
+                defaultSolver.getSolverScope().getMetricTags(),
                 new BestSolutionMutationCountStatisticListener(mutationCounter),
                 BestSolutionMutationCountStatisticListener::getMutationCount));
     }

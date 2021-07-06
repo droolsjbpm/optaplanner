@@ -19,7 +19,7 @@ package org.optaplanner.core.impl.phase;
 import java.util.Iterator;
 
 import org.optaplanner.core.api.score.Score;
-import org.optaplanner.core.config.solver.SolverMetric;
+import org.optaplanner.core.config.solver.metric.SolverMetric;
 import org.optaplanner.core.impl.domain.entity.descriptor.EntityDescriptor;
 import org.optaplanner.core.impl.domain.solution.descriptor.SolutionDescriptor;
 import org.optaplanner.core.impl.domain.variable.descriptor.GenuineVariableDescriptor;
@@ -34,8 +34,6 @@ import org.optaplanner.core.impl.solver.scope.SolverScope;
 import org.optaplanner.core.impl.solver.termination.Termination;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import io.micrometer.core.instrument.Tags;
 
 /**
  * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
@@ -186,8 +184,9 @@ public abstract class AbstractPhase<Solution_> implements Phase<Solution_> {
         if (stepScope.getPhaseScope().getSolverScope().isMetricEnabled(SolverMetric.STEP_SCORE)
                 && stepScope.getScore().isSolutionInitialized()) {
             ScoreDefinition<?> scoreDefinition = stepScope.getPhaseScope().getScoreDefinition();
-            SolverMetric.registerScoreMetrics(SolverMetric.STEP_SCORE, Tags.of("solver.id",
-                    stepScope.getPhaseScope().getSolverScope().getSolverId()), scoreDefinition,
+            SolverMetric.registerScoreMetrics(SolverMetric.STEP_SCORE,
+                    stepScope.getPhaseScope().getSolverScope().getMetricTags(),
+                    scoreDefinition,
                     stepScope.getScore());
         }
     }

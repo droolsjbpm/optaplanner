@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.optaplanner.core.config.solver;
+package org.optaplanner.core.config.solver.metric;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlEnum;
 
 import org.optaplanner.core.api.score.Score;
 import org.optaplanner.core.api.solver.Solver;
+import org.optaplanner.core.config.solver.SolverConfig;
 import org.optaplanner.core.impl.score.definition.ScoreDefinition;
 import org.optaplanner.core.impl.statistic.BestScoreStatistic;
 import org.optaplanner.core.impl.statistic.BestSolutionMutationCountStatistic;
@@ -42,7 +43,7 @@ public enum SolverMetric {
     SCORE_CALCULATION_COUNT("optaplanner.solver.score-calculation-count"),
     BEST_SOLUTION_MUTATION("optaplanner.solver.best-solution-mutation", new BestSolutionMutationCountStatistic()),
     MOVE_COUNT_PER_STEP("optaplanner.solver.step-move-count"),
-    MEMORY_USE("optaplanner.solver.memory-use", new MemoryUseStatistic()),
+    MEMORY_USE("jvm.memory.used", new MemoryUseStatistic()),
     CONSTRAINT_MATCH_TOTAL_BEST_SCORE("optaplanner.solver.constraint-match.best-score"),
     CONSTRAINT_MATCH_TOTAL_STEP_SCORE("optaplanner.solver.constraint-match.step-score"),
     PICKED_MOVE_TYPE_BEST_SCORE_DIFF("optaplanner.solver.move-type.best-score-diff", new PickedMoveBestScoreDiffStatistic()),
@@ -75,7 +76,7 @@ public enum SolverMetric {
     }
 
     public static void setupMetrics(String solverId, SolverConfig solverConfig, Solver solver) {
-        List<SolverMetric> metricsToAcceptList = solverConfig.determineSolverMetrics();
+        List<SolverMetric> metricsToAcceptList = solverConfig.determineMetricConfig().getSolverMetricList();
         metricsToAcceptList.forEach(metric -> metric.register(solver));
     }
 

@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 
 import org.optaplanner.core.api.score.Score;
 import org.optaplanner.core.api.solver.Solver;
-import org.optaplanner.core.config.solver.SolverMetric;
+import org.optaplanner.core.config.solver.metric.SolverMetric;
 import org.optaplanner.core.impl.domain.solution.descriptor.SolutionDescriptor;
 import org.optaplanner.core.impl.localsearch.scope.LocalSearchPhaseScope;
 import org.optaplanner.core.impl.localsearch.scope.LocalSearchStepScope;
@@ -30,8 +30,6 @@ import org.optaplanner.core.impl.phase.scope.AbstractStepScope;
 import org.optaplanner.core.impl.score.definition.ScoreDefinition;
 import org.optaplanner.core.impl.score.director.InnerScoreDirectorFactory;
 import org.optaplanner.core.impl.solver.DefaultSolver;
-
-import io.micrometer.core.instrument.Tags;
 
 public class PickedMoveStepScoreDiffStatistic implements Consumer<Solver> {
     @Override
@@ -79,8 +77,8 @@ public class PickedMoveStepScoreDiffStatistic implements Consumer<Solver> {
             oldStepScore = newStepScore;
 
             SolverMetric.registerScoreMetrics(SolverMetric.PICKED_MOVE_TYPE_STEP_SCORE_DIFF,
-                    Tags.of("solver.id", stepScope.getPhaseScope().getSolverScope().getSolverId(),
-                            "move.type", moveType),
+                    stepScope.getPhaseScope().getSolverScope().getMetricTags()
+                            .and("move.type", moveType),
                     scoreDefinition,
                     stepScoreDiff);
         }

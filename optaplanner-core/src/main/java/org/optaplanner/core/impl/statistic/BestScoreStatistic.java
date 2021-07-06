@@ -19,11 +19,9 @@ package org.optaplanner.core.impl.statistic;
 import java.util.function.Consumer;
 
 import org.optaplanner.core.api.solver.Solver;
-import org.optaplanner.core.config.solver.SolverMetric;
+import org.optaplanner.core.config.solver.metric.SolverMetric;
 import org.optaplanner.core.impl.score.definition.ScoreDefinition;
 import org.optaplanner.core.impl.solver.DefaultSolver;
-
-import io.micrometer.core.instrument.Tags;
 
 public class BestScoreStatistic implements Consumer<Solver> {
     @Override
@@ -31,8 +29,8 @@ public class BestScoreStatistic implements Consumer<Solver> {
         DefaultSolver defaultSolver = (DefaultSolver) solver;
         ScoreDefinition scoreDefinition = defaultSolver.getSolverScope().getScoreDefinition();
         defaultSolver.addEventListener(event -> {
-            SolverMetric.registerScoreMetrics(SolverMetric.BEST_SCORE, Tags.of("solver.id",
-                    defaultSolver.getSolverScope().getSolverId()), scoreDefinition, event.getNewBestScore());
+            SolverMetric.registerScoreMetrics(SolverMetric.BEST_SCORE, defaultSolver.getSolverScope().getMetricTags(),
+                    scoreDefinition, event.getNewBestScore());
         });
     }
 }

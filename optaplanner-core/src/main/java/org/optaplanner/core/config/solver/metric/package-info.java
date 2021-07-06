@@ -13,21 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@javax.xml.bind.annotation.XmlSchema(
+        namespace = SolverConfig.XML_NAMESPACE,
+        elementFormDefault = XmlNsForm.QUALIFIED)
+package org.optaplanner.core.config.solver.metric;
 
-package org.optaplanner.core.impl.statistic;
+import javax.xml.bind.annotation.XmlNsForm;
 
-import java.util.function.Consumer;
-
-import org.optaplanner.core.api.solver.Solver;
-import org.optaplanner.core.impl.solver.DefaultSolver;
-
-import io.micrometer.core.instrument.Metrics;
-import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics;
-
-public class MemoryUseStatistic implements Consumer<Solver> {
-    @Override
-    public void accept(Solver solver) {
-        DefaultSolver defaultSolver = (DefaultSolver) solver;
-        new JvmMemoryMetrics(defaultSolver.getSolverScope().getMetricTags()).bindTo(Metrics.globalRegistry);
-    }
-}
+import org.optaplanner.core.config.solver.SolverConfig;
