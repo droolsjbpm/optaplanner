@@ -16,10 +16,6 @@
 
 package org.optaplanner.examples.cheaptime.swingui;
 
-import static java.util.Comparator.comparing;
-import static java.util.Comparator.nullsFirst;
-import static java.util.function.Function.identity;
-
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
@@ -28,10 +24,8 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
-
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
@@ -50,12 +44,16 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.optaplanner.examples.cheaptime.domain.CheapTimeSolution;
 import org.optaplanner.examples.cheaptime.domain.Machine;
 import org.optaplanner.examples.cheaptime.domain.MachineCapacity;
-import org.optaplanner.examples.cheaptime.domain.PeriodPowerPrice;
+import org.optaplanner.examples.cheaptime.domain.Period;
 import org.optaplanner.examples.cheaptime.domain.Task;
 import org.optaplanner.examples.cheaptime.domain.TaskAssignment;
 import org.optaplanner.examples.cheaptime.domain.TaskRequirement;
 import org.optaplanner.examples.common.swingui.SolutionPanel;
 import org.optaplanner.swing.impl.TangoColorFactory;
+
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.nullsFirst;
+import static java.util.function.Function.identity;
 
 public class CheapTimePanel extends SolutionPanel<CheapTimeSolution> {
 
@@ -155,8 +153,8 @@ public class CheapTimePanel extends SolutionPanel<CheapTimeSolution> {
 
     private XYPlot createPeriodCostPlot(TangoColorFactory tangoColorFactory, CheapTimeSolution solution) {
         XYSeries series = new XYSeries("Power price");
-        for (PeriodPowerPrice periodPowerPrice : solution.getPeriodPowerPriceList()) {
-            series.add(periodPowerPrice.getPowerPriceMicros() / 1000000.0, periodPowerPrice.getPeriod());
+        for (Period period : solution.getPeriodList()) {
+            series.add(period.getPowerPriceMicros() / 1000000.0, period.getPeriod());
         }
         XYSeriesCollection seriesCollection = new XYSeriesCollection();
         seriesCollection.addSeries(series);

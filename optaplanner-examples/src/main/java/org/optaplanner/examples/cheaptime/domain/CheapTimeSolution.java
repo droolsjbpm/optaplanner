@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2021 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ public class CheapTimeSolution extends AbstractPersistable {
     private List<Task> taskList;
     private List<TaskRequirement> taskRequirementList;
     // Order is equal to global periodRange so int period can be used for the index
-    private List<PeriodPowerPrice> periodPowerPriceList;
+    private List<Period> periodList;
 
     private List<TaskAssignment> taskAssignmentList;
 
@@ -123,12 +123,12 @@ public class CheapTimeSolution extends AbstractPersistable {
     }
 
     @ProblemFactCollectionProperty
-    public List<PeriodPowerPrice> getPeriodPowerPriceList() {
-        return periodPowerPriceList;
+    public List<Period> getPeriodList() {
+        return periodList;
     }
 
-    public void setPeriodPowerPriceList(List<PeriodPowerPrice> periodPowerPriceList) {
-        this.periodPowerPriceList = periodPowerPriceList;
+    public void setPeriodList(List<Period> periodList) {
+        this.periodList = periodList;
     }
 
     @PlanningEntityCollectionProperty
