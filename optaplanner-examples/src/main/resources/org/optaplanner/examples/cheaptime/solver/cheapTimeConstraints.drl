@@ -125,20 +125,17 @@ rule "machinePowerCostActive"
             - CheapTimeCostCalculator.multiplyTwoMicros($machine.getPowerConsumptionMicros(), $price));
 end
 
-rule "machinePowerCostOffToActive"
+rule "machinePowerCostIdle"
     when
         MachinePeriodPart($machine : machine, $period : period, active == true)
-        IdleCost(machine == $machine, activePeriodAfterIdle == $period, $idleCost : cost >= $machine.spinUpDownCostMicros)
+        IdleCost(machine == $machine, activePeriodAfterIdle == $period, $idleCost : cost)
     then
-        scoreHolder.addMediumConstraintMatch(kcontext, - $machine.getSpinUpDownCostMicros());
-end
-
-rule "machinePowerCostIdleToActive"
-    when
-        MachinePeriodPart($machine : machine, $period : period, active == true)
-        IdleCost(machine == $machine, activePeriodAfterIdle == $period, $idleCost : cost < $machine.spinUpDownCostMicros)
-    then
-        scoreHolder.addMediumConstraintMatch(kcontext, - $idleCost);
+        if ($idleCost >= $machine.getSpinUpDownCostMicros()) {
+            // Shutting down and restarting the machine is cheaper than keeping it idle.
+            scoreHolder.addMediumConstraintMatch(kcontext, - $machine.getSpinUpDownCostMicros());
+        } else {
+            scoreHolder.addMediumConstraintMatch(kcontext, - $idleCost);
+        }
 end
 
 rule "firstBoot"
