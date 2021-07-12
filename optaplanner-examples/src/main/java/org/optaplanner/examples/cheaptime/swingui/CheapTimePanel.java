@@ -19,11 +19,11 @@ package org.optaplanner.examples.cheaptime.swingui;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 import org.jfree.chart.ChartPanel;
@@ -69,7 +69,7 @@ public class CheapTimePanel extends SolutionPanel<CheapTimeSolution> {
                     .thenComparingInt(a -> a.getTask().getDuration())
                     .thenComparingLong(TaskAssignment::getId);
 
-    private JCheckBox groupByMachineCheckBox;
+    private final JCheckBox groupByMachineCheckBox;
 
     public CheapTimePanel() {
         setLayout(new BorderLayout());
@@ -94,7 +94,7 @@ public class CheapTimePanel extends SolutionPanel<CheapTimeSolution> {
         NumberAxis rangeAxis = new NumberAxis("Period");
         rangeAxis.setRange(-0.5, solution.getGlobalPeriodRangeTo() + 0.5);
         XYPlot taskAssignmentPlot = createTaskAssignmentPlot(tangoColorFactory, solution);
-        XYPlot periodCostPlot = createPeriodCostPlot(tangoColorFactory, solution);
+        XYPlot periodCostPlot = createPeriodCostPlot(solution);
         XYPlot capacityPlot = createAvailableCapacityPlot(tangoColorFactory, solution);
         CombinedRangeXYPlot combinedPlot = new CombinedRangeXYPlot(rangeAxis);
         combinedPlot.add(taskAssignmentPlot, 5);
@@ -127,9 +127,10 @@ public class CheapTimePanel extends SolutionPanel<CheapTimeSolution> {
             renderer.setSeriesPaint(seriesIndex, tangoColorFactory.pickColor(machine));
             seriesIndex++;
         }
-        List<TaskAssignment> taskAssignmentList = new ArrayList<>(solution.getTaskAssignmentList());
-        Collections.sort(taskAssignmentList,
-                groupByMachineCheckBox.isSelected() ? GROUP_BY_MACHINE_COMPARATOR : STABLE_COMPARATOR);
+        List<TaskAssignment> taskAssignmentList = solution.getTaskAssignmentList()
+                .stream()
+                .sorted(groupByMachineCheckBox.isSelected() ? GROUP_BY_MACHINE_COMPARATOR : STABLE_COMPARATOR)
+                .collect(Collectors.toList());
         int pixelIndex = 0;
         for (TaskAssignment taskAssignment : taskAssignmentList) {
             Task task = taskAssignment.getTask();
@@ -151,7 +152,7 @@ public class CheapTimePanel extends SolutionPanel<CheapTimeSolution> {
         return new XYPlot(seriesCollection, domainAxis, null, renderer);
     }
 
-    private XYPlot createPeriodCostPlot(TangoColorFactory tangoColorFactory, CheapTimeSolution solution) {
+    private XYPlot createPeriodCostPlot(CheapTimeSolution solution) {
         XYSeries series = new XYSeries("Power price");
         for (Period period : solution.getPeriodList()) {
             series.add(period.getPowerPriceMicros() / 1000000.0, period.getPeriod());

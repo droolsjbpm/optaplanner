@@ -19,6 +19,7 @@ package org.optaplanner.examples.cheaptime.score;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -581,7 +582,7 @@ public class CheapTimeIncrementalScoreCalculator
         }
         // Individual taskConsumption isn't tracked for performance
         taskConsumptionMatchTotal.addConstraintMatch(
-                Arrays.asList(),
+                Collections.emptyList(),
                 HardMediumSoftLongScore.of(0, taskConsumptionWeight, 0));
         // Individual taskStartPeriod isn't tracked for performance
         // but we mimic it
@@ -589,7 +590,7 @@ public class CheapTimeIncrementalScoreCalculator
             Integer startPeriod = taskAssignment.getStartPeriod();
             if (startPeriod != null) {
                 minimizeTaskStartPeriodMatchTotal.addConstraintMatch(
-                        Arrays.asList(taskAssignment),
+                        Collections.singletonList(taskAssignment),
                         HardMediumSoftLongScore.of(0, 0, -startPeriod));
             }
 

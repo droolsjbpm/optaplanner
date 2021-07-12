@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.optaplanner.examples.cheaptime.optional.score.drools;
+package org.optaplanner.examples.cheaptime.optional.score;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -28,7 +28,7 @@ import org.optaplanner.examples.cheaptime.domain.TaskRequirement;
 
 import static java.util.Comparator.comparing;
 
-public class MachinePeriodPart implements Comparable<MachinePeriodPart> {
+public final class MachinePeriodPart implements Comparable<MachinePeriodPart> {
 
     private static final Comparator<MachinePeriodPart> COMPARATOR = comparing(
             (MachinePeriodPart machinePeriodPart) -> machinePeriodPart.machine.getIndex())
@@ -57,21 +57,22 @@ public class MachinePeriodPart implements Comparable<MachinePeriodPart> {
         for (TaskAssignment taskAssignment : taskAssignmentList) {
             addTaskAssignment(taskAssignment);
         }
-
-        resourceInShortTotal = 0;
-        for (int resourceAvailable : resourceAvailableList) {
-            if (resourceAvailable < 0) {
-                resourceInShortTotal += resourceAvailable;
-            }
-        }
     }
 
-    private void addTaskAssignment(TaskAssignment taskAssignment) {
+    public void addTaskAssignment(TaskAssignment taskAssignment) {
         active = true;
         Task task = taskAssignment.getTask();
         for (int i = 0; i < resourceAvailableList.length; i++) {
             TaskRequirement taskRequirement = task.getTaskRequirementList().get(i);
+            int currentResourceAvailable = resourceAvailableList[i];
+            if (currentResourceAvailable < 0) {
+                resourceInShortTotal -= currentResourceAvailable;
+            }
             resourceAvailableList[i] -= taskRequirement.getResourceUsage();
+            int resourceAvailable = resourceAvailableList[i];
+            if (resourceAvailable < 0) {
+                resourceInShortTotal += resourceAvailable;
+            }
         }
     }
 
