@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2021 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 package org.optaplanner.examples.cheaptime.optional.score.drools;
 
-import static java.util.Comparator.comparing;
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-
 import org.optaplanner.examples.cheaptime.domain.Machine;
+import org.optaplanner.examples.cheaptime.domain.MachineCapacity;
 import org.optaplanner.examples.cheaptime.domain.Task;
 import org.optaplanner.examples.cheaptime.domain.TaskAssignment;
 import org.optaplanner.examples.cheaptime.domain.TaskRequirement;
+
+import static java.util.Comparator.comparing;
 
 public class MachinePeriodPart implements Comparable<MachinePeriodPart> {
 
@@ -43,16 +43,16 @@ public class MachinePeriodPart implements Comparable<MachinePeriodPart> {
     private int[] resourceAvailableList;
     private int resourceInShortTotal;
 
-    public MachinePeriodPart(Machine machine, int period, int resourceListSize, List<TaskAssignment> taskAssignmentList) {
+    public MachinePeriodPart(Machine machine, int period, List<TaskAssignment> taskAssignmentList) {
         this.machine = machine;
         this.period = period;
 
         active = false;
 
-        resourceAvailableList = new int[resourceListSize];
-        for (int i = 0; i < resourceListSize; i++) {
-            resourceAvailableList[i] = machine.getMachineCapacityList().get(i).getCapacity();
-        }
+        resourceAvailableList = machine.getMachineCapacityList()
+                .stream()
+                .mapToInt(MachineCapacity::getCapacity)
+                .toArray();
 
         for (TaskAssignment taskAssignment : taskAssignmentList) {
             addTaskAssignment(taskAssignment);

@@ -39,7 +39,6 @@ global HardMediumSoftLongScoreHolder scoreHolder;
 rule "machinePeriodPart"
     salience 2
     when
-        CheapTimeSolution($resourceList : resourceList)
         Period($period : period)
         $machine : Machine()
         $taskAssignmentList : ArrayList() from collect (
@@ -49,7 +48,7 @@ rule "machinePeriodPart"
                 endPeriod > $period)
         )
     then
-        insertLogical(new MachinePeriodPart($machine, $period, $resourceList.size(), $taskAssignmentList));
+        insertLogical(new MachinePeriodPart($machine, $period, $taskAssignmentList));
 end
 
 // ############################################################################
