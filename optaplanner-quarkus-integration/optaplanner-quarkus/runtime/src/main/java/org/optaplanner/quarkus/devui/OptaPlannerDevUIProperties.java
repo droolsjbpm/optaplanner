@@ -19,9 +19,9 @@ package org.optaplanner.quarkus.devui;
 import java.util.List;
 
 public class OptaPlannerDevUIProperties {
-    OptaPlannerModelProperties optaPlannerModelProperties;
-    String effectiveSolverConfigXML;
-    List<String> constraintList;
+    private final OptaPlannerModelProperties optaPlannerModelProperties;
+    private final String effectiveSolverConfigXML;
+    private final List<String> constraintList;
 
     public OptaPlannerDevUIProperties(OptaPlannerModelProperties optaPlannerModelProperties, String effectiveSolverConfigXML,
             List<String> constraintList) {

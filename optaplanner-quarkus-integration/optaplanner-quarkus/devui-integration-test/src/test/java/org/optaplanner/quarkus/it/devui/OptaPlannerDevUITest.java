@@ -57,7 +57,7 @@ public class OptaPlannerDevUITest {
         Node node = xmlParser.parseText(body);
         String solverConfig = ((Node) (node.getAt(QName.valueOf("body"))
                 .getAt(QName.valueOf("div"))
-                .getAt(QName.valueOf("div"))
+                .getAt(QName.valueOf("pre"))
                 .get(0))).text();
         assertThat(solverConfig).isEqualToIgnoringWhitespace(
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"

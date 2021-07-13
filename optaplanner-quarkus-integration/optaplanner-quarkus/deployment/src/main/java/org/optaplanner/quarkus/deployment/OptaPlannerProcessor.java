@@ -224,10 +224,6 @@ class OptaPlannerProcessor {
                         GizmoMemberAccessorEntityEnhancer.getDroolsInitializer(recorderContext)))
                 .done());
 
-        StringWriter effectiveSolverConfigXMLWriter = new StringWriter();
-        SolverConfigIO solverConfigIO = new SolverConfigIO();
-        solverConfigIO.write(solverConfig, effectiveSolverConfigXMLWriter);
-
         syntheticBeanBuildItemBuildProducer.produce(SyntheticBeanBuildItem.configure(SolverManagerConfig.class)
                 .scope(Singleton.class)
                 .defaultBean()

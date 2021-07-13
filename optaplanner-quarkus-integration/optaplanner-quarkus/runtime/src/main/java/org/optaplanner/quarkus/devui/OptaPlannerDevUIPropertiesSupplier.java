@@ -39,7 +39,7 @@ import org.optaplanner.core.impl.solver.DefaultSolverFactory;
 import io.quarkus.arc.Arc;
 
 public class OptaPlannerDevUIPropertiesSupplier implements Supplier<OptaPlannerDevUIProperties> {
-    String effectiveSolverConfigXml;
+    private String effectiveSolverConfigXml;
 
     public OptaPlannerDevUIPropertiesSupplier() {
         this.effectiveSolverConfigXml = null;
@@ -49,6 +49,7 @@ public class OptaPlannerDevUIPropertiesSupplier implements Supplier<OptaPlannerD
         this.effectiveSolverConfigXml = effectiveSolverConfigXml;
     }
 
+    // Needed for Quarkus Dev UI serialization
     public String getEffectiveSolverConfigXml() {
         return effectiveSolverConfigXml;
     }
