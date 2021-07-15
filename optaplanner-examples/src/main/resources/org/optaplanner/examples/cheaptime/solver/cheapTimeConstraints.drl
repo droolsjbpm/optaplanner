@@ -56,14 +56,14 @@ end
 // ############################################################################
 
 // Start time limits: each task must start between its earliest start and latest start limit.
-rule "startTimeLimitsFrom"
+rule "Task starts too early"
     when
         $taskAssignment : TaskAssignment($task : task, $startPeriod : startPeriod < $task.startPeriodRangeFrom)
     then
         scoreHolder.addHardConstraintMatch(kcontext, $startPeriod - $task.getStartPeriodRangeFrom());
 end
 
-rule "startTimeLimitsTo"
+rule "Task starts too late"
     when
         $taskAssignment : TaskAssignment($task : task, $startPeriod : startPeriod >= $task.startPeriodRangeTo)
     then
@@ -71,7 +71,7 @@ rule "startTimeLimitsTo"
 end
 
 // Maximum capacity: the maximum capacity for each resource for each machine must not be exceeded.
-rule "maximumCapacity" // resourceInShortTotal is calculated in MachinePeriodPart constructor
+rule "Maximum resource capacity" // resourceInShortTotal is calculated in MachinePeriodPart constructor
     when
         MachinePeriodPart($resourceInShortTotal : resourceInShortTotal < 0)
     then
@@ -116,7 +116,7 @@ rule "calculateIdleCost"
         insertLogical(new IdleCost($machine, $period, idleCost));
 end
 
-rule "machinePowerCostActive"
+rule "Active machine power cost"
     when
         MachinePeriodPart($machine : machine, $period : period, active == true)
         Period(period == $period, $price: powerPriceMicros)
@@ -125,7 +125,7 @@ rule "machinePowerCostActive"
             - CheapTimeCostCalculator.multiplyTwoMicros($machine.getPowerConsumptionMicros(), $price));
 end
 
-rule "machinePowerCostIdle"
+rule "Machine idle costs"
     when
         MachinePeriodPart($machine : machine, $period : period, active == true)
         IdleCost(machine == $machine, activePeriodAfterIdle == $period, $idleCost : cost)
@@ -138,7 +138,7 @@ rule "machinePowerCostIdle"
         }
 end
 
-rule "firstBoot"
+rule "Active machine spin up and down cost"
     when
         MachinePeriodPart($machine : machine, $period : period, active == true)
         not MachinePeriodPart(machine == $machine, period < $period, active == true);
@@ -147,7 +147,7 @@ rule "firstBoot"
 end
 
 // Task power cost: Each task consumes power too, which infers a power cost (depending on the power price during its time).
-rule "taskPowerCost"
+rule "Task power cost"
     when
         Period($period: period, $price: powerPriceMicros)
         TaskAssignment(startPeriod <= $period, endPeriod > $period, $task : task)
@@ -161,7 +161,7 @@ end
 // ############################################################################
 
 // Start early: prefer starting a task sooner rather than later.
-rule "startEarly"
+rule "Prefer early task start"
     when
         TaskAssignment($startPeriod : startPeriod != null)
     then

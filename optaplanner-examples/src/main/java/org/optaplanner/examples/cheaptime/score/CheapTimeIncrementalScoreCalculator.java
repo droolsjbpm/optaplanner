@@ -42,7 +42,7 @@ public class CheapTimeIncrementalScoreCalculator
         implements ConstraintMatchAwareIncrementalScoreCalculator<CheapTimeSolution, HardMediumSoftLongScore>,
         IncrementalScoreCalculator<CheapTimeSolution, HardMediumSoftLongScore> {
 
-    protected static final String CONSTRAINT_PACKAGE = "org.optaplanner.examples.cheaptime.solver";
+    public static final String CONSTRAINT_PACKAGE = "org.optaplanner.examples.cheaptime.solver";
 
     private CheapTimeSolution cheapTimeSolution;
 
