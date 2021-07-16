@@ -21,19 +21,19 @@ import java.util.List;
 import org.optaplanner.benchmark.config.statistic.ProblemStatisticType;
 import org.optaplanner.benchmark.impl.result.SubSingleBenchmarkResult;
 import org.optaplanner.benchmark.impl.statistic.ProblemBasedSubSingleStatistic;
+import org.optaplanner.benchmark.impl.statistic.StatisticRegistry;
+import org.optaplanner.core.api.score.Score;
 import org.optaplanner.core.api.solver.Solver;
-import org.optaplanner.core.api.solver.event.BestSolutionChangedEvent;
-import org.optaplanner.core.api.solver.event.SolverEventListener;
+import org.optaplanner.core.config.solver.metric.SolverMetric;
 import org.optaplanner.core.impl.score.definition.ScoreDefinition;
+
+import io.micrometer.core.instrument.Tags;
 
 public class BestScoreSubSingleStatistic<Solution_>
         extends ProblemBasedSubSingleStatistic<Solution_, BestScoreStatisticPoint> {
 
-    private final BestScoreSubSingleStatisticListener listener;
-
     public BestScoreSubSingleStatistic(SubSingleBenchmarkResult subSingleBenchmarkResult) {
         super(subSingleBenchmarkResult, ProblemStatisticType.BEST_SCORE);
-        listener = new BestScoreSubSingleStatisticListener();
     }
 
     // ************************************************************************
@@ -41,22 +41,15 @@ public class BestScoreSubSingleStatistic<Solution_>
     // ************************************************************************
 
     @Override
-    public void open(Solver<Solution_> solver) {
-        solver.addEventListener(listener);
+    public void open(StatisticRegistry registry, Tags runTag, Solver<Solution_> solver) {
+        registry.addListener(SolverMetric.BEST_SCORE, timestamp -> {
+            Score score = registry.extractScoreFromMeters(SolverMetric.BEST_SCORE, runTag);
+            pointList.add(new BestScoreStatisticPoint(timestamp, score));
+        });
     }
 
     @Override
-    public void close(Solver<Solution_> solver) {
-        solver.removeEventListener(listener);
-    }
-
-    private class BestScoreSubSingleStatisticListener implements SolverEventListener<Solution_> {
-
-        @Override
-        public void bestSolutionChanged(BestSolutionChangedEvent<Solution_> event) {
-            pointList.add(new BestScoreStatisticPoint(event.getTimeMillisSpent(), event.getNewBestScore()));
-        }
-
+    public void close(StatisticRegistry registry, Tags runTag, Solver<Solution_> solver) {
     }
 
     // ************************************************************************

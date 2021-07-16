@@ -80,7 +80,7 @@ public class DefaultSolverTest {
         SolverFactory<TestdataSolution> solverFactory = SolverFactory.create(solverConfig);
 
         Solver<TestdataSolution> solver = solverFactory.buildSolver();
-        meterRegistry.publish();
+        meterRegistry.publish(solver);
         assertThat(meterRegistry.getMeasurement("optaplanner.solver.errors", "COUNT")).isZero();
         assertThat(meterRegistry.getMeasurement("optaplanner.solver.solve-length", "ACTIVE_TASKS")).isZero();
 
@@ -92,7 +92,7 @@ public class DefaultSolverTest {
         solver.addEventListener(event -> {
             if (!updatedTime.get()) {
                 meterRegistry.getClock().addSeconds(2);
-                meterRegistry.publish();
+                meterRegistry.publish(solver);
                 assertThat(meterRegistry.getMeasurement("optaplanner.solver.solve-length", "ACTIVE_TASKS")).isOne();
                 assertThat(meterRegistry.getMeasurement("optaplanner.solver.solve-length", "DURATION").longValue())
                         .isEqualTo(TimeUnit.SECONDS.toNanos(2));
@@ -101,7 +101,7 @@ public class DefaultSolverTest {
         });
         solution = solver.solve(solution);
 
-        meterRegistry.publish();
+        meterRegistry.publish(solver);
         assertThat(solution).isNotNull();
         assertThat(solution.getScore().isSolutionInitialized()).isTrue();
 
@@ -137,7 +137,7 @@ public class DefaultSolverTest {
         SolverFactory<TestdataSolution> solverFactory = SolverFactory.create(solverConfig);
 
         Solver<TestdataSolution> solver = solverFactory.buildSolver();
-        meterRegistry.publish();
+        meterRegistry.publish(solver);
         assertThat(meterRegistry.getMeasurement("optaplanner.solver.errors", "COUNT")).isZero();
         assertThat(meterRegistry.getMeasurement("optaplanner.solver.solve-length", "ACTIVE_TASKS")).isZero();
 
@@ -145,14 +145,14 @@ public class DefaultSolverTest {
         solution.setValueList(Arrays.asList(new TestdataValue("v1"), new TestdataValue("v2")));
         solution.setEntityList(Arrays.asList(new TestdataEntity("e1"), new TestdataEntity("e2")));
 
-        meterRegistry.publish();
+        meterRegistry.publish(solver);
 
         assertThatCode(() -> {
             solver.solve(solution);
         }).hasMessageContaining("Thrown exception in constraint provider");
 
         meterRegistry.getClock().addSeconds(1);
-        meterRegistry.publish();
+        meterRegistry.publish(solver);
         assertThat(meterRegistry.getMeasurement("optaplanner.solver.solve-length", "ACTIVE_TASKS")).isZero();
         assertThat(meterRegistry.getMeasurement("optaplanner.solver.solve-length", "DURATION")).isZero();
         assertThat(meterRegistry.getMeasurement("optaplanner.solver.errors", "COUNT")).isOne();

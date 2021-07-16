@@ -19,12 +19,14 @@ package org.optaplanner.core.impl.solver;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.ToDoubleFunction;
 
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.score.Score;
 import org.optaplanner.core.api.solver.ProblemFactChange;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.config.solver.EnvironmentMode;
+import org.optaplanner.core.config.solver.metric.SolverMetric;
 import org.optaplanner.core.impl.phase.Phase;
 import org.optaplanner.core.impl.score.director.InnerScoreDirector;
 import org.optaplanner.core.impl.score.director.InnerScoreDirectorFactory;
@@ -76,8 +78,28 @@ public class DefaultSolver<Solution_> extends AbstractSolver<Solution_> {
         this.basicPlumbingTermination = basicPlumbingTermination;
         this.solverScope = solverScope;
         this.moveThreadCountDescription = moveThreadCountDescription;
-        this.solveLengthTimer = Metrics.more().longTaskTimer("optaplanner.solver.solve-length");
-        this.errorCounter = Metrics.counter("optaplanner.solver.errors");
+        this.solveLengthTimer = Metrics.more().longTaskTimer(SolverMetric.SOLVE_LENGTH.getMeterId(),
+                solverScope.getMetricTags());
+        this.errorCounter = Metrics.counter(SolverMetric.ERROR_COUNT.getMeterId(), solverScope.getMetricTags());
+
+        // NOTE: Speed can be derived by count if sampling rate is known
+        Metrics.gauge(SolverMetric.SCORE_CALCULATION_SPEED.getMeterId(), solverScope.getMetricTags(),
+                solverScope, new ToDoubleFunction<SolverScope>() {
+                    long lastTimestamp = System.currentTimeMillis();
+                    long lastCount = 0;
+
+                    @Override
+                    public double applyAsDouble(SolverScope solverScope) {
+                        long newCount = solverScope.getScoreCalculationCount();
+                        long newTimestamp = System.currentTimeMillis();
+                        double difference = (newTimestamp == lastTimestamp) ? 1L : newTimestamp - lastTimestamp;
+                        double out = (newCount - lastCount) / difference;
+
+                        lastCount = newCount;
+                        lastTimestamp = newTimestamp;
+                        return out;
+                    }
+                });
     }
 
     public EnvironmentMode getEnvironmentMode() {

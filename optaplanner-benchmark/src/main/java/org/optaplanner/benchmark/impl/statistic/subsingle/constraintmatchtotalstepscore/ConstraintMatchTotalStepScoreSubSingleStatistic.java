@@ -19,14 +19,17 @@ package org.optaplanner.benchmark.impl.statistic.subsingle.constraintmatchtotals
 import java.io.File;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
@@ -39,31 +42,26 @@ import org.optaplanner.benchmark.config.statistic.SingleStatisticType;
 import org.optaplanner.benchmark.impl.report.BenchmarkReport;
 import org.optaplanner.benchmark.impl.result.SubSingleBenchmarkResult;
 import org.optaplanner.benchmark.impl.statistic.PureSubSingleStatistic;
+import org.optaplanner.benchmark.impl.statistic.StatisticRegistry;
 import org.optaplanner.benchmark.impl.statistic.common.MillisecondsSpentNumberFormat;
-import org.optaplanner.core.api.score.constraint.ConstraintMatchTotal;
+import org.optaplanner.core.api.score.Score;
 import org.optaplanner.core.api.solver.Solver;
-import org.optaplanner.core.impl.localsearch.scope.LocalSearchStepScope;
-import org.optaplanner.core.impl.phase.event.PhaseLifecycleListenerAdapter;
-import org.optaplanner.core.impl.phase.scope.AbstractPhaseScope;
-import org.optaplanner.core.impl.phase.scope.AbstractStepScope;
+import org.optaplanner.core.config.solver.metric.SolverMetric;
 import org.optaplanner.core.impl.score.ScoreUtils;
 import org.optaplanner.core.impl.score.definition.ScoreDefinition;
-import org.optaplanner.core.impl.score.director.InnerScoreDirector;
-import org.optaplanner.core.impl.solver.AbstractSolver;
 import org.optaplanner.core.impl.solver.DefaultSolver;
+
+import io.micrometer.core.instrument.Meter;
+import io.micrometer.core.instrument.Tags;
 
 public class ConstraintMatchTotalStepScoreSubSingleStatistic<Solution_>
         extends PureSubSingleStatistic<Solution_, ConstraintMatchTotalStepScoreStatisticPoint> {
-
-    @XmlTransient
-    private ConstraintMatchTotalStepScoreSubSingleStatisticListener listener;
 
     @XmlTransient
     protected List<File> graphFileList = null;
 
     public ConstraintMatchTotalStepScoreSubSingleStatistic(SubSingleBenchmarkResult subSingleBenchmarkResult) {
         super(subSingleBenchmarkResult, SingleStatisticType.CONSTRAINT_MATCH_TOTAL_STEP_SCORE);
-        listener = new ConstraintMatchTotalStepScoreSubSingleStatisticListener();
     }
 
     /**
@@ -79,54 +77,38 @@ public class ConstraintMatchTotalStepScoreSubSingleStatistic<Solution_>
     // ************************************************************************
 
     @Override
-    public void open(Solver<Solution_> solver) {
+    public void open(StatisticRegistry registry, Tags runTag, Solver<Solution_> solver) {
         DefaultSolver<Solution_> defaultSolver = (DefaultSolver<Solution_>) solver;
         defaultSolver.getSolverScope().getScoreDirector().overwriteConstraintMatchEnabledPreference(true);
-        defaultSolver.addPhaseLifecycleListener(listener);
+        registry.addListener(SolverMetric.CONSTRAINT_MATCH_TOTAL_STEP_SCORE, timeMillisSpent -> {
+            Set<Meter.Id> meterIds = registry.getMeterIds(SolverMetric.CONSTRAINT_MATCH_TOTAL_STEP_SCORE, runTag);
+            Set<ImmutablePair<String, String>> constraintPackageNamePairs = new HashSet<>();
+            meterIds.forEach(meterId -> {
+                constraintPackageNamePairs
+                        .add(ImmutablePair.of(meterId.getTag("constraint.package"), meterId.getTag("constraint.name")));
+            });
+            constraintPackageNamePairs.forEach(constraintPackageNamePair -> {
+                String constraintPackage = constraintPackageNamePair.left;
+                String constraintName = constraintPackageNamePair.right;
+                Score score = registry.extractScoreFromMeters(SolverMetric.CONSTRAINT_MATCH_TOTAL_STEP_SCORE, runTag
+                        .and("constraint.package", constraintPackageNamePair.left)
+                        .and("constraint.name", constraintPackageNamePair.right));
+                int count = registry.getGaugeValue(SolverMetric.CONSTRAINT_MATCH_TOTAL_STEP_SCORE + ".count",
+                        runTag.and("constraint.package", constraintPackageNamePair.left)
+                                .and("constraint.name", constraintPackageNamePair.right))
+                        .intValue();
+                pointList.add(new ConstraintMatchTotalStepScoreStatisticPoint(
+                        timeMillisSpent,
+                        constraintPackage,
+                        constraintName,
+                        count,
+                        score));
+            });
+        });
     }
 
     @Override
-    public void close(Solver<Solution_> solver) {
-        ((AbstractSolver<Solution_>) solver).removePhaseLifecycleListener(listener);
-    }
-
-    private class ConstraintMatchTotalStepScoreSubSingleStatisticListener extends PhaseLifecycleListenerAdapter<Solution_> {
-
-        private boolean constraintMatchEnabled;
-
-        @Override
-        public void phaseStarted(AbstractPhaseScope<Solution_> phaseScope) {
-            InnerScoreDirector scoreDirector = phaseScope.getScoreDirector();
-            constraintMatchEnabled = scoreDirector.isConstraintMatchEnabled();
-            if (!constraintMatchEnabled) {
-                logger.warn("The subSingleStatistic ({}) cannot function properly" +
-                        " because ConstraintMatches are not supported on the ScoreDirector.", singleStatisticType);
-            }
-        }
-
-        @Override
-        public void stepEnded(AbstractStepScope<Solution_> stepScope) {
-            if (stepScope instanceof LocalSearchStepScope) {
-                localSearchStepEnded((LocalSearchStepScope<Solution_>) stepScope);
-            }
-        }
-
-        private void localSearchStepEnded(LocalSearchStepScope<Solution_> stepScope) {
-            if (constraintMatchEnabled) {
-                long timeMillisSpent = stepScope.getPhaseScope().calculateSolverTimeMillisSpentUpToNow();
-                InnerScoreDirector<Solution_, ?> scoreDirector = stepScope.getScoreDirector();
-                for (ConstraintMatchTotal<?> constraintMatchTotal : scoreDirector.getConstraintMatchTotalMap()
-                        .values()) {
-                    pointList.add(new ConstraintMatchTotalStepScoreStatisticPoint(
-                            timeMillisSpent,
-                            constraintMatchTotal.getConstraintPackage(),
-                            constraintMatchTotal.getConstraintName(),
-                            constraintMatchTotal.getConstraintMatchCount(),
-                            constraintMatchTotal.getScore()));
-                }
-            }
-        }
-
+    public void close(StatisticRegistry registry, Tags runTag, Solver<Solution_> solver) {
     }
 
     // ************************************************************************

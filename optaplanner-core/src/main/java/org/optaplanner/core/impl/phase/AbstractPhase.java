@@ -18,18 +18,17 @@ package org.optaplanner.core.impl.phase;
 
 import java.util.Iterator;
 
-import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.score.Score;
+import org.optaplanner.core.config.solver.metric.SolverMetric;
 import org.optaplanner.core.impl.domain.entity.descriptor.EntityDescriptor;
 import org.optaplanner.core.impl.domain.solution.descriptor.SolutionDescriptor;
 import org.optaplanner.core.impl.domain.variable.descriptor.GenuineVariableDescriptor;
-import org.optaplanner.core.impl.localsearch.DefaultLocalSearchPhase;
 import org.optaplanner.core.impl.phase.event.PhaseLifecycleListener;
 import org.optaplanner.core.impl.phase.event.PhaseLifecycleSupport;
 import org.optaplanner.core.impl.phase.scope.AbstractPhaseScope;
 import org.optaplanner.core.impl.phase.scope.AbstractStepScope;
+import org.optaplanner.core.impl.score.definition.ScoreDefinition;
 import org.optaplanner.core.impl.score.director.InnerScoreDirector;
-import org.optaplanner.core.impl.solver.DefaultSolver;
 import org.optaplanner.core.impl.solver.recaller.BestSolutionRecaller;
 import org.optaplanner.core.impl.solver.scope.SolverScope;
 import org.optaplanner.core.impl.solver.termination.Termination;
@@ -174,10 +173,22 @@ public abstract class AbstractPhase<Solution_> implements Phase<Solution_> {
 
     @Override
     public void stepEnded(AbstractStepScope<Solution_> stepScope) {
+        collectMetrics(stepScope);
         bestSolutionRecaller.stepEnded(stepScope);
         solverPhaseLifecycleSupport.fireStepEnded(stepScope);
         termination.stepEnded(stepScope);
         phaseLifecycleSupport.fireStepEnded(stepScope);
+    }
+
+    private void collectMetrics(AbstractStepScope<Solution_> stepScope) {
+        if (stepScope.getPhaseScope().getSolverScope().isMetricEnabled(SolverMetric.STEP_SCORE)
+                && stepScope.getScore().isSolutionInitialized()) {
+            ScoreDefinition<?> scoreDefinition = stepScope.getPhaseScope().getScoreDefinition();
+            SolverMetric.registerScoreMetrics(SolverMetric.STEP_SCORE,
+                    stepScope.getPhaseScope().getSolverScope().getMetricTags(),
+                    scoreDefinition,
+                    stepScope.getScore());
+        }
     }
 
     @Override

@@ -17,12 +17,21 @@
 package org.optaplanner.benchmark.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.optaplanner.benchmark.config.ProblemBenchmarksConfig;
 import org.optaplanner.benchmark.config.SolverBenchmarkConfig;
+import org.optaplanner.benchmark.config.statistic.ProblemStatisticType;
+import org.optaplanner.benchmark.config.statistic.SingleStatisticType;
 import org.optaplanner.benchmark.impl.result.PlannerBenchmarkResult;
 import org.optaplanner.benchmark.impl.result.SolverBenchmarkResult;
 import org.optaplanner.core.config.solver.EnvironmentMode;
+import org.optaplanner.core.config.solver.metric.MetricConfig;
+import org.optaplanner.core.config.solver.metric.SolverMetric;
 import org.optaplanner.core.config.util.ConfigUtils;
 import org.optaplanner.core.impl.domain.solution.descriptor.SolutionDescriptor;
 import org.optaplanner.core.impl.solver.DefaultSolverFactory;
@@ -43,7 +52,14 @@ public class SolverBenchmarkFactory {
         if (config.getSolverConfig().getClassLoader() == null) {
             config.getSolverConfig().setClassLoader(classLoader);
         }
-        solverBenchmarkResult.setSolverConfig(config.getSolverConfig());
+        Map<String, String> additionalTagsMap = new HashMap<>();
+        List<SolverMetric> solverMetricList = getSolverMetrics(config.getProblemBenchmarksConfig());
+        additionalTagsMap.put("optaplanner.benchmark.name", config.getName());
+        solverBenchmarkResult.setSolverConfig(config.getSolverConfig()
+                .copyConfig().withMetricConfig(
+                        new MetricConfig()
+                                .withTagNameToValueMap(additionalTagsMap)
+                                .withSolverMetricList(solverMetricList)));
         DefaultSolverFactory<Solution_> defaultSolverFactory = new DefaultSolverFactory<>(config.getSolverConfig());
         SolutionDescriptor<Solution_> solutionDescriptor =
                 defaultSolverFactory.buildSolutionDescriptor(EnvironmentMode.REPRODUCIBLE);
@@ -80,5 +96,21 @@ public class SolverBenchmarkFactory {
             throw new IllegalStateException("The solverBenchmark name (" + config.getName()
                     + ") is invalid because the subSingleCount (" + config.getSubSingleCount() + ") must be greater than 1.");
         }
+    }
+
+    protected List<SolverMetric> getSolverMetrics(ProblemBenchmarksConfig config) {
+        List<SolverMetric> out = new ArrayList<>();
+        if (config == null) {
+            return out;
+        }
+        for (ProblemStatisticType problemStatisticType : ObjectUtils.defaultIfNull(config.getProblemStatisticTypeList(),
+                Collections.<ProblemStatisticType> emptyList())) {
+            out.add(SolverMetric.valueOf(problemStatisticType.name()));
+        }
+        for (SingleStatisticType singleStatisticType : ObjectUtils.defaultIfNull(config.getSingleStatisticTypeList(),
+                Collections.<SingleStatisticType> emptyList())) {
+            out.add(SolverMetric.valueOf(singleStatisticType.name()));
+        }
+        return out;
     }
 }

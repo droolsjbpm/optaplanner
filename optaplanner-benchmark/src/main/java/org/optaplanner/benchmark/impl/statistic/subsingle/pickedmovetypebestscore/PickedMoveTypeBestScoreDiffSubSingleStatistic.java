@@ -38,6 +38,7 @@ import org.optaplanner.benchmark.config.statistic.SingleStatisticType;
 import org.optaplanner.benchmark.impl.report.BenchmarkReport;
 import org.optaplanner.benchmark.impl.result.SubSingleBenchmarkResult;
 import org.optaplanner.benchmark.impl.statistic.PureSubSingleStatistic;
+import org.optaplanner.benchmark.impl.statistic.StatisticRegistry;
 import org.optaplanner.benchmark.impl.statistic.common.MillisecondsSpentNumberFormat;
 import org.optaplanner.core.api.score.Score;
 import org.optaplanner.core.api.solver.Solver;
@@ -49,6 +50,8 @@ import org.optaplanner.core.impl.phase.scope.AbstractStepScope;
 import org.optaplanner.core.impl.score.ScoreUtils;
 import org.optaplanner.core.impl.score.definition.ScoreDefinition;
 import org.optaplanner.core.impl.solver.AbstractSolver;
+
+import io.micrometer.core.instrument.Tags;
 
 public class PickedMoveTypeBestScoreDiffSubSingleStatistic<Solution_>
         extends PureSubSingleStatistic<Solution_, PickedMoveTypeBestScoreDiffStatisticPoint> {
@@ -77,12 +80,13 @@ public class PickedMoveTypeBestScoreDiffSubSingleStatistic<Solution_>
     // ************************************************************************
 
     @Override
-    public void open(Solver<Solution_> solver) {
+    public void open(StatisticRegistry registry, Tags runTag, Solver<Solution_> solver) {
+        // TODO: convert this to use registry
         ((AbstractSolver<Solution_>) solver).addPhaseLifecycleListener(listener);
     }
 
     @Override
-    public void close(Solver<Solution_> solver) {
+    public void close(StatisticRegistry registry, Tags runTag, Solver<Solution_> solver) {
         ((AbstractSolver<Solution_>) solver).removePhaseLifecycleListener(listener);
     }
 
