@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2021 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,12 +23,14 @@ import org.optaplanner.core.config.partitionedsearch.PartitionedSearchPhaseConfi
 import org.optaplanner.core.config.phase.NoChangePhaseConfig;
 import org.optaplanner.core.config.phase.PhaseConfig;
 import org.optaplanner.core.config.phase.custom.CustomPhaseConfig;
+import org.optaplanner.core.config.phase.loop.LoopPhaseConfig;
 import org.optaplanner.core.impl.constructionheuristic.DefaultConstructionHeuristicPhaseFactory;
 import org.optaplanner.core.impl.exhaustivesearch.DefaultExhaustiveSearchPhaseFactory;
 import org.optaplanner.core.impl.heuristic.HeuristicConfigPolicy;
 import org.optaplanner.core.impl.localsearch.DefaultLocalSearchPhaseFactory;
 import org.optaplanner.core.impl.partitionedsearch.DefaultPartitionedSearchPhaseFactory;
 import org.optaplanner.core.impl.phase.custom.DefaultCustomPhaseFactory;
+import org.optaplanner.core.impl.phase.loop.LoopPhaseFactory;
 import org.optaplanner.core.impl.solver.recaller.BestSolutionRecaller;
 import org.optaplanner.core.impl.solver.termination.Termination;
 
@@ -47,12 +49,14 @@ public interface PhaseFactory<Solution_> {
             return new DefaultExhaustiveSearchPhaseFactory<>((ExhaustiveSearchPhaseConfig) phaseConfig);
         } else if (NoChangePhaseConfig.class.isAssignableFrom(phaseConfig.getClass())) {
             return new NoChangePhaseFactory<>((NoChangePhaseConfig) phaseConfig);
+        } else if (LoopPhaseConfig.class.isAssignableFrom(phaseConfig.getClass())) {
+            return new LoopPhaseFactory<>((LoopPhaseConfig) phaseConfig);
         } else {
             throw new IllegalArgumentException(String.format("Unknown %s type: (%s).",
                     PhaseConfig.class.getSimpleName(), phaseConfig.getClass().getName()));
         }
     }
 
-    Phase<Solution_> buildPhase(int phaseIndex, HeuristicConfigPolicy<Solution_> solverConfigPolicy,
+    Phase<Solution_> buildPhase(PhaseCounter<Solution_> phaseCounter, HeuristicConfigPolicy<Solution_> solverConfigPolicy,
             BestSolutionRecaller<Solution_> bestSolutionRecaller, Termination<Solution_> solverTermination);
 }

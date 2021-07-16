@@ -224,7 +224,7 @@ public class DefaultSolver<Solution_> extends AbstractSolver<Solution_> {
                 solverScope.getTimeMillisSpent(),
                 solverScope.getBestScore(),
                 solverScope.getScoreCalculationSpeed(),
-                phaseList.size(),
+                solverScope.getPhaseCounter().getPhasesEnded(),
                 environmentMode.name(),
                 moveThreadCountDescription);
         solving.set(false);

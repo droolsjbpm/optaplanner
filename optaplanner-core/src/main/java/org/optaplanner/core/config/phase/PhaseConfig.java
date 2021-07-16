@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2021 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import org.optaplanner.core.config.exhaustivesearch.ExhaustiveSearchPhaseConfig;
 import org.optaplanner.core.config.localsearch.LocalSearchPhaseConfig;
 import org.optaplanner.core.config.partitionedsearch.PartitionedSearchPhaseConfig;
 import org.optaplanner.core.config.phase.custom.CustomPhaseConfig;
+import org.optaplanner.core.config.phase.loop.LoopPhaseConfig;
 import org.optaplanner.core.config.solver.termination.TerminationConfig;
 import org.optaplanner.core.config.util.ConfigUtils;
 
@@ -35,7 +36,8 @@ import org.optaplanner.core.config.util.ConfigUtils;
         ExhaustiveSearchPhaseConfig.class,
         LocalSearchPhaseConfig.class,
         NoChangePhaseConfig.class,
-        PartitionedSearchPhaseConfig.class
+        PartitionedSearchPhaseConfig.class,
+        LoopPhaseConfig.class
 })
 @XmlType(propOrder = {
         "terminationConfig"

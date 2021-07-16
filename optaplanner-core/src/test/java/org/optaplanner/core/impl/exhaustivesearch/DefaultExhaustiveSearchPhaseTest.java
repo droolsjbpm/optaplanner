@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2021 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ import org.optaplanner.core.impl.exhaustivesearch.scope.ExhaustiveSearchPhaseSco
 import org.optaplanner.core.impl.exhaustivesearch.scope.ExhaustiveSearchStepScope;
 import org.optaplanner.core.impl.heuristic.move.Move;
 import org.optaplanner.core.impl.heuristic.selector.entity.EntitySelector;
+import org.optaplanner.core.impl.phase.PhaseCounter;
 import org.optaplanner.core.impl.score.director.InnerScoreDirector;
 import org.optaplanner.core.impl.testdata.domain.TestdataEntity;
 import org.optaplanner.core.impl.testdata.domain.TestdataSolution;
@@ -95,7 +96,8 @@ public class DefaultExhaustiveSearchPhaseTest {
         when(lastCompletedStepScope.getExpandingNode()).thenReturn(node3A);
         when(stepScope.getExpandingNode()).thenReturn(node4B);
 
-        DefaultExhaustiveSearchPhase<TestdataSolution> phase = new DefaultExhaustiveSearchPhase<>(0, "", null, null);
+        DefaultExhaustiveSearchPhase<TestdataSolution> phase =
+                new DefaultExhaustiveSearchPhase<>(new PhaseCounter<>(), "", null, null);
         phase.setEntitySelector(mock(EntitySelector.class));
         phase.setDecider(mock(ExhaustiveSearchDecider.class));
         phase.restoreWorkingSolution(stepScope);

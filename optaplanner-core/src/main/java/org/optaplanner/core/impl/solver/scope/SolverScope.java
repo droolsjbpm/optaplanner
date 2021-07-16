@@ -24,6 +24,7 @@ import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.score.Score;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.impl.domain.solution.descriptor.SolutionDescriptor;
+import org.optaplanner.core.impl.phase.PhaseCounter;
 import org.optaplanner.core.impl.phase.scope.AbstractPhaseScope;
 import org.optaplanner.core.impl.score.definition.ScoreDefinition;
 import org.optaplanner.core.impl.score.director.InnerScoreDirector;
@@ -52,6 +53,8 @@ public class SolverScope<Solution_> {
     protected volatile Solution_ bestSolution;
     protected volatile Score bestScore;
     protected Long bestSolutionTimeMillis;
+
+    private final PhaseCounter<Solution_> phaseCounter = new PhaseCounter<>();
 
     // ************************************************************************
     // Constructors and simple getters/setters
@@ -169,6 +172,10 @@ public class SolverScope<Solution_> {
 
     public void setBestSolutionTimeMillis(Long bestSolutionTimeMillis) {
         this.bestSolutionTimeMillis = bestSolutionTimeMillis;
+    }
+
+    public PhaseCounter<Solution_> getPhaseCounter() {
+        return phaseCounter;
     }
 
     // ************************************************************************

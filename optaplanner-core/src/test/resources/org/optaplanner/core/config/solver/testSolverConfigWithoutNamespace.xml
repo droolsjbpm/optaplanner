@@ -156,4 +156,12 @@
       </acceptor>
     </localSearch>
   </partitionedSearch>
+  <loop>
+    <constructionHeuristic />
+    <localSearch />
+    <customPhase />
+    <exhaustiveSearch />
+    <noChangePhase/>
+    <partitionedSearch />
+  </loop>
 </solver>

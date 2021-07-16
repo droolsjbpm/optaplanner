@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2021 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,8 @@ public abstract class AbstractPhase<Solution_> implements Phase<Solution_> {
 
     protected final transient Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected final int phaseIndex;
+    private final PhaseCounter<Solution_> phaseCounter;
+    private int phaseIndex = -1;
     protected final String logIndentation;
     protected final BestSolutionRecaller<Solution_> bestSolutionRecaller;
     protected final Termination<Solution_> termination;
@@ -58,15 +59,20 @@ public abstract class AbstractPhase<Solution_> implements Phase<Solution_> {
     protected boolean assertExpectedStepScore = false;
     protected boolean assertShadowVariablesAreNotStaleAfterStep = false;
 
-    public AbstractPhase(int phaseIndex, String logIndentation, BestSolutionRecaller<Solution_> bestSolutionRecaller,
-            Termination<Solution_> termination) {
-        this.phaseIndex = phaseIndex;
+    public AbstractPhase(PhaseCounter<Solution_> phaseCounter, String logIndentation,
+            BestSolutionRecaller<Solution_> bestSolutionRecaller, Termination<Solution_> termination) {
+        this.phaseCounter = phaseCounter;
         this.logIndentation = logIndentation;
         this.bestSolutionRecaller = bestSolutionRecaller;
         this.termination = termination;
     }
 
-    public int getPhaseIndex() {
+    /**
+     * Not constant; changes when the phase instance is reused.
+     *
+     * @return the number of phases that run before this phase, within the current solver run. -1 if phase not yet run.
+     */
+    protected int getPhaseIndex() {
         return phaseIndex;
     }
 
@@ -111,6 +117,7 @@ public abstract class AbstractPhase<Solution_> implements Phase<Solution_> {
 
     @Override
     public void solvingStarted(SolverScope<Solution_> solverScope) {
+        phaseCounter.solvingStarted(solverScope);
         // bestSolutionRecaller.solvingStarted(...) is called by DefaultSolver
         // solverPhaseLifecycleSupport.solvingStarted(...) is called by DefaultSolver
         termination.solvingStarted(solverScope);
@@ -119,6 +126,7 @@ public abstract class AbstractPhase<Solution_> implements Phase<Solution_> {
 
     @Override
     public void solvingEnded(SolverScope<Solution_> solverScope) {
+        phaseCounter.solvingEnded(solverScope);
         // bestSolutionRecaller.solvingEnded(...) is called by DefaultSolver
         // solverPhaseLifecycleSupport.solvingEnded(...) is called by DefaultSolver
         termination.solvingEnded(solverScope);
@@ -127,6 +135,8 @@ public abstract class AbstractPhase<Solution_> implements Phase<Solution_> {
 
     @Override
     public void phaseStarted(AbstractPhaseScope<Solution_> phaseScope) {
+        phaseIndex = phaseCounter.getPhasesStarted();
+        phaseCounter.phaseStarted(phaseScope);
         phaseScope.startingNow();
         phaseScope.reset();
         bestSolutionRecaller.phaseStarted(phaseScope);
@@ -137,6 +147,7 @@ public abstract class AbstractPhase<Solution_> implements Phase<Solution_> {
 
     @Override
     public void stepStarted(AbstractStepScope<Solution_> stepScope) {
+        phaseCounter.stepStarted(stepScope);
         bestSolutionRecaller.stepStarted(stepScope);
         solverPhaseLifecycleSupport.fireStepStarted(stepScope);
         termination.stepStarted(stepScope);
@@ -174,6 +185,7 @@ public abstract class AbstractPhase<Solution_> implements Phase<Solution_> {
 
     @Override
     public void stepEnded(AbstractStepScope<Solution_> stepScope) {
+        phaseCounter.stepEnded(stepScope);
         bestSolutionRecaller.stepEnded(stepScope);
         solverPhaseLifecycleSupport.fireStepEnded(stepScope);
         termination.stepEnded(stepScope);
@@ -182,6 +194,7 @@ public abstract class AbstractPhase<Solution_> implements Phase<Solution_> {
 
     @Override
     public void phaseEnded(AbstractPhaseScope<Solution_> phaseScope) {
+        phaseCounter.phaseEnded(phaseScope);
         bestSolutionRecaller.phaseEnded(phaseScope);
         solverPhaseLifecycleSupport.firePhaseEnded(phaseScope);
         termination.phaseEnded(phaseScope);

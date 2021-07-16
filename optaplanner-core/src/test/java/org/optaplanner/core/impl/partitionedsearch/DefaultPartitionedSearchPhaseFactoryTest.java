@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2021 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.optaplanner.core.config.partitionedsearch.PartitionedSearchPhaseConfig;
 import org.optaplanner.core.config.solver.EnvironmentMode;
 import org.optaplanner.core.impl.heuristic.HeuristicConfigPolicy;
+import org.optaplanner.core.impl.phase.PhaseCounter;
 import org.optaplanner.core.impl.solver.recaller.BestSolutionRecaller;
 import org.optaplanner.core.impl.solver.termination.Termination;
 import org.optaplanner.core.impl.testdata.domain.TestdataSolution;
@@ -87,8 +88,9 @@ class DefaultPartitionedSearchPhaseFactoryTest {
         PartitionedSearchPhaseConfig phaseConfig = new PartitionedSearchPhaseConfig();
         phaseConfig.setSolutionPartitionerClass(TestdataSolutionPartitioner.class);
         DefaultPartitionedSearchPhaseFactory<TestdataSolution> partitionedSearchPhaseFactory =
-                new DefaultPartitionedSearchPhaseFactory<TestdataSolution>(phaseConfig);
-        return (DefaultPartitionedSearchPhase) partitionedSearchPhaseFactory.buildPhase(0, heuristicConfigPolicy,
+                new DefaultPartitionedSearchPhaseFactory<>(phaseConfig);
+        return (DefaultPartitionedSearchPhase<TestdataSolution>) partitionedSearchPhaseFactory.buildPhase(new PhaseCounter<>(),
+                heuristicConfigPolicy,
                 mock(BestSolutionRecaller.class), mock(Termination.class));
     }
 

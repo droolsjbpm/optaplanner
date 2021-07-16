@@ -14,41 +14,35 @@
  * limitations under the License.
  */
 
-package org.optaplanner.core.impl.phase;
+package org.optaplanner.core.impl.phase.loop.scope;
 
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
-import org.optaplanner.core.impl.solver.recaller.BestSolutionRecaller;
+import org.optaplanner.core.impl.phase.scope.AbstractPhaseScope;
 import org.optaplanner.core.impl.solver.scope.SolverScope;
-import org.optaplanner.core.impl.solver.termination.Termination;
 
 /**
- * A {@link NoChangePhase} is a {@link Phase} which does nothing.
- *
  * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
- * @see Phase
- * @see AbstractPhase
  */
-public class NoChangePhase<Solution_> extends AbstractPhase<Solution_> {
+public class LoopPhaseScope<Solution_> extends AbstractPhaseScope<Solution_> {
 
-    public NoChangePhase(PhaseCounter<Solution_> phaseCounter, String logIndentation,
-            BestSolutionRecaller<Solution_> bestSolutionRecaller, Termination<Solution_> termination) {
-        super(phaseCounter, logIndentation, bestSolutionRecaller, termination);
+    private LoopStepScope<Solution_> lastCompletedStepScope;
+
+    public LoopPhaseScope(SolverScope<Solution_> solverScope) {
+        super(solverScope);
+        lastCompletedStepScope = new LoopStepScope<>(this, -1);
     }
 
     @Override
-    public String getPhaseTypeString() {
-        return "No Change";
+    public LoopStepScope<Solution_> getLastCompletedStepScope() {
+        return lastCompletedStepScope;
+    }
+
+    public void setLastCompletedStepScope(LoopStepScope<Solution_> lastCompletedStepScope) {
+        this.lastCompletedStepScope = lastCompletedStepScope;
     }
 
     // ************************************************************************
-    // Worker methods
+    // Calculated methods
     // ************************************************************************
-
-    @Override
-    public void solve(SolverScope<Solution_> solverScope) {
-        logger.info("{}No Change phase ({}) ended.",
-                logIndentation,
-                getPhaseIndex());
-    }
 
 }

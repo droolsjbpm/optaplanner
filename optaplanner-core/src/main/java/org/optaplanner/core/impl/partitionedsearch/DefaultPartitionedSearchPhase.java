@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2021 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ import org.optaplanner.core.impl.partitionedsearch.scope.PartitionedSearchPhaseS
 import org.optaplanner.core.impl.partitionedsearch.scope.PartitionedSearchStepScope;
 import org.optaplanner.core.impl.phase.AbstractPhase;
 import org.optaplanner.core.impl.phase.Phase;
+import org.optaplanner.core.impl.phase.PhaseCounter;
 import org.optaplanner.core.impl.phase.PhaseFactory;
 import org.optaplanner.core.impl.score.director.InnerScoreDirector;
 import org.optaplanner.core.impl.solver.recaller.BestSolutionRecaller;
@@ -63,11 +64,11 @@ public class DefaultPartitionedSearchPhase<Solution_> extends AbstractPhase<Solu
     protected List<PhaseConfig> phaseConfigList;
     protected HeuristicConfigPolicy<Solution_> configPolicy;
 
-    public DefaultPartitionedSearchPhase(int phaseIndex, String logIndentation,
+    public DefaultPartitionedSearchPhase(PhaseCounter<Solution_> phaseCounter, String logIndentation,
             BestSolutionRecaller<Solution_> bestSolutionRecaller, Termination<Solution_> termination,
             SolutionPartitioner<Solution_> solutionPartitioner, ThreadFactory threadFactory,
             Integer runnablePartThreadLimit) {
-        super(phaseIndex, logIndentation, bestSolutionRecaller, termination);
+        super(phaseCounter, logIndentation, bestSolutionRecaller, termination);
         this.solutionPartitioner = solutionPartitioner;
         this.threadFactory = threadFactory;
         this.runnablePartThreadLimit = runnablePartThreadLimit;
@@ -176,13 +177,12 @@ public class DefaultPartitionedSearchPhase<Solution_> extends AbstractPhase<Solu
         Termination<Solution_> partTermination = new OrCompositeTermination<>(childThreadPlumbingTermination,
                 termination.createChildThreadTermination(solverScope, ChildThreadType.PART_THREAD));
         List<Phase<Solution_>> phaseList = new ArrayList<>(phaseConfigList.size());
-        int partPhaseIndex = 0;
+        PhaseCounter<Solution_> partPhaseCounter = new PhaseCounter<>(); // Phase count independent of the outer solver.
         for (PhaseConfig phaseConfig : phaseConfigList) {
             PhaseFactory<Solution_> phaseFactory = PhaseFactory.create(phaseConfig);
             Phase<Solution_> phase =
-                    phaseFactory.buildPhase(partPhaseIndex, configPolicy, bestSolutionRecaller, partTermination);
+                    phaseFactory.buildPhase(partPhaseCounter, configPolicy, bestSolutionRecaller, partTermination);
             phaseList.add(phase);
-            partPhaseIndex++;
         }
         // TODO create PartitionSolverScope alternative to deal with 3 layer terminations
         SolverScope<Solution_> partSolverScope = solverScope.createChildThreadSolverScope(ChildThreadType.PART_THREAD);
@@ -229,7 +229,7 @@ public class DefaultPartitionedSearchPhase<Solution_> extends AbstractPhase<Solu
         logger.info("{}Partitioned Search phase ({}) ended: time spent ({}), best score ({}),"
                 + " score calculation speed ({}/sec), step total ({}), partCount ({}), runnablePartThreadLimit ({}).",
                 logIndentation,
-                phaseIndex,
+                getPhaseIndex(),
                 phaseScope.calculateSolverTimeMillisSpentUpToNow(),
                 phaseScope.getBestScore(),
                 phaseScope.getPhaseScoreCalculationSpeed(),
