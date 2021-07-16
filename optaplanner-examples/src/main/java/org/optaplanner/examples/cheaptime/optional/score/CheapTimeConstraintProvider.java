@@ -19,10 +19,8 @@ package org.optaplanner.examples.cheaptime.optional.score;
 import java.util.function.Function;
 import org.optaplanner.core.api.score.buildin.hardmediumsoftlong.HardMediumSoftLongScore;
 import org.optaplanner.core.api.score.stream.Constraint;
-import org.optaplanner.core.api.score.stream.ConstraintCollectors;
 import org.optaplanner.core.api.score.stream.ConstraintFactory;
 import org.optaplanner.core.api.score.stream.ConstraintProvider;
-import org.optaplanner.core.api.score.stream.Joiners;
 import org.optaplanner.examples.cheaptime.domain.Machine;
 import org.optaplanner.examples.cheaptime.domain.Period;
 import org.optaplanner.examples.cheaptime.domain.Resource;
@@ -30,10 +28,13 @@ import org.optaplanner.examples.cheaptime.domain.TaskAssignment;
 import org.optaplanner.examples.common.experimental.api.ConsecutiveIntervalInfo;
 
 import static org.optaplanner.core.api.score.stream.ConstraintCollectors.sum;
+import static org.optaplanner.core.api.score.stream.ConstraintCollectors.sumLong;
+import static org.optaplanner.core.api.score.stream.Joiners.equal;
 import static org.optaplanner.core.api.score.stream.Joiners.filtering;
 import static org.optaplanner.core.api.score.stream.Joiners.greaterThan;
 import static org.optaplanner.core.api.score.stream.Joiners.greaterThanOrEqual;
 import static org.optaplanner.core.api.score.stream.Joiners.lessThan;
+import static org.optaplanner.core.api.score.stream.Joiners.lessThanOrEqual;
 import static org.optaplanner.examples.cheaptime.score.CheapTimeCostCalculator.multiplyTwoMicros;
 import static org.optaplanner.examples.cheaptime.score.CheapTimeIncrementalScoreCalculator.CONSTRAINT_PACKAGE;
 import static org.optaplanner.examples.common.experimental.ExperimentalConstraintCollectors.consecutiveIntervals;
@@ -69,16 +70,16 @@ public class CheapTimeConstraintProvider implements ConstraintProvider {
     }
 
     protected Constraint maximumCapacity(ConstraintFactory constraintFactory) {
-        return constraintFactory.from(Period.class)
-                .join(TaskAssignment.class,
-                        greaterThanOrEqual(Period::getPeriod, TaskAssignment::getStartPeriod),
-                        lessThan(Period::getPeriod, TaskAssignment::getEndPeriod))
+        return constraintFactory.from(TaskAssignment.class)
                 .join(Resource.class,
-                        filtering((period, taskAssignment, resource) -> taskAssignment.getTask().getUsage(resource) > 0))
-                .groupBy((period, taskAssignment, resource) -> period,
-                        (period, taskAssignment, resource) -> resource,
-                        (period, taskAssignment, resource) -> taskAssignment.getMachine(),
-                        sum((period, taskAssignment, resource) -> taskAssignment.getTask().getUsage(resource)))
+                        filtering((taskAssignment, resource) -> taskAssignment.getTask().getUsage(resource) > 0))
+                .join(Period.class,
+                        lessThanOrEqual((taskAssignment, resource) -> taskAssignment.getStartPeriod(), Period::getPeriod),
+                        greaterThan((taskAssignment, resource) -> taskAssignment.getEndPeriod(), Period::getPeriod))
+                .groupBy((taskAssignment, resource, period) -> period,
+                        (taskAssignment, resource, period) -> resource,
+                        (taskAssignment, resource, period) -> taskAssignment.getMachine(),
+                        sum((taskAssignment, resource, period) -> taskAssignment.getTask().getUsage(resource)))
                 .filter((period, resource, machine, usage) -> machine.getMachineCapacity(resource).getCapacity() < usage)
                 .penalizeLong(CONSTRAINT_PACKAGE, "Maximum resource capacity", HardMediumSoftLongScore.ONE_HARD,
                         (period, resource, machine, usage) -> usage - machine.getMachineCapacity(resource).getCapacity());
@@ -88,7 +89,7 @@ public class CheapTimeConstraintProvider implements ConstraintProvider {
         return constraintFactory.from(Period.class)
                 .join(Machine.class)
                 .ifExists(TaskAssignment.class,
-                        Joiners.equal((period, machine) -> machine, TaskAssignment::getMachine),
+                        equal((period, machine) -> machine, TaskAssignment::getMachine),
                         greaterThanOrEqual((period, machine) -> period.getPeriod(), TaskAssignment::getStartPeriod),
                         lessThan((period, machine) -> period.getPeriod(), TaskAssignment::getEndPeriod))
                 .penalizeLong(CONSTRAINT_PACKAGE, "Active machine power cost", HardMediumSoftLongScore.ONE_MEDIUM,
@@ -99,43 +100,44 @@ public class CheapTimeConstraintProvider implements ConstraintProvider {
     protected Constraint activeMachineSpinUpAndDownCost(ConstraintFactory constraintFactory) {
         return constraintFactory.from(Machine.class)
                 .ifExists(TaskAssignment.class,
-                        Joiners.equal(Function.identity(), TaskAssignment::getMachine))
+                        equal(Function.identity(), TaskAssignment::getMachine))
                 .penalizeLong(CONSTRAINT_PACKAGE, "Active machine spin up and down cost", HardMediumSoftLongScore.ONE_MEDIUM,
-                        machine -> machine.getSpinUpDownCostMicros() * 2);
+                        Machine::getSpinUpDownCostMicros);
     }
 
     protected Constraint idleCosts(ConstraintFactory constraintFactory) {
         return constraintFactory.from(TaskAssignment.class)
                 .groupBy(TaskAssignment::getMachine,
                         consecutiveIntervals(TaskAssignment::getStartPeriod, TaskAssignment::getEndPeriod, (a, b) -> b - a))
-                .flattenLast(ConsecutiveIntervalInfo::getBreaks) // add break
+                .flattenLast(ConsecutiveIntervalInfo::getBreaks)
                 .join(Period.class,
-                        greaterThan((machine, brk) -> brk.getPreviousIntervalClusterEnd(), Period::getPeriod),
-                        lessThan((machine, brk) -> brk.getNextIntervalClusterStart(), Period::getPeriod))
-                .groupBy((machine, idlePeriod, period) -> machine,
-                        (machine, idlePeriod, period) -> idlePeriod,
-                        ConstraintCollectors.sumLong((machine, idlePeriod, period) -> period.getPowerPriceMicros()))
+                        lessThanOrEqual((machine, brk) -> brk.getPreviousIntervalClusterEnd(), Period::getPeriod),
+                        greaterThan((machine, brk) -> brk.getNextIntervalClusterStart(), Period::getPeriod))
+                .groupBy((machine, brk, idlePeriod) -> machine,
+                        (machine, brk, idlePeriod) -> brk,
+                        sumLong((machine, brk, idlePeriod) -> idlePeriod.getPowerPriceMicros()))
                 .penalizeLong(CONSTRAINT_PACKAGE, "Machine idle costs", HardMediumSoftLongScore.ONE_MEDIUM,
-                        (machine, idlePeriod, idlePowerCost) -> {
-                            long idleCost = multiplyTwoMicros(machine.getPowerConsumptionMicros(), idlePowerCost);
+                        (machine, brk, powerCost) -> {
+                            long idleCost = multiplyTwoMicros(machine.getPowerConsumptionMicros(), powerCost);
                             // Shutting down and restarting the machine may be cheaper than keeping it idle.
-                            return Math.min(idleCost, machine.getSpinUpDownCostMicros() * 2);
+                            return Math.min(idleCost, machine.getSpinUpDownCostMicros());
                         });
     }
 
     protected Constraint taskPowerCost(ConstraintFactory constraintFactory) {
-        return constraintFactory.from(Period.class)
-                .join(TaskAssignment.class,
-                        greaterThanOrEqual(Period::getPeriod, TaskAssignment::getStartPeriod),
-                        lessThan(Period::getPeriod, TaskAssignment::getEndPeriod))
+        return constraintFactory.from(TaskAssignment.class)
+                .join(Period.class,
+                        lessThanOrEqual(TaskAssignment::getStartPeriod, Period::getPeriod),
+                        greaterThan(TaskAssignment::getEndPeriod, Period::getPeriod))
                 .penalizeLong(CONSTRAINT_PACKAGE, "Task power cost", HardMediumSoftLongScore.ONE_MEDIUM,
-                        (period, taskAssignment) -> multiplyTwoMicros(taskAssignment.getTask().getPowerConsumptionMicros(),
+                        (taskAssignment, period) -> multiplyTwoMicros(taskAssignment.getTask().getPowerConsumptionMicros(),
                                 period.getPowerPriceMicros()));
     }
 
     protected Constraint startEarly(ConstraintFactory constraintFactory) {
         return constraintFactory.from(TaskAssignment.class)
-                .penalize(CONSTRAINT_PACKAGE, "Prefer early task start", HardMediumSoftLongScore.ONE_SOFT, TaskAssignment::getStartPeriod);
+                .penalize(CONSTRAINT_PACKAGE, "Prefer early task start", HardMediumSoftLongScore.ONE_SOFT,
+                        TaskAssignment::getStartPeriod);
     }
 
 }

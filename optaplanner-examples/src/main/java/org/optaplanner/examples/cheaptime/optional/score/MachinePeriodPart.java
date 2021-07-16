@@ -16,17 +16,18 @@
 
 package org.optaplanner.examples.cheaptime.optional.score;
 
+import static java.util.Comparator.comparing;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+
 import org.optaplanner.examples.cheaptime.domain.Machine;
 import org.optaplanner.examples.cheaptime.domain.MachineCapacity;
 import org.optaplanner.examples.cheaptime.domain.Task;
 import org.optaplanner.examples.cheaptime.domain.TaskAssignment;
 import org.optaplanner.examples.cheaptime.domain.TaskRequirement;
-
-import static java.util.Comparator.comparing;
 
 public final class MachinePeriodPart implements Comparable<MachinePeriodPart> {
 

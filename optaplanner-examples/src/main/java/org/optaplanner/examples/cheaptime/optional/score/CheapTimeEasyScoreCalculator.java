@@ -74,7 +74,7 @@ public class CheapTimeEasyScoreCalculator implements EasyScoreCalculator<CheapTi
             List<MachinePeriodPart> machinePeriodList = entry.getValue();
             MachinePeriodStatus previousStatus = MachinePeriodStatus.OFF;
             long idleCostMicros = 0L;
-            for (Period period: solution.getPeriodList()) {
+            for (Period period : solution.getPeriodList()) {
                 MachinePeriodPart machinePeriodPart = machinePeriodList.get(period.getPeriod());
                 boolean active = machinePeriodPart.isActive();
                 if (active) {
