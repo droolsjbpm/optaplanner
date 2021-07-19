@@ -51,10 +51,10 @@ pipeline {
 
                     if (isRelease()) {
                         // Verify version is set and if on right release branch
-                        assert getProjectVersion()
+                        assert getOptaplannerVersion()
                         assert getKogitoVersion()
 
-                        assert getBuildBranch() == util.getReleaseBranchFromVersion(getProjectVersion())
+                        assert getBuildBranch() == util.getReleaseBranchFromVersion(getOptaplannerVersion())
                     }
 
                     installGithubCLI()
@@ -185,7 +185,7 @@ pipeline {
                         String prBranchName = createWebsitePrBranch(websiteRepository)
 
                         // Update versions in links on the website.
-                        sh "./build/update-versions.sh ${getProjectVersion()} ${getNextMinorSnapshotVersion(getProjectVersion())}"
+                        sh "./build/update-versions.sh ${getOptaplannerVersion()} ${getNextMinorSnapshotVersion(getOptaplannerVersion())}"
 
                         // Update the XSDs. OptaPlanner must be cloned and build with the full profile before.
                         String optaplannerRoot = "$WORKSPACE/optaplanner"
@@ -193,7 +193,7 @@ pipeline {
                         sh "cp $optaplannerRoot/optaplanner-benchmark/target/classes/benchmark.xsd content/xsd/benchmark/benchmark-8.xsd"
 
                         // Add changed files, commit, open and merge PR
-                        prLink = commitAndCreatePR("Release OptaPlanner ${getProjectVersion()}", { sh 'git add content/xsd/\\*.xsd data/pom.yml' }, prBranchName, 'master')
+                        prLink = commitAndCreatePR("Release OptaPlanner ${getOptaplannerVersion()}", { sh 'git add content/xsd/\\*.xsd data/pom.yml' }, prBranchName, 'master')
                     }
                     dir(websiteRepository) {
                         checkoutRepo(websiteRepository, 'master')
@@ -209,11 +209,11 @@ pipeline {
             }
             steps {
                 script {
-                    String nextMicroSnapshotVersion = getNextMicroSnapshotVersion(getProjectVersion())
+                    String nextMicroSnapshotVersion = getNextMicroSnapshotVersion(getOptaplannerVersion())
 
                     dir("${optaplannerRepository}-bot") {
                         prepareForPR(optaplannerRepository)
-                        String nextSnapshotVersion = getNextMicroSnapshotVersion(getProjectVersion())
+                        String nextSnapshotVersion = getNextMicroSnapshotVersion(getOptaplannerVersion())
                         maven.mvnVersionsSet(getMavenCommand(), nextSnapshotVersion, true)
                         maven.mvnSetVersionProperty(getMavenCommand(), 'version.org.kie.kogito', getNextMicroSnapshotVersion(getKogitoVersion()))
 
@@ -235,7 +235,7 @@ pipeline {
             }
             steps {
                 script {
-                    String nextMicroSnapshotVersion = getNextMicroSnapshotVersion(getProjectVersion())
+                    String nextMicroSnapshotVersion = getNextMicroSnapshotVersion(getOptaplannerVersion())
                     dir("$vehicleRoutingRepository-bot") {
                         prepareForPR(vehicleRoutingRepository)
                         maven.mvnVersionsUpdateParentAndChildModules(nextMicroSnapshotVersion, true)
@@ -258,7 +258,7 @@ pipeline {
             }
             steps {
                 script {
-                    String nextMicroSnapshotVersion = getNextMicroSnapshotVersion(getProjectVersion())
+                    String nextMicroSnapshotVersion = getNextMicroSnapshotVersion(getOptaplannerVersion())
                     dir("$employeeRosteringRepository-bot") {
                         prepareForPR(employeeRosteringRepository)
                         maven.mvnVersionsUpdateParentAndChildModules(nextMicroSnapshotVersion, true)
@@ -281,7 +281,7 @@ pipeline {
             }
             steps {
                 script {
-                    String nextMicroSnapshotVersion = getNextMicroSnapshotVersion(getProjectVersion())
+                    String nextMicroSnapshotVersion = getNextMicroSnapshotVersion(getOptaplannerVersion())
                     String botQuickstartsRepository = "${quickstartsRepository}-bot"
                     dir(botQuickstartsRepository) {
                         prepareForPR(quickstartsRepository)
@@ -359,8 +359,8 @@ boolean isRelease() {
     return env.RELEASE.toBoolean()
 }
 
-String getProjectVersion() {
-    return getParamOrDeployProperty('PROJECT_VERSION', 'project.version')
+String getOptaplannerVersion() {
+    return getParamOrDeployProperty('OPTAPLANNER_VERSION', 'optaplanner.version')
 }
 
 String getKogitoVersion() {
@@ -376,7 +376,7 @@ String getNextMinorSnapshotVersion(String currentVersion) {
 }
 
 String getGitTag() {
-    return params.GIT_TAG != '' ? params.GIT_TAG : getProjectVersion()
+    return params.GIT_TAG != '' ? params.GIT_TAG : getOptaplannerVersion()
 }
 
 String getBuildBranch() {
@@ -408,7 +408,7 @@ void setPipelinePrLink(String repo, String value) {
 }
 
 String getSnapshotBranch() {
-    return "${getNextMicroSnapshotVersion(getProjectVersion()).toLowerCase()}-${env.BOT_BRANCH_HASH}"
+    return "${getNextMicroSnapshotVersion(getOptaplannerVersion()).toLowerCase()}-${env.BOT_BRANCH_HASH}"
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -465,7 +465,7 @@ String commitAndCreatePR(String commitMsg, Closure precommit, String localBranch
 }
 
 void commitAndForcePushProtectedBranch(String repo, String branch) {
-    githubscm.commitChanges("[${getBuildBranch()}] Update ${branch} to ${getProjectVersion()}", {
+    githubscm.commitChanges("[${getBuildBranch()}] Update ${branch} to ${getOptaplannerVersion()}", {
         githubscm.findAndStageNotIgnoredFiles('pom.xml')
         githubscm.findAndStageNotIgnoredFiles('build.gradle')
     })
@@ -488,7 +488,7 @@ String commitAndCreatePR(String commitMsg) {
 String createWebsitePrBranch(String websiteRepository) {
     checkoutRepo(websiteRepository, 'master') // there is no other branch
     githubscm.forkRepo(getBotAuthorCredsID())
-    String prBranchName = "${getProjectVersion().toLowerCase()}-${env.BOT_BRANCH_HASH}"
+    String prBranchName = "${getOptaplannerVersion().toLowerCase()}-${env.BOT_BRANCH_HASH}"
     githubscm.createBranch(prBranchName)
     return prBranchName
 }
@@ -510,7 +510,7 @@ void uploadDistribution(String directory) {
                     keyFileVariable: 'SSH_KEY_JBOSS_FILEMGMT')]) {
                 // For testing, simulate connection via SSH:
                 // sh "ssh -i $SSH_KEY_JBOSS_FILEMGMT -oKexAlgorithms=+diffie-hellman-group1-sha1 optaplanner@filemgmt.jboss.org"
-                sh "./build/release/upload_distribution.sh ${getProjectVersion()} $SSH_KEY_JBOSS_FILEMGMT"
+                sh "./build/release/upload_distribution.sh ${getOptaplannerVersion()} $SSH_KEY_JBOSS_FILEMGMT"
                     }
         }
     } else {
@@ -650,7 +650,7 @@ void updateQuickstartsVersions(String newVersion) {
     gradleVersionsUpdate(newVersion)
 
     assert !sh(script:
-            "grep -Rn \"${getProjectVersion()}\" --include={pom.xml,build.gradle} | " +
+            "grep -Rn \"${getOptaplannerVersion()}\" --include={pom.xml,build.gradle} | " +
              'cat', returnStdout: true)
 }
 
