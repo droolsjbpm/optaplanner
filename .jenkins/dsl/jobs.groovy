@@ -156,6 +156,8 @@ void setupDeployJob(String jobFolder, KogitoJobType jobType) {
                 stringParam('PR_TARGET_BRANCH', '', 'What is the target branch of the PR?')
             }
 
+            booleanParam('SEND_NOTIFICATION', false, 'In case you want the pipeline to send a notification on CI channel for this run.')
+
             //Build branch name for quickstarts
             stringParam('QUICKSTARTS_BUILD_BRANCH_NAME', "${GIT_BRANCH}" == 'master' ? 'development' : "${GIT_BRANCH}", 'Base branch for quickstarts. Set if you are not on a multibranch pipeline.')
         }
@@ -207,6 +209,8 @@ void setupPromoteJob(String jobFolder, KogitoJobType jobType) {
             stringParam('KOGITO_VERSION', '', 'Optional if not RELEASE. If RELEASE, cannot be empty.')
 
             stringParam('GIT_TAG', '', 'Git tag to set, if different from PROJECT_VERSION')
+
+            booleanParam('SEND_NOTIFICATION', false, 'In case you want the pipeline to send a notification on CI channel for this run.')
         }
 
         environmentVariables {
