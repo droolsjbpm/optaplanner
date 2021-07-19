@@ -149,7 +149,7 @@ void setupDeployJob(String jobFolder, KogitoJobType jobType) {
             booleanParam('SKIP_INTEGRATION_TESTS',  false, 'Skip long integration tests')
 
             booleanParam('CREATE_PR', false, 'Should we create a PR with the changes ?')
-            stringParam('PROJECT_VERSION', '', 'Optional if not RELEASE. If RELEASE, cannot be empty.')
+            stringParam('OPTAPLANNER_VERSION', '', 'Optional if not RELEASE. If RELEASE, cannot be empty.')
             stringParam('KOGITO_VERSION', '', 'Optional if not RELEASE. If RELEASE, cannot be empty.')
 
             if (jobType == KogitoJobType.PR) {
@@ -203,10 +203,10 @@ void setupPromoteJob(String jobFolder, KogitoJobType jobType) {
             stringParam('DEPLOY_BUILD_URL', '', 'URL to jenkins deploy build to retrieve the `deployment.properties` file. If base parameters are defined, they will override the `deployment.properties` information')
 
             // Release information which can override `deployment.properties`
-            stringParam('PROJECT_VERSION', '', 'Override `deployment.properties`. Optional if not RELEASE. If RELEASE, cannot be empty.')
+            stringParam('OPTAPLANNER_VERSION', '', 'Override `deployment.properties`. Optional if not RELEASE. If RELEASE, cannot be empty.')
             stringParam('KOGITO_VERSION', '', 'Optional if not RELEASE. If RELEASE, cannot be empty.')
 
-            stringParam('GIT_TAG', '', 'Git tag to set, if different from PROJECT_VERSION')
+            stringParam('GIT_TAG', '', 'Git tag to set, if different from OPTAPLANNER_VERSION')
         }
 
         environmentVariables {
