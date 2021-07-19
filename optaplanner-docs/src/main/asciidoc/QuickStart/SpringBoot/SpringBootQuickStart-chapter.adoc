@@ -34,7 +34,7 @@ that deliver a near-optimal solution in a reasonable amount of time.
 == What you'll need
 
 * https://adoptopenjdk.net/[JDK 11 or later]
-* https://maven.apache.org/download.cgi[Maven 3.6+] or https://gradle.org/install/[Gradle4+]
+* https://maven.apache.org/download.cgi[Maven 3.8+] or https://gradle.org/install/[Gradle4+]
 * An IDE, such as https://www.jetbrains.com/idea[IntelliJ IDEA], VSCode or Eclipse
 
 == The build file and the dependencies

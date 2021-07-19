@@ -56,7 +56,7 @@
     <!-- Plugins -->
     <!-- ************************************************************************ -->
 
-    <maven.min.version>3.6.2</maven.min.version>
+    <maven.min.version>3.8.1</maven.min.version>
     <maven.compiler.release>11</maven.compiler.release>
     <!-- jboss suffixed version from jboss-parent which cannot be downloaded due to SNAPSHOT only policy for plugins from JBoss -->
     <version.compiler.plugin>3.8.1</version.compiler.plugin>
