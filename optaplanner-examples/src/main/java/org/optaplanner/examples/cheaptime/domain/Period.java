@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2021 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,18 +20,20 @@ import org.optaplanner.examples.common.domain.AbstractPersistable;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
-@XStreamAlias("CtPeriodPowerPrice")
-public class PeriodPowerPrice extends AbstractPersistable {
+@XStreamAlias("CtPeriod")
+public class Period extends AbstractPersistable implements Comparable<Period> {
 
-    private int period;
+    private final int period;
     private long powerPriceMicros;
+
+    public Period(int id, long powerPriceMicros) {
+        super(id);
+        this.period = id;
+        this.powerPriceMicros = powerPriceMicros;
+    }
 
     public int getPeriod() {
         return period;
-    }
-
-    public void setPeriod(int period) {
-        this.period = period;
     }
 
     public long getPowerPriceMicros() {
@@ -42,8 +44,8 @@ public class PeriodPowerPrice extends AbstractPersistable {
         this.powerPriceMicros = powerPriceMicros;
     }
 
-    // ************************************************************************
-    // Complex methods
-    // ************************************************************************
-
+    @Override
+    public int compareTo(Period o) {
+        return Long.compare(this.period, o.period);
+    }
 }
